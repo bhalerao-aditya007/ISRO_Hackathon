@@ -28,8 +28,8 @@ from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 
-from core.base_agent import BaseAgent
-from core.protocol import AgentID, PayloadType, PipelineState
+from base_agent import BaseAgent
+from protocol import AgentID, PayloadType, PipelineState
 
 log = logging.getLogger("PRISM.DEPTH_SOUNDER")
 
@@ -206,16 +206,13 @@ class DepthSounder(BaseAgent):
                     import rasterio
                     with rasterio.open(path) as src:
                         return src.read(1).astype(np.float32)
-                except Exception:
-                    pass
+                except Exception as e:
+                    self.log.error(f"Failed to read TIFF {path}: {e}")
+                    raise
             elif path.endswith(".npy"):
                 return np.load(path).astype(np.float32)
 
-        # Synthetic fallback
-        rng = np.random.default_rng(99)
-        arr = rng.exponential(0.8, (256, 256)).astype(np.float32)
-        arr = np.clip(arr, 0, 5)
-        return arr
+        raise FileNotFoundError(f"Real data file missing or invalid: {path}. Synthetic fallbacks are disabled.")
 
     def _load_mask(self, path: Optional[str], shape: tuple) -> np.ndarray:
         if path and Path(path).exists():
@@ -226,21 +223,25 @@ class DepthSounder(BaseAgent):
                         return src.read(1).astype(np.uint8)
                 else:
                     return np.load(path).astype(np.uint8)
-            except Exception:
-                pass
+            except Exception as e:
+                self.log.error(f"Failed to read mask {path}: {e}")
+                raise
+        
+        self.log.warning(f"Quality mask not found at {path}, defaulting to all-valid.")
         return np.ones(shape, dtype=np.uint8)
 
     def _get_meta(self, ref_path: Optional[str], shape: tuple) -> Optional[dict]:
-        if ref_path and ref_path.endswith(".tif"):
+        if ref_path and ref_path.endswith(".tif") and Path(ref_path).exists():
             try:
                 import rasterio
                 with rasterio.open(ref_path) as src:
                     meta = src.profile.copy()
                 meta.update(count=1, dtype="float32")
                 return meta
-            except Exception:
-                pass
-        return None
+            except Exception as e:
+                self.log.error(f"Failed to read metadata from {ref_path}: {e}")
+                raise
+        raise FileNotFoundError(f"Reference file for metadata missing or invalid: {ref_path}")
 
     def _write_raster(
         self, array: np.ndarray, name: str, meta: Optional[dict], dtype: str = "float32"

@@ -17,7 +17,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from core.protocol import AgentID, AgentMessage, PayloadType, PipelineState
+from protocol import AgentID, AgentMessage, PayloadType, PipelineState
 
 logger = logging.getLogger("PRISM")
 
