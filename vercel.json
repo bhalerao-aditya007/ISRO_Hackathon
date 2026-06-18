@@ -1,0 +1,35 @@
+{
+  "_comment": "PRISM — Vercel configuration",
+  "_note": [
+    "Vercel does not support long-running Python worker processes natively.",
+    "The recommended architecture is:",
+    "  • Frontend (React / Next.js dashboard) deployed on Vercel",
+    "  • Backend (FastAPI) deployed on Render",
+    "This vercel.json rewrites /api/* to your Render backend URL.",
+    "Set RENDER_API_URL in Vercel's environment variables dashboard."
+  ],
+
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://prism-api.onrender.com/:path*"
+    }
+  ],
+
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    }
+  ],
+
+  "framework": null,
+
+  "_alternatively_for_nextjs": {
+    "note": "If your frontend is Next.js, change framework to 'nextjs' above and remove the rewrites block. Use Next.js API routes as a thin proxy instead."
+  }
+}
