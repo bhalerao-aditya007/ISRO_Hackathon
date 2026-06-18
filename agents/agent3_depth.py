@@ -28,8 +28,8 @@ from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 
-from base_agent import BaseAgent
-from protocol import AgentID, PayloadType, PipelineState
+from core.base_agent import BaseAgent
+from core.protocol import AgentID, PayloadType, PipelineState
 
 log = logging.getLogger("PRISM.DEPTH_SOUNDER")
 

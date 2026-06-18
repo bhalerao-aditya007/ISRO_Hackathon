@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import glob
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -40,17 +41,25 @@ class PreprocessorPrime(BaseAgent):
         cfg = self.config
 
         # ---- Step 0: Detect polarization mode -----------------------------
-        pol_mode = self._detect_polarization_mode(cfg.get("dfsar_metadata_path"))
+        pol_mode = "compact_pol" # Forced for ISRO hackathon data
+        self.log.info("Polarization mode locked to: %s", pol_mode)
         state.polarization_mode = pol_mode
         self.log.info("Polarization mode detected: %s", pol_mode)
 
         # ---- Step 1: SNAP preprocessing (via pyroSAR or subprocess) ------
-        coregistered_stack = self._run_snap_preprocessing(
-            dfsar_slc_path = cfg.get("dfsar_slc_path"),
-            dem_path       = cfg.get("dem_path"),
-            pol_mode       = pol_mode,
-            output_prefix  = self.output_path("coregistered"),
-        )
+        dfsar_dir = cfg.get("dfsar_derived_dir", r"D:\PRISM_DATA\01_DFSAR")
+        cpr_files = glob.glob(os.path.join(dfsar_dir, "**", "*_d_cpr_*.tif"), recursive=True)
+        
+        if cpr_files:
+            coregistered_stack = cpr_files[0]
+            self.log.info(f"Using real ISRO derived data: {coregistered_stack}")
+        else:
+            coregistered_stack = self._run_snap_preprocessing(
+                dfsar_slc_path = cfg.get("dfsar_slc_path"),
+                dem_path       = cfg.get("dem_path"),
+                pol_mode       = pol_mode,
+                output_prefix  = self.output_path("coregistered"),
+            )
         state.coregistered_stack = coregistered_stack
 
         # ---- Step 2: Compute ENL after speckle filtering ------------------

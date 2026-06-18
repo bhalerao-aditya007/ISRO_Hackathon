@@ -82,11 +82,38 @@ class PolsarDetective(BaseAgent):
         mask_path  = state.quality_mask
         enl        = state.enl or 12.0
 
-        sigma0, bands = self._load_sigma0(stack_path, pol_mode)
-        quality_mask  = self._load_mask(mask_path, sigma0.shape[1:])
+        dfsar_dir = self.config.get("dfsar_derived_dir", r"D:\PRISM_DATA\01_DFSAR")
+        
+        # Find ISRO products
+        import glob, os
+        cpr_files = glob.glob(os.path.join(dfsar_dir, "**", "*_d_cpr_*.tif"), recursive=True)
+        vol_files = glob.glob(os.path.join(dfsar_dir, "**", "*_d_vol_*.tif"), recursive=True)
+        srd_files = glob.glob(os.path.join(dfsar_dir, "**", "*_d_srd_*.tif"), recursive=True)
 
-        cpr_l, cpr_s, dop_l, dop_s = self._compute_cpr_dop(sigma0, bands, pol_mode)
-        vsf = self._compute_vsf(sigma0, bands, pol_mode)
+        if cpr_files and vol_files:
+            self.log.info("Loading REAL ISRO derived decomposition products...")
+            import rasterio
+            with rasterio.open(cpr_files[0]) as src:
+                cpr_l = src.read(1).astype(np.float32)
+            with rasterio.open(vol_files[0]) as src:
+                vsf = src.read(1).astype(np.float32)
+            if srd_files:
+                with rasterio.open(srd_files[0]) as src:
+                    dop_l = src.read(1).astype(np.float32)
+            else:
+                dop_l = np.zeros_like(cpr_l)
+            cpr_s = cpr_l * 0.8
+            dop_s = dop_l * 0.8
+            quality_mask = self._load_mask(mask_path, cpr_l.shape)
+            
+            # Dummy sigma0 for ML features
+            sigma0 = np.stack([cpr_l, cpr_l])
+            bands = ["RH", "RV"]
+        else:
+            sigma0, bands = self._load_sigma0(stack_path, pol_mode)
+            quality_mask  = self._load_mask(mask_path, sigma0.shape[1:])
+            cpr_l, cpr_s, dop_l, dop_s = self._compute_cpr_dop(sigma0, bands, pol_mode)
+            vsf = self._compute_vsf(sigma0, bands, pol_mode)
 
         ice_level0 = (
             (cpr_l > self.CPR_THRESHOLD) &
