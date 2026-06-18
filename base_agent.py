@@ -10,6 +10,7 @@ All 8 agents inherit from BaseAgent.  Provides:
 
 from __future__ import annotations
 import logging
+import os
 import time
 import traceback
 from abc import ABC, abstractmethod
@@ -19,6 +20,36 @@ from typing import Any, Dict, Optional
 from core.protocol import AgentID, AgentMessage, PayloadType, PipelineState
 
 logger = logging.getLogger("PRISM")
+
+
+def _models_dir() -> Path:
+    """
+    Resolve the trained_models directory robustly.
+
+    Search order:
+      1. $PRISM_MODELS_DIR   (explicit env override)
+      2. $PRISM_ROOT/models/trained_models
+      3. <repo-root inferred from this file>/models/trained_models
+      4. CWD/models/trained_models   (last resort)
+    """
+    # 1. Explicit env override
+    env_models = os.environ.get("PRISM_MODELS_DIR")
+    if env_models:
+        return Path(env_models)
+
+    # 2. PRISM_ROOT env
+    env_root = os.environ.get("PRISM_ROOT")
+    if env_root:
+        return Path(env_root) / "models" / "trained_models"
+
+    # 3. Infer from this file:  core/base_agent.py → ../models/trained_models
+    this_file = Path(__file__).resolve()
+    candidate = this_file.parent.parent / "models" / "trained_models"
+    if candidate.exists():
+        return candidate
+
+    # 4. CWD fallback
+    return Path.cwd() / "models" / "trained_models"
 
 
 class BaseAgent(ABC):
@@ -95,23 +126,52 @@ class BaseAgent(ABC):
         Place your trained .pkl files at:
             PRISM/models/trained_models/<model_filename>.pkl
 
+        You can override the search path via:
+            export PRISM_MODELS_DIR=/absolute/path/to/trained_models
+
         Example:
             self._model = self.load_model("rf_ice_classifier")
-            # file: models/trained_models/rf_ice_classifier.pkl
+            # looks for: models/trained_models/rf_ice_classifier.pkl
+
+        HOW TO CONNECT YOUR TRAINED MODEL
+        ----------------------------------
+        1. Train your sklearn model and save it:
+               import pickle
+               with open("rf_ice_classifier.pkl", "wb") as f:
+                   pickle.dump(model, f)
+
+        2. Drop the .pkl file into:
+               PRISM/models/trained_models/
+
+        3. That's it — the agent auto-loads on startup and uses
+           model.predict_proba() (Agent 2) or model.predict() (Agent 4).
+
+        4. For the API/Render deployment, set the env var:
+               PRISM_MODELS_DIR=/app/models/trained_models
         """
         import pickle
-        model_dir  = Path(__file__).parent.parent / "models" / "trained_models"
+
+        model_dir  = _models_dir()
         model_path = model_dir / f"{model_filename}.pkl"
+
         if not model_path.exists():
             self.log.warning(
-                "Model file not found: %s  —  agent will use physics-only fallback.",
+                "Model file not found: %s  —  agent will use physics-only fallback.\n"
+                "  To fix: copy your .pkl to %s\n"
+                "  Or set: export PRISM_MODELS_DIR=/your/path",
                 model_path,
+                model_dir,
             )
             return None
-        with open(model_path, "rb") as f:
-            model = pickle.load(f)
-        self.log.info("Loaded model: %s", model_path)
-        return model
+
+        try:
+            with open(model_path, "rb") as f:
+                model = pickle.load(f)
+            self.log.info("Loaded model: %s", model_path)
+            return model
+        except Exception as exc:
+            self.log.error("Failed to unpickle model %s: %s", model_path, exc)
+            return None
 
     def output_path(self, filename: str) -> str:
         """Return absolute output path string."""
