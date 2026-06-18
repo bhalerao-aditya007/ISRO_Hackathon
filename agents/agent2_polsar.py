@@ -58,8 +58,8 @@ from typing import Any, Dict, List, Optional, Tuple   # ← FIXED: Tuple was mis
 
 import numpy as np
 
-from core.base_agent import BaseAgent
-from core.protocol import AgentID, PayloadType, PipelineState
+from agents.base_agent import BaseAgent
+from agents.protocol import AgentID, PayloadType, PipelineState
 
 log = logging.getLogger("PRISM.POLSAR_DETECTIVE")
 

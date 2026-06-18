@@ -23,8 +23,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
-from core.base_agent import BaseAgent
-from core.protocol import (
+from agents.base_agent import BaseAgent
+from agents.protocol import (
     AgentID, ConflictLevel, PayloadType, PipelineState,
 )
 

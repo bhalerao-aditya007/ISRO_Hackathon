@@ -23,8 +23,8 @@ from typing import Any, Dict, Optional
 
 import numpy as np
 
-from core.base_agent import BaseAgent
-from core.protocol import AgentID, AgentMessage, ConflictLevel, PayloadType, PipelineState
+from agents.base_agent import BaseAgent
+from agents.protocol import AgentID, AgentMessage, ConflictLevel, PayloadType, PipelineState
 
 log = logging.getLogger("PRISM.PREPROCESSOR_PRIME")
 

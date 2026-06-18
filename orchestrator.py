@@ -24,7 +24,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict
 
-from core.protocol import AgentID, PipelineState
+from agents.protocol import AgentID, PipelineState
 
 from agents.agent1_preprocessor import PreprocessorPrime
 from agents.agent2_polsar        import PolsarDetective
