@@ -29,10 +29,11 @@ from core.protocol import AgentID, PipelineState
 from agents.agent1_preprocessor import PreprocessorPrime
 from agents.agent2_polsar        import PolsarDetective
 from agents.agent3_depth         import DepthSounder
-from agents.agents4_to_8         import (
-    ThermoGuardian, VolumeOracle, TerrainScout,
-    ISRUArchitect,  Navigator,
-)
+from agents.agent4_thermo import ThermoGuardian
+from agents.agent5_volume import VolumeOracle
+from agents.agent6_terrain import TerrainScout
+from agents.agent7_isru import ISRUArchitect
+from agents.agent8_navigator import Navigator
 
 log = logging.getLogger("PRISM.ORCHESTRATOR")
 

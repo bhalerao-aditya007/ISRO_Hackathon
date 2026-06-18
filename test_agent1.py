@@ -11,7 +11,7 @@ from pathlib import Path
 # Add the agents directory to the path so we can import agent1_preprocessor
 sys.path.append(str(Path(__file__).parent / "agents"))
 
-from agent1_preprocessor import PreprocessorPrime
+from agents.agent1_preprocessor import PreprocessorPrime
 
 def main():
     print("Testing PRISM Agent 1: PREPROCESSOR PRIME")
@@ -52,7 +52,7 @@ def main():
     try:
         # Execute preprocessing
         processor = PreprocessorPrime(config)
-        result = processor.run()
+        result = processor.run(state)
 
         print("\n" + "="*60)
         print("PREPROCESSOR PRIME COMPLETED SUCCESSFULLY")
