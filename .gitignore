@@ -1,0 +1,24 @@
+# Data outputs (do not push large TIFF files)
+data/outputs/*.tif
+data/outputs/*.tiff
+
+# Raw data
+data/derived/
+my4rspeast/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
