@@ -18,11 +18,15 @@ DAG topology (from PRISM spec):
 """
 
 from __future__ import annotations
+import os
 import json
 import logging
 import time
 from pathlib import Path
 from typing import Any, Dict
+
+# Hotfix for PyTorch / numexpr OpenMP runtime conflict
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 from agents.protocol import AgentID, PipelineState
 
