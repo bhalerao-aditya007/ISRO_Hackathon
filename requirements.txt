@@ -1,0 +1,34 @@
+# PRISM — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# ── Core scientific stack ────────────────────────────────────────────────
+numpy>=1.24
+scipy>=1.11
+
+# ── Geospatial / raster ──────────────────────────────────────────────────
+rasterio>=1.3
+GDAL>=3.6          # optional but strongly recommended; comment out if build fails on Render
+                   # and use the gdal-config trick below instead
+
+# ── Image processing ─────────────────────────────────────────────────────
+scikit-image>=0.21
+
+# ── Machine learning ─────────────────────────────────────────────────────
+scikit-learn>=1.3   # for RandomForestClassifier and pickling
+
+# ── API / web ────────────────────────────────────────────────────────────
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-multipart>=0.0.9   # for file uploads
+
+# ── Optional: LangGraph DAG ──────────────────────────────────────────────
+# langgraph>=0.1        # uncomment to enable parallel DAG execution
+
+# ── Optional: NSGA-II path planner ──────────────────────────────────────
+# pymoo>=0.6            # uncomment to enable NSGA-II in Agent 8
+
+# ── Optional: SAR preprocessing ─────────────────────────────────────────
+# pyroSAR>=0.22         # requires SNAP to be installed separately
+
+# ── Dev / testing ────────────────────────────────────────────────────────
+pytest>=7.4
