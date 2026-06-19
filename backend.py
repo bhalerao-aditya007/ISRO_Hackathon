@@ -74,6 +74,8 @@ app = FastAPI(
     docs_url    = "/docs",
     redoc_url   = "/redoc",
 )
+import startup as _startup
+_startup.run()
 
 app.add_middleware(
     CORSMiddleware,
@@ -187,7 +189,7 @@ def run_pipeline(body: RunRequest, background_tasks: BackgroundTasks):
     (all agents generate plausible fake data) — useful for testing the API
     without real DFSAR files.
     """
-    config = load_config(os.environ.get("PRISM_CONFIG", "config/pipeline_config.json"))
+    config = load_config(os.environ.get("PRISM_CONFIG", str(_PRISM_ROOT / "config" / "pipeline_config.json")))
 
     # Override with request body values
     overrides = body.dict(exclude_none=True, exclude={"use_langgraph"})
@@ -245,7 +247,7 @@ def run_pipeline_sync(body: RunRequest):
     Use only for quick demos — long runs will time out on Render/Vercel.
     For production, use POST /run (async) + GET /jobs/{id}.
     """
-    config = load_config(os.environ.get("PRISM_CONFIG", "config/pipeline_config.json"))
+    config = load_config(os.environ.get("PRISM_CONFIG", str(_PRISM_ROOT / "config" / "pipeline_config.json")))
     overrides = body.dict(exclude_none=True, exclude={"use_langgraph"})
     config.update(overrides)
 
