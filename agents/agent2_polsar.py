@@ -92,7 +92,7 @@ class PolsarDetective(BaseAgent):
         mask_path  = state.quality_mask
         enl        = state.enl or 12.0
 
-        dfsar_dir = self.config.get("dfsar_derived_dir", r"D:\PRISM_DATA\01_DFSAR")
+        dfsar_dir = self.config.get("dfsar_derived_dir") or ""
         
         # Find ISRO products
         import glob, os
