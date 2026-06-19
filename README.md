@@ -1,3 +1,12 @@
+---
+title: PRISM API
+emoji: 🌙
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+app_port: 7860
+---
 <div align="center">
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Indian_Space_Research_Organisation_Logo.svg" alt="ISRO Logo" width="150"/>
