@@ -1,9 +1,10 @@
 {
-  "dfsar_derived_dir": "D:\\PRISM_DATA\\01_DFSAR",
-  "ohrc_dir": "D:\\PRISM_DATA\\02_OHRC",
-  "dem_path": "D:\\PRISM_DATA\\03_LOLA\\LDEM_80S_20MPP_ADJ.TIF",
-  "diviner_path": "D:\\PRISM_DATA\\05_DIVINER\\polar_south_80_Tmax.grd",
-  "illumination_path": "D:\\PRISM_DATA\\04_ILLUMINATION\\AVGVISIB_65S_240M.IMG",
-  "output_dir": "D:\\Code\\prism\\data\\outputs",
-  "layover_threshold": 0.3
+    "dfsar_derived_dir": "D:\\PRISM_DATA\\01_DFSAR",
+    "ohrc_dir": "D:\\PRISM_DATA\\02_OHRC",
+    "dem_path": "D:\\PRISM_DATA\\03_LOLA\\LDEM_80S_20MPP_ADJ.TIF",
+    "diviner_path": "D:\\PRISM_DATA\\05_DIVINER\\polar_south_80_Tmax.grd",
+    "illumination_path": "D:\\PRISM_DATA\\04_ILLUMINATION\\AVGVISIB_65S_240M.IMG",
+    "output_dir": "D:\\Code\\prism\\data\\outputs",
+    "layover_threshold": 0.3,
+    "use_diffusion_augmentation": true
 }
