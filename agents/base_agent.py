@@ -23,15 +23,6 @@ logger = logging.getLogger("PRISM")
 
 
 def _models_dir() -> Path:
-    """
-    Resolve the trained_models directory robustly.
-
-    Search order:
-      1. $PRISM_MODELS_DIR   (explicit env override)
-      2. $PRISM_ROOT/models/trained_models
-      3. <repo-root inferred from this file>/models/trained_models
-      4. CWD/models/trained_models   (last resort)
-    """
     # 1. Explicit env override
     env_models = os.environ.get("PRISM_MODELS_DIR")
     if env_models:
@@ -40,9 +31,16 @@ def _models_dir() -> Path:
     # 2. PRISM_ROOT env
     env_root = os.environ.get("PRISM_ROOT")
     if env_root:
-        return Path(env_root) / "models" / "trained_models"
+        candidate = Path(env_root) / "models" / "trained_models"
+        if candidate.exists():
+            return candidate
 
-    # 3. Infer from this file:  core/base_agent.py → ../models/trained_models
+    # 2.5  HF Spaces /data/ cache (NEW)
+    hf_cache = Path("/data/prism_models")
+    if hf_cache.exists():
+        return hf_cache
+
+    # 3. Infer from this file
     this_file = Path(__file__).resolve()
     candidate = this_file.parent.parent / "models" / "trained_models"
     if candidate.exists():
