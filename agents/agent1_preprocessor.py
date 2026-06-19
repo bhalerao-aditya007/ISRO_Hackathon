@@ -47,7 +47,7 @@ class PreprocessorPrime(BaseAgent):
         self.log.info("Polarization mode detected: %s", pol_mode)
 
         # ---- Step 1: SNAP preprocessing (via pyroSAR or subprocess) ------
-        dfsar_dir = cfg.get("dfsar_derived_dir", r"D:\PRISM_DATA\01_DFSAR")
+        dfsar_dir = cfg.get("dfsar_derived_dir") or ""
         cpr_files = glob.glob(os.path.join(dfsar_dir, "**", "*_d_cpr_*.tif"), recursive=True)
         
         if cpr_files:
