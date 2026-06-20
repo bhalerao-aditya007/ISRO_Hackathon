@@ -1,0 +1,11 @@
+{
+    "_comment": "Paths use /data/ which is populated by startup.py from HF Hub at container start.",
+    "dfsar_derived_dir": "/data/prism_data/01_DFSAR",
+    "ohrc_dir": "/data/prism_data/02_OHRC",
+    "dem_path": "/data/prism_data/03_LOLA/LDEM_80S_20MPP_ADJ.TIF",
+    "diviner_path": "/data/prism_data/05_DIVINER/polar_south_80_Tmax.grd",
+    "illumination_path": "/data/prism_data/04_ILLUMINATION/AVGVISIB_65S_240M.IMG",
+    "output_dir": "/data/prism_outputs",
+    "layover_threshold": 0.3,
+    "use_diffusion_augmentation": false
+}

@@ -1,0 +1,25 @@
+# PRISM — Python dependencies for HuggingFace Spaces
+
+# Core scientific stack
+numpy>=1.24
+scipy>=1.11
+
+# Geospatial — rasterio wheel on HF Spaces includes GDAL
+rasterio>=1.3
+
+# Image processing
+scikit-image>=0.21
+
+# Machine learning
+scikit-learn>=1.3
+
+# HuggingFace Hub (for startup.py data download)
+huggingface_hub>=0.20
+
+# API
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-multipart>=0.0.9
+
+# Dev/test
+pytest>=7.4
