@@ -199,7 +199,7 @@ class DepthSounder(BaseAgent):
     # I/O helpers
     # -----------------------------------------------------------------------
 
-def _load_raster(self, path: Optional[str]) -> np.ndarray:
+    def _load_raster(self, path: Optional[str]) -> np.ndarray:
         if path and Path(path).exists():
             if path.endswith(".tif"):
                 try:
