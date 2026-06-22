@@ -1,264 +1,1382 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>PRISM | Polarimetric Resource Intelligence System for the Moon</title>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRISM — Polarimetric Resource Intelligence System for the Moon</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;family=Jetbrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"surface-dim": "#0b1422", "surface-bright": "#313949", "primary-fixed": "#ffdbca", background: "#0b1422", "inverse-surface": "#dae3f7", "on-tertiary-fixed": "#000e5e", primary: "#ffb68f", outline: "#a78b7d", "surface-container-highest": "#2c3544", "tertiary-container": "#7e8fff", "inverse-primary": "#9d4400", "on-background": "#dae3f7", "outline-variant": "#584237", error: "#ffb4ab", "on-secondary": "#273237", "tertiary-fixed": "#dee0ff", "on-primary-fixed": "#331100", "on-primary-container": "#542100", "error-container": "#93000a", "surface-tint": "#ffb68f", "surface-container-high": "#222a39", "primary-fixed-dim": "#ffb68f", "primary-container": "#f47216", secondary: "#bcc8cf", "on-secondary-fixed": "#121d22", "on-surface": "#dae3f7", "on-tertiary-fixed-variant": "#1130c5", "on-surface-variant": "#e0c0b1", "surface-container": "#17202e", "secondary-fixed": "#d8e4eb", "inverse-on-surface": "#283140", "tertiary-fixed-dim": "#bbc3ff", "on-tertiary-container": "#001c94", "on-primary-fixed-variant": "#773200", "surface-variant": "#2c3544", "surface-container-low": "#131c2a", "on-tertiary": "#001c95", "on-error": "#690005", "secondary-container": "#3f4b50", "secondary-fixed-dim": "#bcc8cf", "on-secondary-container": "#aebac1", "on-primary": "#542100", "on-error-container": "#ffdad6", surface: "#0b1422", "on-secondary-fixed-variant": "#3d484e", "surface-container-lowest": "#060e1c", tertiary: "#bbc3ff"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {gutter: "24px", "margin-mobile": "20px", "margin-desktop": "64px", "container-max": "1440px", unit: "4px"}, fontFamily: {"display-xl-mobile": ["Sora"], "label-md": ["Geist"], "headline-md": ["Sora"], "headline-lg": ["Sora"], "body-md": ["Inter"], "display-xl": ["Sora"], "body-lg": ["Inter"], "mono-sm": ["Geist"], headline: ["Sora"], display: ["Sora"], body: ["Inter"], label: ["Jetbrains Mono"]}, fontSize: {"display-xl-mobile": ["40px", {lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "500"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "display-xl": ["64px", {lineHeight: "72px", letterSpacing: "-0.02em", fontWeight: "700"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "mono-sm": ["12px", {lineHeight: "16px", fontWeight: "400"}]}}}};</script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary:    "#ffb68f",
+        "primary-container": "#f47216",
+        "on-primary": "#542100",
+        "on-primary-container": "#331100",
+        surface:    "#0b1422",
+        "surface-container-lowest": "#060e1c",
+        "surface-container-low":    "#131c2a",
+        "surface-container":        "#17202e",
+        "surface-container-high":   "#222a39",
+        "surface-container-highest":"#2c3544",
+        "on-surface": "#dae3f7",
+        "on-surface-variant": "#a0b4c8",
+        secondary:  "#bcc8cf",
+        tertiary:   "#bbc3ff",
+        outline:    "#a78b7d",
+        "outline-variant": "#2c3544",
+        background: "#0b1422",
+        error: "#ffb4ab",
+      },
+      fontFamily: {
+        display: ["Sora","sans-serif"],
+        headline: ["Sora","sans-serif"],
+        body: ["Inter","sans-serif"],
+        mono: ["JetBrains Mono","monospace"],
+      }
+    }
+  }
+};
+</script>
 <style>
-        body {
-            background-color: #020617;
-            color: #dce1fb;
-            overflow-x: hidden;
-        }
-        .glass-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .glass-card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
-            pointer-events: none;
-        }
-        .fade-up {
-            opacity: 1;
-        }
-        .primary-glow:hover {
-            box-shadow: 0px 0px 20px rgba(244, 114, 22, 0.5);
-            transform: scale(1.02);
-        }
-        .pulse-accent {
-            animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
-        }
-    </style>
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Inter", sans-serif;
+    background: #0b1422;
+    color: #dae3f7;
+    overflow-x: hidden;
+  }
+
+  /* ── Glass card ── */
+  .card {
+    background: rgba(13, 20, 35, 0.75);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+  }
+  .card-accent {
+    border-color: rgba(255,182,143,0.25);
+  }
+
+  /* ── Agent DAG ── */
+  .dag-node {
+    transition: all 0.4s ease;
+  }
+  .dag-node.pending  { opacity: 0.35; }
+  .dag-node.running  { filter: drop-shadow(0 0 6px #ffb68f); animation: dag-pulse 1.2s infinite; }
+  .dag-node.done     { filter: drop-shadow(0 0 8px #10b981); }
+  .dag-node.error    { filter: drop-shadow(0 0 6px #ef4444); }
+
+  @keyframes dag-pulse {
+    0%,100% { opacity: 1; }
+    50%      { opacity: 0.6; }
+  }
+
+  /* ── Log console ── */
+  #log-console {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    height: 260px;
+    overflow-y: auto;
+    background: rgba(6,14,28,0.9);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 12px 14px;
+    scroll-behavior: smooth;
+  }
+  #log-console::-webkit-scrollbar { width: 4px; }
+  #log-console::-webkit-scrollbar-thumb { background: rgba(255,182,143,0.3); border-radius: 4px; }
+
+  .log-info    { color: #a0b4c8; }
+  .log-agent   { color: #ffb68f; }
+  .log-success { color: #10b981; }
+  .log-error   { color: #ef4444; }
+  .log-warn    { color: #facc15; }
+
+  /* ── Progress bar ── */
+  .progress-track {
+    background: rgba(255,255,255,0.06);
+    border-radius: 999px;
+    overflow: hidden;
+    height: 5px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f47216, #ffb68f);
+    border-radius: 999px;
+    transition: width 0.6s ease;
+  }
+
+  /* ── Metric badge ── */
+  .metric-val {
+    font-family: "Sora", sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffb68f;
+    line-height: 1;
+  }
+  .metric-unit {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: #a0b4c8;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+  .metric-label {
+    font-size: 12px;
+    color: #a0b4c8;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* ── Confidence ring ── */
+  .ring-svg circle.track { stroke: rgba(255,255,255,0.06); }
+  .ring-svg circle.fill  { transition: stroke-dashoffset 1s ease; transform: rotate(-90deg); transform-origin: 50% 50%; stroke-linecap: round; }
+
+  /* ── Site score bar ── */
+  .site-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 999px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .site-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #f47216, #ffb68f);
+    transition: width 1.2s ease;
+  }
+
+  /* ── Status pill ── */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .pill-idle    { background: rgba(160,180,200,0.1); border: 1px solid rgba(160,180,200,0.2); color: #a0b4c8; }
+  .pill-running { background: rgba(255,182,143,0.12); border: 1px solid rgba(255,182,143,0.35); color: #ffb68f; }
+  .pill-done    { background: rgba(16,185,129,0.12);  border: 1px solid rgba(16,185,129,0.35);  color: #10b981; }
+  .pill-error   { background: rgba(239,68,68,0.12);   border: 1px solid rgba(239,68,68,0.35);   color: #ef4444; }
+
+  /* ── Dot blink ── */
+  .dot-blink { animation: blink 1s step-start infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── Depth stratification bars ── */
+  .depth-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: height 1.2s ease;
+  }
+
+  /* ── Traverse path indicator ── */
+  .path-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .path-indicator {
+    width: 4px;
+    height: 32px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* upload zone */
+  .upload-zone {
+    border: 2px dashed rgba(255,182,143,0.25);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .upload-zone:hover {
+    border-color: rgba(255,182,143,0.5);
+    background: rgba(255,182,143,0.04);
+  }
+
+  /* scrollbar global */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,182,143,0.2); border-radius: 4px; }
+
+  /* ── Section label ── */
+  .section-eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #ffb68f;
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
+</style>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/api.js"></script>
 </head>
-<body class="flex flex-col min-h-screen">
-<!-- TopNavBar -->
-<header class="w-full top-0 sticky z-50 bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(34,211,238,0.1)]">
-<nav class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
-<div class="flex items-center gap-2">
-<a class="font-headline-md text-headline-md tracking-tighter text-primary" href="index.html">PRISM</a>
-</div>
-<div class="hidden md:flex gap-8 items-center">
-<a class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1" href="mission_control.html">Missions</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="mission_control.html">Telemetry</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="dataset.html">Resources</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="dataset.html">Logistics</a>
-</div>
-<a class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-label-md hover:bg-primary/10 transition-all duration-300 active:scale-95 text-center" href="intelligence_dashboard.html">
-                Launch Terminal
-            </a>
-</nav>
+
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TOP NAV
+═══════════════════════════════════════════════════════════ -->
+<header style="position:sticky;top:0;z-index:50;background:rgba(6,14,28,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);height:56px;display:flex;align-items:center;padding:0 24px;gap:16px;">
+  <span style="font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:#ffb68f;letter-spacing:-0.02em;">PRISM</span>
+  <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#a0b4c8;letter-spacing:0.12em;text-transform:uppercase;">Polarimetric Resource Intelligence System for the Moon</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+    <span class="pill pill-idle" id="nav-status-pill">
+      <span style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span>
+      Idle
+    </span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#a0b4c8;" id="nav-backend">
+      hf.space backend
+    </span>
+  </div>
 </header>
-<main class="flex-grow">
-<!-- Hero Section -->
-<section class="relative h-screen min-h-[800px] flex items-center overflow-hidden"><div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-<iframe src="animation.html" class="w-full h-full object-cover opacity-80 mix-blend-screen border-none" style="pointer-events: none;"></iframe>
-<div class="absolute inset-0 bg-gradient-to-b from-surface-dim/80 via-transparent to-surface-dim"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO BAND — mission statement, not decoration
+═══════════════════════════════════════════════════════════ -->
+<div style="background:linear-gradient(135deg,rgba(244,114,22,0.08) 0%,transparent 60%);border-bottom:1px solid rgba(255,255,255,0.05);padding:28px 24px 24px;">
+  <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;">
+    <div>
+      <div class="section-eyebrow">Chandrayaan-2 DFSAR · LOLA DEM · DIVINER Thermal · ISRU Planning</div>
+      <h1 style="font-family:'Sora',sans-serif;font-size:26px;font-weight:700;color:#dae3f7;margin:4px 0 8px;line-height:1.2;">
+        Lunar South Pole — Subsurface Ice Detection &amp; Rover Traverse Planning
+      </h1>
+      <p style="font-size:13px;color:#a0b4c8;max-width:700px;line-height:1.6;">
+        8 autonomous AI agents process real SAR polarimetry, thermal mapping, and terrain data to locate extractable water-ice deposits and plan a safe rover path to the doubly-shadowed crater in the Faustini PSR.
+      </p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
+      <button id="btn-run" onclick="startPipeline()" style="font-family:'JetBrains Mono',monospace;font-size:12px;background:#f47216;color:#fff;border:none;padding:10px 22px;border-radius:8px;cursor:pointer;letter-spacing:0.05em;transition:all 0.2s;"
+        onmouseover="this.style.background='#ffb68f';this.style.color='#331100'"
+        onmouseout="this.style.background='#f47216';this.style.color='#fff'">
+        ▶  RUN PIPELINE
+      </button>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" style="min-width:180px;">
+        <input type="file" id="file-input" accept=".tif,.tiff,.png,.jpg,.jpeg" style="display:none" onchange="handleUpload(event)">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#ffb68f;opacity:0.6;display:block;">cloud_upload</span>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#ffb68f;margin-top:2px;">Upload TIFF / Image</div>
+        <div style="font-size:10px;color:#a0b4c8;">for single-image inference</div>
+      </div>
+    </div>
+  </div>
+  <!-- Progress bar -->
+  <div style="max-width:1400px;margin:16px auto 0;">
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#a0b4c8;" id="progress-label">Awaiting run…</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#ffb68f;" id="progress-pct">0%</span>
+    </div>
+  </div>
 </div>
-<div class="relative z-10 w-full max-w-container-max mx-auto px-gutter grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-<div class="max-w-2xl">
-<span class="inline-block px-3 py-1 mb-6 rounded-full bg-primary/10 border border-primary/20 text-primary font-mono-sm text-mono-sm tracking-widest uppercase">
-                        Institutional Lunar Logistics
-                    </span>
-<h1 class="font-display-xl text-display-xl lg:text-display-xl text-on-surface mb-4 leading-tight">
-                        PRISM
-                    </h1>
-<p class="font-headline-md text-headline-md text-primary-fixed-dim mb-6">
-                        Polarimetric Resource Intelligence System for the Moon
-                    </p>
-<p class="font-body-lg text-body-lg text-on-surface-variant mb-10">
-                        We don't just detect ice — we identify extractable lunar resources, evaluate accessibility, and plan intelligent rover missions through collaborative AI.
-                    </p>
-<div class="flex flex-wrap gap-4">
-<a class="primary-glow bg-primary-container text-on-primary-container px-8 py-4 rounded-xl font-headline-md transition-all duration-300 text-center" href="mission_control.html">
-                            Explore Mission
-                        </a>
-<a class="border border-primary/30 text-primary px-8 py-4 rounded-xl font-headline-md hover:bg-primary/5 transition-all duration-300 text-center" href="intelligence_dashboard.html">
-                            View Agent Architecture
-                        </a>
-</div>
-</div>
-<div class="relative h-[400px] lg:h-[600px] w-full">
-<!-- Decorative HUD elements -->
-<div class="absolute top-0 right-0 p-4 border-r border-t border-primary/20 w-32 h-32 pointer-events-none"></div>
-<div class="absolute bottom-0 left-0 p-4 border-l border-b border-primary/20 w-32 h-32 pointer-events-none"></div>
-</div>
-</div>
-</section>
-<!-- Stats Row -->
-<section class="relative z-20 -mt-24 px-gutter max-w-container-max mx-auto mb-24">
-<div class="glass-card rounded-2xl grid grid-cols-2 md:grid-cols-4 divide-x divide-white/5 py-8">
-<div class="flex flex-col items-center justify-center p-6 text-center">
-<span class="font-headline-lg text-headline-lg text-primary">8</span>
-<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">AI Agents</span>
-</div>
-<div class="flex flex-col items-center justify-center p-6 text-center">
-<span class="font-headline-lg text-headline-lg text-primary">10+</span>
-<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Datasets</span>
-</div>
-<div class="flex flex-col items-center justify-center p-6 text-center">
-<span class="font-headline-lg text-headline-lg text-primary">30h</span>
-<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Execution Pipeline</span>
-</div>
-<div class="flex flex-col items-center justify-center p-6 text-center">
-<span class="font-headline-lg text-headline-lg text-primary">ISRU</span>
-<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">E2E Planning</span>
-</div>
-</div>
-</section>
-<!-- Features Section -->
-<section class="px-gutter max-w-container-max mx-auto py-24">
-<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-<div class="max-w-2xl">
-<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Autonomous Intelligence for Lunar Expansion</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">PRISM orchestrates specialized neural architectures to solve the most complex challenges of off-world resource management.</p>
-</div>
-<div class="flex gap-2">
-<span class="w-2 h-2 rounded-full bg-primary pulse-accent"></span>
-<span class="font-mono-sm text-mono-sm text-primary uppercase">Active Telemetry Stream</span>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-<!-- Feature 1 -->
-<div class="glass-card p-10 rounded-3xl flex flex-col h-full group hover:border-primary/40 transition-colors duration-500">
-<div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-primary text-3xl" style='font-variation-settings: "FILL" 1;'>dataset</span>
-</div>
-<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Resource Identification</h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-8 flex-grow">
-                        Utilizing multi-spectral polarimetry to detect sub-surface volatiles and mineral deposits with 98.4% diagnostic accuracy across the lunar south pole.
-                    </p>
-<a class="inline-flex items-center text-primary font-label-md hover:translate-x-2 transition-transform" href="intelligence_dashboard.html">
-                        Explore Model Specs <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
-</a>
-</div>
-<!-- Feature 2 -->
-<div class="glass-card p-10 rounded-3xl flex flex-col h-full group hover:border-primary/40 transition-colors duration-500">
-<div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-primary text-3xl" style='font-variation-settings: "FILL" 1;'>analytics</span>
-</div>
-<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Accessibility Evaluation</h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-8 flex-grow">
-                        Real-time geotechnical analysis of regolith stability and crater slope gradients to determine extraction feasibility for ISRU hardware.
-                    </p>
-<a class="inline-flex items-center text-primary font-label-md hover:translate-x-2 transition-transform" href="dataset.html">
-                        Topographic Data <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
-</a>
-</div>
-<!-- Feature 3 -->
-<div class="glass-card p-10 rounded-3xl flex flex-col h-full group hover:border-primary/40 transition-colors duration-500">
-<div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-primary text-3xl" style='font-variation-settings: "FILL" 1;'>precision_manufacturing</span>
-</div>
-<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Rover Mission Planning</h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-8 flex-grow">
-                        Multi-agent pathfinding that optimizes for power consumption, communication windows, and thermal management in Permanently Shadowed Regions (PSRs).
-                    </p>
-<a class="inline-flex items-center text-primary font-label-md hover:translate-x-2 transition-transform" href="mission_control.html">
-                        Simulation Engine <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
-</a>
-</div>
-</div>
-</section>
-<!-- Asymmetric Bento Data View -->
-<section class="px-gutter max-w-container-max mx-auto py-24">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter h-full lg:h-[600px]">
-<div class="lg:col-span-8 glass-card rounded-3xl p-8 flex flex-col justify-end relative">
-<div class="absolute inset-0 opacity-40 overflow-hidden rounded-3xl">
-<div class="w-full h-full bg-cover bg-center" data-alt="A cinematic, high-resolution scientific data visualization showing a 3D topographic map of a lunar crater with glowing cyan heat maps indicating mineral concentrations." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuALRd3Djxwy4iHBzqJuKnYBcA1F2kyA1X46a1l1Y4A9dnwVLsysSkq6lLe4pj_WMRvRQXYA7XueYbHci6V6L8KgwaszmtD79A_CE-ZxTHLtLwbV2NQg67OoJThO67QBwcvhfI2kNqqJ8YzaOgoc9ungr0fXd-NjQWBaLGMMjsHwaAPh_V0RJU13dM8jUyBQ1wrqpKdvhwedn9Hnag00bVYDpRvURX4Zuei0GWBwOmwfmBQkr1n7fKPFUg");'></div>
-</div>
-<div class="relative z-10 bg-surface/80 backdrop-blur-md p-8 rounded-2xl border border-white/5 max-w-lg">
-<h4 class="font-headline-md text-headline-md text-primary mb-2">Live Mission Simulation</h4>
-<p class="font-body-md text-body-md text-on-surface-variant mb-4">Observing PRISM-A1 Agent executing pathfinding in the Shackleton Crater vicinity. Current success probability: 94%.</p>
-<div class="flex items-center gap-4">
-<div class="flex-grow bg-surface-container h-1 rounded-full overflow-hidden">
-<div class="bg-primary h-full w-[94%] shadow-[0_0_8px_#8aebff]"></div>
-</div>
-<span class="font-mono-sm text-mono-sm text-primary">SYST_RUNNING</span>
-</div>
-</div>
-</div>
-<div class="lg:col-span-4 flex flex-col gap-gutter">
-<div class="glass-card flex-grow rounded-3xl p-8 flex flex-col">
-<span class="material-symbols-outlined text-primary mb-4">security</span>
-<h4 class="font-headline-md text-headline-md text-on-surface mb-2">Clearance Level 5</h4>
-<p class="font-body-md text-body-md text-on-surface-variant">Authorized personnel can access the raw telemetry feeds and neural weights of our mission agents.</p>
-</div>
-<div class="glass-card flex-grow rounded-3xl p-8 flex flex-col bg-primary-container/10 border border-primary/20">
-<span class="material-symbols-outlined text-primary mb-4">rocket_launch</span>
-<h4 class="font-headline-md text-headline-md text-on-surface mb-2">Next Window</h4>
-<p class="font-headline-lg text-headline-lg text-primary">T-Minus 12:44:02</p>
-<p class="font-body-md text-body-md text-on-surface-variant mt-2">To Shackleton-Prime landing site.</p>
-</div>
-</div>
-</div>
-</section>
-<!-- CTA Section -->
-<section class="px-gutter max-w-container-max mx-auto py-24 text-center">
-<div class="glass-card p-16 rounded-[3rem] border-primary/20 bg-gradient-to-b from-primary/5 to-transparent">
-<h2 class="font-display-xl-mobile text-display-xl-mobile md:text-display-xl text-on-surface mb-6">Secure the Future of ISRU</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-2xl mx-auto">Join the multi-agent lunar intelligence network and start identifying extractable resources today.</p>
-<div class="flex flex-col md:flex-row justify-center gap-4">
-<a class="primary-glow bg-primary-container text-on-primary-container px-12 py-5 rounded-2xl font-headline-md text-center" href="mission_control.html">Initialize Protocol</a>
-<a class="border border-white/10 hover:bg-white/5 text-on-surface px-12 py-5 rounded-2xl font-headline-md transition-colors text-center" href="#contact">Request Access</a>
-</div>
-</div>
-</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN LAYOUT — two-column
+═══════════════════════════════════════════════════════════ -->
+<main style="max-width:1400px;margin:0 auto;padding:20px 24px 60px;display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;">
+
+  <!-- ── LEFT PANEL: Agent DAG + Console ── -->
+  <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:72px;">
+
+    <!-- Agent Pipeline DAG -->
+    <div class="card" style="padding:18px;">
+      <div class="section-eyebrow">Agent Pipeline — LangGraph DAG</div>
+      <div style="font-size:13px;font-weight:600;color:#dae3f7;margin-bottom:14px;">8-Agent Execution Graph</div>
+
+      <!-- SVG DAG -->
+      <svg id="dag-svg" viewBox="0 0 300 480" width="100%" style="display:block;">
+
+        <!-- Edges (drawn behind nodes) -->
+        <!-- PREPROCESSOR → POLSAR, THERMO -->
+        <line x1="150" y1="46" x2="90"  y2="104" stroke="rgba(255,182,143,0.18)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="150" y1="46" x2="210" y2="104" stroke="rgba(255,182,143,0.18)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <!-- POLSAR → DEPTH, VOLUME -->
+        <line x1="90"  y1="130" x2="60"  y2="188" stroke="rgba(255,182,143,0.18)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="90"  y1="130" x2="150" y2="188" stroke="rgba(255,182,143,0.18)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <!-- THERMO → VOLUME, ISRU -->
+        <line x1="210" y1="130" x2="150" y2="188" stroke="rgba(255,182,143,0.18)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="210" y1="130" x2="240" y2="188" stroke="rgba(255,182,143,0.18)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <!-- DEPTH → TERRAIN -->
+        <line x1="60"  y1="214" x2="90"  y2="272" stroke="rgba(255,182,143,0.18)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <!-- VOLUME → ISRU -->
+        <line x1="150" y1="214" x2="240" y2="272" stroke="rgba(255,182,143,0.18)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <!-- ISRU → TERRAIN -->
+        <line x1="240" y1="214" x2="210" y2="272" stroke="rgba(255,182,143,0.18)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <!-- TERRAIN → NAVIGATOR -->
+        <line x1="150" y1="298" x2="150" y2="356" stroke="rgba(255,182,143,0.18)" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+        <!-- ── Node definitions ── -->
+        <!-- 1. PREPROCESSOR_PRIME -->
+        <g class="dag-node pending" id="dag-PREPROCESSOR_PRIME">
+          <circle cx="150" cy="28" r="22" fill="rgba(244,114,22,0.15)" stroke="#f47216" stroke-width="1.5"/>
+          <text x="150" y="24" text-anchor="middle" fill="#ffb68f" font-family="JetBrains Mono" font-size="7" font-weight="500">PREPROC</text>
+          <text x="150" y="34" text-anchor="middle" fill="#ffb68f" font-family="JetBrains Mono" font-size="7">PRIME</text>
+        </g>
+
+        <!-- 2. POLSAR_DETECTIVE -->
+        <g class="dag-node pending" id="dag-POLSAR_DETECTIVE">
+          <circle cx="90" cy="117" r="22" fill="rgba(187,195,255,0.1)" stroke="#bbc3ff" stroke-width="1.5"/>
+          <text x="90" y="113" text-anchor="middle" fill="#bbc3ff" font-family="JetBrains Mono" font-size="7">POLSAR</text>
+          <text x="90" y="123" text-anchor="middle" fill="#bbc3ff" font-family="JetBrains Mono" font-size="7">DETECTIVE</text>
+        </g>
+
+        <!-- 3. THERMO_GUARDIAN -->
+        <g class="dag-node pending" id="dag-THERMO_GUARDIAN">
+          <circle cx="210" cy="117" r="22" fill="rgba(250,204,21,0.1)" stroke="#facc15" stroke-width="1.5"/>
+          <text x="210" y="113" text-anchor="middle" fill="#facc15" font-family="JetBrains Mono" font-size="7">THERMO</text>
+          <text x="210" y="123" text-anchor="middle" fill="#facc15" font-family="JetBrains Mono" font-size="7">GUARDIAN</text>
+        </g>
+
+        <!-- 4. DEPTH_SOUNDER -->
+        <g class="dag-node pending" id="dag-DEPTH_SOUNDER">
+          <circle cx="60" cy="201" r="22" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.5"/>
+          <text x="60" y="197" text-anchor="middle" fill="#10b981" font-family="JetBrains Mono" font-size="7">DEPTH</text>
+          <text x="60" y="207" text-anchor="middle" fill="#10b981" font-family="JetBrains Mono" font-size="7">SOUNDER</text>
+        </g>
+
+        <!-- 5. VOLUME_ORACLE -->
+        <g class="dag-node pending" id="dag-VOLUME_ORACLE">
+          <circle cx="150" cy="201" r="22" fill="rgba(34,211,238,0.1)" stroke="#22d3ee" stroke-width="1.5"/>
+          <text x="150" y="197" text-anchor="middle" fill="#22d3ee" font-family="JetBrains Mono" font-size="7">VOLUME</text>
+          <text x="150" y="207" text-anchor="middle" fill="#22d3ee" font-family="JetBrains Mono" font-size="7">ORACLE</text>
+        </g>
+
+        <!-- 6. ISRU_ARCHITECT -->
+        <g class="dag-node pending" id="dag-ISRU_ARCHITECT">
+          <circle cx="240" cy="201" r="22" fill="rgba(139,92,246,0.1)" stroke="#8b5cf6" stroke-width="1.5"/>
+          <text x="240" y="197" text-anchor="middle" fill="#8b5cf6" font-family="JetBrains Mono" font-size="7">ISRU</text>
+          <text x="240" y="207" text-anchor="middle" fill="#8b5cf6" font-family="JetBrains Mono" font-size="7">ARCHITECT</text>
+        </g>
+
+        <!-- 7. TERRAIN_SCOUT -->
+        <g class="dag-node pending" id="dag-TERRAIN_SCOUT">
+          <circle cx="150" cy="285" r="22" fill="rgba(255,182,143,0.1)" stroke="#ffb68f" stroke-width="1.5"/>
+          <text x="150" y="281" text-anchor="middle" fill="#ffb68f" font-family="JetBrains Mono" font-size="7">TERRAIN</text>
+          <text x="150" y="291" text-anchor="middle" fill="#ffb68f" font-family="JetBrains Mono" font-size="7">SCOUT</text>
+        </g>
+
+        <!-- 8. NAVIGATOR -->
+        <g class="dag-node pending" id="dag-NAVIGATOR">
+          <circle cx="150" cy="369" r="22" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.5"/>
+          <text x="150" y="365" text-anchor="middle" fill="#10b981" font-family="JetBrains Mono" font-size="7">NAVI-</text>
+          <text x="150" y="375" text-anchor="middle" fill="#10b981" font-family="JetBrains Mono" font-size="7">GATOR</text>
+        </g>
+
+        <!-- Legend -->
+        <circle cx="16" cy="420" r="5" fill="none" stroke="rgba(255,182,143,0.4)" stroke-width="1.5"/>
+        <text x="26" y="424" fill="#a0b4c8" font-family="JetBrains Mono" font-size="8">Pending</text>
+        <circle cx="86" cy="420" r="5" fill="none" stroke="#ffb68f" stroke-width="1.5"/>
+        <text x="96" y="424" fill="#a0b4c8" font-family="JetBrains Mono" font-size="8">Running</text>
+        <circle cx="156" cy="420" r="5" fill="#10b981" stroke="#10b981" stroke-width="1.5"/>
+        <text x="166" y="424" fill="#a0b4c8" font-family="JetBrains Mono" font-size="8">Done</text>
+        <circle cx="206" cy="420" r="5" fill="#ef4444" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="216" y="424" fill="#a0b4c8" font-family="JetBrains Mono" font-size="8">Error</text>
+      </svg>
+
+      <!-- Confidence summary -->
+      <div id="conf-summary" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">
+        <div style="font-size:11px;color:#a0b4c8;margin-bottom:8px;">Agent Confidence Scores</div>
+        <div id="conf-bars" style="display:flex;flex-direction:column;gap:6px;"></div>
+      </div>
+    </div>
+
+    <!-- Log Console -->
+    <div class="card" style="padding:18px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div class="section-eyebrow" style="margin:0;">Agent Log Stream</div>
+        <span class="dot-blink" id="log-dot" style="width:6px;height:6px;border-radius:50%;background:#10b981;display:none;margin-left:auto;"></span>
+      </div>
+      <div id="log-console">
+        <div class="log-info">// PRISM pipeline ready. Press RUN PIPELINE to start.</div>
+        <div class="log-info">// Or upload a TIFF/image for single-image inference.</div>
+        <div class="log-info">// Backend: https://Atharv1909-prism-api.hf.space</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button onclick="clearLogs()" style="flex:1;font-family:'JetBrains Mono',monospace;font-size:10px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:#a0b4c8;padding:6px;border-radius:6px;cursor:pointer;letter-spacing:0.05em;">CLEAR</button>
+        <button onclick="exportLogs()" style="flex:1;font-family:'JetBrains Mono',monospace;font-size:10px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:#a0b4c8;padding:6px;border-radius:6px;cursor:pointer;letter-spacing:0.05em;">EXPORT</button>
+      </div>
+    </div>
+
+  </div><!-- /left panel -->
+
+  <!-- ── RIGHT PANEL: Results ── -->
+  <div style="display:flex;flex-direction:column;gap:16px;">
+
+    <!-- ── Row 1: Key metrics strip ── -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+
+      <!-- Ice Detection Confidence -->
+      <div class="card" style="padding:16px;text-align:center;">
+        <div class="section-eyebrow" style="text-align:center;">CPR &gt; 1 &amp; DOP &lt; 0.13</div>
+        <div class="metric-val" id="m-ice-conf">—</div>
+        <div class="metric-unit">% confidence</div>
+        <div class="metric-label">Ice detected in PSR via POLSAR classification (RF model on Chandrayaan-2 DFSAR L-band backscatter)</div>
+      </div>
+
+      <!-- Ice Volume -->
+      <div class="card" style="padding:16px;text-align:center;">
+        <div class="section-eyebrow" style="text-align:center;">IEM + Oh2004 inversion</div>
+        <div class="metric-val" id="m-ice-vol">—</div>
+        <div class="metric-unit">m³ median</div>
+        <div class="metric-label">Estimated subsurface ice volume in top 5 m (Polder–van Santen dielectric mixing, Monte Carlo)</div>
+      </div>
+
+      <!-- Extractability Index -->
+      <div class="card" style="padding:16px;text-align:center;">
+        <div class="section-eyebrow" style="text-align:center;">ISRU Architect</div>
+        <div class="metric-val" id="m-isru-ei">—</div>
+        <div class="metric-unit">Extractability Index</div>
+        <div class="metric-label">0–1 score weighting ice vol., terrain slope, thermal stability, illumination access &amp; comm LOS</div>
+      </div>
+
+      <!-- Best Landing Score -->
+      <div class="card" style="padding:16px;text-align:center;">
+        <div class="section-eyebrow" style="text-align:center;">Terrain Scout</div>
+        <div class="metric-val" id="m-land-score">—</div>
+        <div class="metric-unit">Landing score / 100</div>
+        <div class="metric-label">Multi-criteria site score: slope safety, boulder density (GLCM), PSR proximity, solar access</div>
+      </div>
+    </div>
+
+    <!-- ── Row 2: Ice Detection + Depth Stratification ── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+      <!-- Ice Detection Detail -->
+      <div class="card" style="padding:18px;">
+        <div class="section-eyebrow">PolSAR Detective · Agent 2</div>
+        <div style="font-size:14px;font-weight:600;color:#dae3f7;margin-bottom:14px;">Ice Signature Analysis</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;">CPR (L-band)</div>
+            <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:#ffb68f;" id="v-cpr">—</div>
+            <div style="font-size:10px;color:#a0b4c8;margin-top:2px;">Circular Polarization Ratio — &gt;1.0 indicates volume scattering (ice)</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;">DOP</div>
+            <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:#bbc3ff;" id="v-dop">—</div>
+            <div style="font-size:10px;color:#a0b4c8;margin-top:2px;">Degree of Polarization — &lt;0.13 confirms depolarized scattering signature</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;">Ice Conc.</div>
+            <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:#10b981;" id="v-ice-conc">—</div>
+            <div style="font-size:10px;color:#a0b4c8;margin-top:2px;">Estimated volumetric ice fraction in regolith from dielectric inversion</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;">Classifier</div>
+            <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:#facc15;" id="v-clf-acc">—</div>
+            <div style="font-size:10px;color:#a0b4c8;margin-top:2px;">Random Forest accuracy on held-out SAR validation set</div>
+          </div>
+        </div>
+
+        <!-- Decomposition breakdown -->
+        <div style="font-size:11px;color:#a0b4c8;margin-bottom:8px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;">Yamaguchi Decomposition Power</div>
+        <div style="display:flex;flex-direction:column;gap:6px;" id="decomp-bars">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:10px;color:#a0b4c8;width:64px;flex-shrink:0;">Volume</div>
+            <div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;">
+              <div id="bar-vol" style="height:100%;background:#22d3ee;border-radius:999px;width:0%;transition:width 1s ease;"></div>
+            </div>
+            <div style="font-size:10px;color:#22d3ee;width:36px;text-align:right;" id="pct-vol">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:10px;color:#a0b4c8;width:64px;flex-shrink:0;">Double</div>
+            <div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;">
+              <div id="bar-dbl" style="height:100%;background:#ffb68f;border-radius:999px;width:0%;transition:width 1s ease;"></div>
+            </div>
+            <div style="font-size:10px;color:#ffb68f;width:36px;text-align:right;" id="pct-dbl">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:10px;color:#a0b4c8;width:64px;flex-shrink:0;">Surface</div>
+            <div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;">
+              <div id="bar-srf" style="height:100%;background:#8b5cf6;border-radius:999px;width:0%;transition:width 1s ease;"></div>
+            </div>
+            <div style="font-size:10px;color:#8b5cf6;width:36px;text-align:right;" id="pct-srf">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:10px;color:#a0b4c8;width:64px;flex-shrink:0;">Helix</div>
+            <div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;">
+              <div id="bar-hlx" style="height:100%;background:#facc15;border-radius:999px;width:0%;transition:width 1s ease;"></div>
+            </div>
+            <div style="font-size:10px;color:#facc15;width:36px;text-align:right;" id="pct-hlx">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Depth Stratification -->
+      <div class="card" style="padding:18px;">
+        <div class="section-eyebrow">Depth Sounder · Agent 3 · Monte Carlo</div>
+        <div style="font-size:14px;font-weight:600;color:#dae3f7;margin-bottom:6px;">Subsurface Depth Profile</div>
+        <div style="font-size:11px;color:#a0b4c8;margin-bottom:14px;">L-band (~5 m penetration) &amp; S-band (~2 m) stratification — 1000-sample MC ensemble</div>
+
+        <!-- Depth bar chart -->
+        <div style="display:flex;align-items:flex-end;gap:8px;height:130px;margin-bottom:12px;" id="depth-chart">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div id="d0-bar" style="width:100%;background:#22d3ee;border-radius:4px 4px 0 0;height:0%;transition:height 1.2s ease;min-height:2px;"></div>
+            <div style="font-size:9px;color:#22d3ee;font-family:'JetBrains Mono',monospace;" id="d0-pct">—</div>
+            <div style="font-size:9px;color:#a0b4c8;text-align:center;">0–1 m</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div id="d1-bar" style="width:100%;background:#10b981;border-radius:4px 4px 0 0;height:0%;transition:height 1.2s ease;min-height:2px;"></div>
+            <div style="font-size:9px;color:#10b981;font-family:'JetBrains Mono',monospace;" id="d1-pct">—</div>
+            <div style="font-size:9px;color:#a0b4c8;text-align:center;">1–2 m</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div id="d2-bar" style="width:100%;background:#ffb68f;border-radius:4px 4px 0 0;height:0%;transition:height 1.2s ease;min-height:2px;"></div>
+            <div style="font-size:9px;color:#ffb68f;font-family:'JetBrains Mono',monospace;" id="d2-pct">—</div>
+            <div style="font-size:9px;color:#a0b4c8;text-align:center;">2–3 m</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div id="d3-bar" style="width:100%;background:#8b5cf6;border-radius:4px 4px 0 0;height:0%;transition:height 1.2s ease;min-height:2px;"></div>
+            <div style="font-size:9px;color:#8b5cf6;font-family:'JetBrains Mono',monospace;" id="d3-pct">—</div>
+            <div style="font-size:9px;color:#a0b4c8;text-align:center;">3–5 m</div>
+          </div>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,0.06);margin-bottom:12px;"></div>
+
+        <!-- MC summary -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:10px;">
+            <div style="font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">Peak Depth</div>
+            <div style="font-size:18px;font-weight:700;color:#ffb68f;font-family:'Sora',sans-serif;" id="v-peak-depth">—</div>
+            <div style="font-size:10px;color:#a0b4c8;">median ice layer centroid</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:10px;">
+            <div style="font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">90% CI</div>
+            <div style="font-size:18px;font-weight:700;color:#bbc3ff;font-family:'Sora',sans-serif;" id="v-depth-ci">—</div>
+            <div style="font-size:10px;color:#a0b4c8;">depth confidence interval</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:10px;">
+            <div style="font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">Regolith ρ</div>
+            <div style="font-size:18px;font-weight:700;color:#10b981;font-family:'Sora',sans-serif;" id="v-density">—</div>
+            <div style="font-size:10px;color:#a0b4c8;">bulk density g/cm³</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:10px;">
+            <div style="font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">Dielectric ε</div>
+            <div style="font-size:18px;font-weight:700;color:#22d3ee;font-family:'Sora',sans-serif;" id="v-dielectric">—</div>
+            <div style="font-size:10px;color:#a0b4c8;">effective permittivity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Row 3: Thermal + ISRU ── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+      <!-- Thermal Guardian -->
+      <div class="card" style="padding:18px;">
+        <div class="section-eyebrow">Thermo Guardian · Agent 4 · DIVINER</div>
+        <div style="font-size:14px;font-weight:600;color:#dae3f7;margin-bottom:14px;">Thermal Environment</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:10px;">
+            <div style="font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">T_max (crater)</div>
+            <div style="font-size:18px;font-weight:700;color:#facc15;font-family:'Sora',sans-serif;" id="v-tmax">—</div>
+            <div style="font-size:10px;color:#a0b4c8;">peak DIVINER temp — must be &lt;110 K for ice stability</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:10px;">
+            <div style="font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">Cold Trap Score</div>
+            <div style="font-size:18px;font-weight:700;color:#22d3ee;font-family:'Sora',sans-serif;" id="v-cold-trap">—</div>
+            <div style="font-size:10px;color:#a0b4c8;">0–1 cold trap classification (1 = permanent shadow, &lt;110 K)</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:10px;">
+            <div style="font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">Illumination</div>
+            <div style="font-size:18px;font-weight:700;color:#10b981;font-family:'Sora',sans-serif;" id="v-illum">—</div>
+            <div style="font-size:10px;color:#a0b4c8;">% avg illumination at landing ridge (solar power feasibility)</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:10px;">
+            <div style="font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">Thermal Score</div>
+            <div style="font-size:18px;font-weight:700;color:#ffb68f;font-family:'Sora',sans-serif;" id="v-thermo-score">—</div>
+            <div style="font-size:10px;color:#a0b4c8;">composite suitability score (ice stability + solar + gradient)</div>
+          </div>
+        </div>
+
+        <!-- PSR status -->
+        <div style="padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);display:flex;align-items:center;gap:10px;">
+          <span class="material-symbols-outlined" style="color:#facc15;font-size:18px;">thermostat</span>
+          <div>
+            <div style="font-size:11px;color:#dae3f7;font-weight:500;" id="v-psr-label">PSR Classification: —</div>
+            <div style="font-size:10px;color:#a0b4c8;" id="v-psr-desc">Awaiting DIVINER analysis…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ISRU Architect -->
+      <div class="card" style="padding:18px;">
+        <div class="section-eyebrow">ISRU Architect · Agent 7 · Extractability</div>
+        <div style="font-size:14px;font-weight:600;color:#dae3f7;margin-bottom:14px;">Resource Extraction Feasibility</div>
+
+        <!-- EI gauge -->
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <svg viewBox="0 0 80 80" width="80" height="80" style="flex-shrink:0;">
+            <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="#8b5cf6" stroke-width="6"
+              stroke-dasharray="201" id="isru-ring"
+              stroke-dashoffset="201"
+              stroke-linecap="round"
+              style="transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1.2s ease;"/>
+            <text x="40" y="37" text-anchor="middle" fill="#dae3f7" font-family="Sora" font-size="13" font-weight="700" id="isru-ring-val">—</text>
+            <text x="40" y="49" text-anchor="middle" fill="#a0b4c8" font-family="JetBrains Mono" font-size="7">EI</text>
+          </svg>
+          <div style="flex:1;">
+            <div style="font-size:20px;font-weight:700;color:#8b5cf6;font-family:'Sora',sans-serif;" id="v-ei-score">—</div>
+            <div style="font-size:10px;color:#a0b4c8;margin-top:2px;">Extractability Index (0–1)</div>
+            <div style="font-size:10px;color:#a0b4c8;margin-top:4px;line-height:1.5;">Weighted composite of ice volume, terrain accessibility, thermal stability, illumination, and comm LOS</div>
+          </div>
+        </div>
+
+        <!-- Sub-scores -->
+        <div style="display:flex;flex-direction:column;gap:6px;" id="isru-sub-scores">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:10px;color:#a0b4c8;width:80px;flex-shrink:0;">Ice Volume</div>
+            <div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;"><div id="sb-ice" style="height:100%;background:#22d3ee;width:0%;transition:width 1s ease;border-radius:999px;"></div></div>
+            <div style="font-size:10px;color:#22d3ee;width:28px;text-align:right;" id="sv-ice">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:10px;color:#a0b4c8;width:80px;flex-shrink:0;">Accessibility</div>
+            <div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;"><div id="sb-acc" style="height:100%;background:#10b981;width:0%;transition:width 1s ease;border-radius:999px;"></div></div>
+            <div style="font-size:10px;color:#10b981;width:28px;text-align:right;" id="sv-acc">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:10px;color:#a0b4c8;width:80px;flex-shrink:0;">Thermal</div>
+            <div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;"><div id="sb-thm" style="height:100%;background:#facc15;width:0%;transition:width 1s ease;border-radius:999px;"></div></div>
+            <div style="font-size:10px;color:#facc15;width:28px;text-align:right;" id="sv-thm">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:10px;color:#a0b4c8;width:80px;flex-shrink:0;">Illumination</div>
+            <div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;"><div id="sb-ilm" style="height:100%;background:#ffb68f;width:0%;transition:width 1s ease;border-radius:999px;"></div></div>
+            <div style="font-size:10px;color:#ffb68f;width:28px;text-align:right;" id="sv-ilm">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:10px;color:#a0b4c8;width:80px;flex-shrink:0;">Comm LOS</div>
+            <div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;"><div id="sb-com" style="height:100%;background:#bbc3ff;width:0%;transition:width 1s ease;border-radius:999px;"></div></div>
+            <div style="font-size:10px;color:#bbc3ff;width:28px;text-align:right;" id="sv-com">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Row 4: Landing Sites + Rover Traverse ── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+      <!-- Landing Sites -->
+      <div class="card" style="padding:18px;">
+        <div class="section-eyebrow">Terrain Scout · Agent 6 · LOLA DEM + OHRC</div>
+        <div style="font-size:14px;font-weight:600;color:#dae3f7;margin-bottom:6px;">Landing Site Candidates</div>
+        <div style="font-size:11px;color:#a0b4c8;margin-bottom:14px;">Ranked by: slope (&lt;15°) + boulder density (GLCM) + PSR proximity + solar ridge access</div>
+        <div id="landing-sites" style="display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:12px;background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;text-align:center;font-size:11px;color:#a0b4c8;font-family:'JetBrains Mono',monospace;">
+            Awaiting terrain analysis…
+          </div>
+        </div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <div style="font-size:9px;color:#a0b4c8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;">Max Slope</div>
+              <div style="font-size:16px;font-weight:700;color:#ffb68f;font-family:'Sora',sans-serif;" id="v-max-slope">—</div>
+            </div>
+            <div>
+              <div style="font-size:9px;color:#a0b4c8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;">Boulder Risk</div>
+              <div style="font-size:16px;font-weight:700;color:#ffb68f;font-family:'Sora',sans-serif;" id="v-boulder">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigator / Traverse -->
+      <div class="card" style="padding:18px;">
+        <div class="section-eyebrow">Navigator · Agent 8 · NSGA-II + A*</div>
+        <div style="font-size:14px;font-weight:600;color:#dae3f7;margin-bottom:6px;">Rover Traverse Planning</div>
+        <div style="font-size:11px;color:#a0b4c8;margin-bottom:14px;">Hierarchical multi-objective optimization: energy budget, slope safety, shadow avoidance — Pragyan-class rover model</div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;" id="traverse-paths">
+          <div class="path-row">
+            <div class="path-indicator" style="background:#10b981;"></div>
+            <div style="flex:1;">
+              <div style="font-size:12px;color:#dae3f7;font-weight:500;">Balanced Path <span style="font-size:10px;padding:2px 8px;background:rgba(16,185,129,0.15);color:#10b981;border-radius:4px;margin-left:6px;font-family:'JetBrains Mono',monospace;">RECOMMENDED</span></div>
+              <div style="font-size:10px;color:#a0b4c8;margin-top:3px;" id="path-balanced-desc">Awaiting NSGA-II solution…</div>
+            </div>
+          </div>
+          <div class="path-row">
+            <div class="path-indicator" style="background:#ffb68f;"></div>
+            <div style="flex:1;">
+              <div style="font-size:12px;color:#dae3f7;font-weight:500;">Safe Path</div>
+              <div style="font-size:10px;color:#a0b4c8;margin-top:3px;" id="path-safe-desc">Maximises slope safety margin (&lt;12°)</div>
+            </div>
+          </div>
+          <div class="path-row">
+            <div class="path-indicator" style="background:#bbc3ff;"></div>
+            <div style="flex:1;">
+              <div style="font-size:12px;color:#dae3f7;font-weight:500;">Solar-Optimal Path</div>
+              <div style="font-size:10px;color:#a0b4c8;margin-top:3px;" id="path-solar-desc">Maximises illumination time for power harvesting</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+          <div>
+            <div style="font-size:9px;color:#a0b4c8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;">Path Length</div>
+            <div style="font-size:16px;font-weight:700;color:#10b981;font-family:'Sora',sans-serif;" id="v-path-len">—</div>
+          </div>
+          <div>
+            <div style="font-size:9px;color:#a0b4c8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;">Energy Budget</div>
+            <div style="font-size:16px;font-weight:700;color:#ffb68f;font-family:'Sora',sans-serif;" id="v-energy">—</div>
+          </div>
+          <div>
+            <div style="font-size:9px;color:#a0b4c8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;">Pareto Front</div>
+            <div style="font-size:16px;font-weight:700;color:#bbc3ff;font-family:'Sora',sans-serif;" id="v-pareto">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Row 5: Volume Oracle + Overall pipeline confidence ── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+      <!-- Volume Oracle -->
+      <div class="card" style="padding:18px;">
+        <div class="section-eyebrow">Volume Oracle · Agent 5 · IEM + Polder–van Santen</div>
+        <div style="font-size:14px;font-weight:600;color:#dae3f7;margin-bottom:14px;">Ice Volume Estimation (Monte Carlo)</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+          <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">P5</div>
+            <div style="font-size:18px;font-weight:700;color:#8b5cf6;font-family:'Sora',sans-serif;" id="v-vol-p5">—</div>
+            <div style="font-size:9px;color:#a0b4c8;">m³</div>
+          </div>
+          <div style="background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.2);border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:9px;color:#22d3ee;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">MEDIAN</div>
+            <div style="font-size:22px;font-weight:700;color:#22d3ee;font-family:'Sora',sans-serif;" id="v-vol-med">—</div>
+            <div style="font-size:9px;color:#a0b4c8;">m³</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:9px;color:#a0b4c8;text-transform:uppercase;letter-spacing:0.08em;font-family:'JetBrains Mono',monospace;">P95</div>
+            <div style="font-size:18px;font-weight:700;color:#8b5cf6;font-family:'Sora',sans-serif;" id="v-vol-p95">—</div>
+            <div style="font-size:9px;color:#a0b4c8;">m³</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px;font-size:10px;color:#a0b4c8;line-height:1.6;">
+          <strong style="color:#dae3f7;">Method:</strong> IEM (Integral Equation Model) + Oh2004 dielectric inversion → Polder–van Santen mixing → 1000-sample Monte Carlo ensemble. Uncertainties from permittivity (±0.3) and ice fraction (±5%) are propagated through all layers.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px;">
+            <div style="font-size:9px;color:#a0b4c8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;">Water Equiv.</div>
+            <div style="font-size:16px;font-weight:700;color:#bbc3ff;font-family:'Sora',sans-serif;" id="v-water-eq">—</div>
+            <div style="font-size:9px;color:#a0b4c8;">Mega-litres</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px;">
+            <div style="font-size:9px;color:#a0b4c8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;">Extractable %</div>
+            <div style="font-size:16px;font-weight:700;color:#10b981;font-family:'Sora',sans-serif;" id="v-extractable">—</div>
+            <div style="font-size:9px;color:#a0b4c8;">at assumed 50% efficiency</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline Confidence Summary -->
+      <div class="card" style="padding:18px;">
+        <div class="section-eyebrow">All Agents · Confidence Registry</div>
+        <div style="font-size:14px;font-weight:600;color:#dae3f7;margin-bottom:14px;">Pipeline Reliability</div>
+        <div id="conf-rings-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;">
+          <!-- Populated by JS -->
+          <div style="text-align:center;opacity:0.3;">
+            <svg viewBox="0 0 44 44" width="44" height="44"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/><circle cx="22" cy="22" r="18" fill="none" stroke="#ffb68f" stroke-width="3" stroke-dasharray="113" stroke-dashoffset="113" stroke-linecap="round" style="transform:rotate(-90deg);transform-origin:50% 50%;"/></svg>
+            <div style="font-size:9px;color:#a0b4c8;font-family:'JetBrains Mono',monospace;margin-top:2px;">—</div>
+          </div>
+        </div>
+        <div style="padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:12px;color:#a0b4c8;">Overall pipeline confidence</span>
+            <span style="font-family:'Sora',sans-serif;font-size:28px;font-weight:700;color:#ffb68f;" id="v-overall-conf">—</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="overall-conf-bar" style="width:0%;"></div>
+          </div>
+          <div style="margin-top:8px;font-size:10px;color:#a0b4c8;line-height:1.5;">
+            Mean confidence across all 8 agents. Each agent reports its own score based on data quality, fallback usage, and algorithmic convergence. Scores below 0.6 trigger synthetic-fallback mode automatically.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /right panel -->
 </main>
-<!-- Footer -->
-<footer class="w-full mt-auto bg-surface-container-lowest border-t border-white/5">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop py-12 max-w-container-max mx-auto">
-<div class="md:col-span-1">
-<span class="font-headline-lg text-headline-lg text-primary block mb-4">PRISM</span>
-<p class="font-mono-sm text-mono-sm text-on-surface-variant mb-6 leading-relaxed">
-                    © 2024 PRISM Lunar Intelligence. All rights reserved. Authorized Lunar Personnel Only.
-                </p>
-</div>
-<div>
-<h4 class="font-label-md text-label-md text-on-surface mb-6 uppercase tracking-widest">Protocol</h4>
-<ul class="space-y-4">
-<li class=""><a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Privacy Protocol</a></li>
-<li class=""><a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Security Clearance</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-label-md text-label-md text-on-surface mb-6 uppercase tracking-widest">Resources</h4>
-<ul class="space-y-4">
-<li class=""><a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Data Policy</a></li>
-<li class=""><a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary-fixed transition-colors" href="mission_control.html">Mission Control</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-label-md text-label-md text-on-surface mb-6 uppercase tracking-widest">Status</h4>
-<div class="flex items-center gap-2 mb-4">
-<span class="w-2 h-2 rounded-full bg-primary pulse-accent"></span>
-<span class="font-mono-sm text-mono-sm text-primary">SYSTEMS NOMINAL</span>
-</div>
-<p class="font-mono-sm text-mono-sm text-on-surface-variant">Lat: 89.9° S | Long: 0.0° E</p>
-</div>
-</div>
+
+<!-- ── Footer ── -->
+<footer style="border-top:1px solid rgba(255,255,255,0.05);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(6,14,28,0.7);">
+  <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#a0b4c8;letter-spacing:0.12em;text-transform:uppercase;">© 2024 PRISM · ISRO Hackathon · Chandrayaan-2 Intelligence · All telemetry encrypted</span>
+  <div style="display:flex;gap:16px;">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#a0b4c8;">Backend: hf.space</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;" id="footer-job">Job: —</span>
+  </div>
 </footer>
+
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT — All pipeline logic
+══════════════════════════════════════════════════════ -->
 <script>
-        // Interactive Button scaling
-        document.querySelectorAll('button, a').forEach(btn => {
-            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
-            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
-            btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
-        });
-    </script>
-</body></html>
+// ───────────── State ─────────────
+let pollTimer = null;
+let currentJobId = null;
+let pipelineRunning = false;
+
+const AGENT_ORDER = [
+  "PREPROCESSOR_PRIME",
+  "POLSAR_DETECTIVE",
+  "THERMO_GUARDIAN",
+  "DEPTH_SOUNDER",
+  "VOLUME_ORACLE",
+  "ISRU_ARCHITECT",
+  "TERRAIN_SCOUT",
+  "NAVIGATOR",
+];
+
+const AGENT_SHORT = {
+  PREPROCESSOR_PRIME: "PREPROC",
+  POLSAR_DETECTIVE:   "POLSAR",
+  THERMO_GUARDIAN:    "THERMO",
+  DEPTH_SOUNDER:      "DEPTH",
+  VOLUME_ORACLE:      "VOLUME",
+  ISRU_ARCHITECT:     "ISRU",
+  TERRAIN_SCOUT:      "TERRAIN",
+  NAVIGATOR:          "NAV",
+};
+
+// ───────────── Logging ─────────────
+function addLog(text, type = "info") {
+  const console = document.getElementById("log-console");
+  const ts = new Date().toLocaleTimeString("en-GB", { hour12: false });
+  const div = document.createElement("div");
+  div.className = `log-${type}`;
+  div.textContent = `[${ts}] ${text}`;
+  console.appendChild(div);
+  console.scrollTop = console.scrollHeight;
+  document.getElementById("log-dot").style.display = "inline-block";
+}
+
+function clearLogs() {
+  document.getElementById("log-console").innerHTML = '<div class="log-info">// Log cleared.</div>';
+}
+
+function exportLogs() {
+  const text = document.getElementById("log-console").innerText;
+  const blob = new Blob([text], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `prism-logs-${Date.now()}.txt`;
+  a.click();
+}
+
+// ───────────── DAG state ─────────────
+function setDagNode(agentKey, state) {
+  const el = document.getElementById(`dag-${agentKey}`);
+  if (!el) return;
+  el.className = `dag-node ${state}`;
+  // Update stroke color
+  const circle = el.querySelector("circle");
+  if (!circle) return;
+  const colorMap = {
+    pending: "rgba(255,182,143,0.3)",
+    running: "#ffb68f",
+    done:    "#10b981",
+    error:   "#ef4444",
+  };
+  circle.setAttribute("stroke", colorMap[state] || "#ffb68f");
+}
+
+function resetDag() {
+  AGENT_ORDER.forEach(k => setDagNode(k, "pending"));
+}
+
+// ───────────── Status pill ─────────────
+function setStatusPill(state, text) {
+  const pill = document.getElementById("nav-status-pill");
+  pill.className = `pill pill-${state}`;
+  pill.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:currentColor;${state==='running'?'animation:blink 1s step-start infinite':''}"></span> ${text}`;
+}
+
+// ───────────── Progress ─────────────
+function setProgress(pct, label) {
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("progress-pct").textContent = Math.round(pct) + "%";
+  if (label) document.getElementById("progress-label").textContent = label;
+}
+
+// ───────────── Pipeline trigger ─────────────
+async function startPipeline() {
+  if (pipelineRunning) return;
+  pipelineRunning = true;
+
+  const btn = document.getElementById("btn-run");
+  btn.disabled = true;
+  btn.textContent = "⏳  RUNNING…";
+
+  resetDag();
+  setStatusPill("running", "Running");
+  setProgress(5, "Launching PRISM pipeline…");
+  document.getElementById("log-dot").style.display = "inline-block";
+  addLog("SYSTEM: Launching PRISM multi-agent pipeline…", "agent");
+
+  const payload = {
+    dfsar_slc_path: "",
+    dfsar_metadata_path: "",
+    dem_path: "",
+    ohrc_path: "",
+    diviner_path: "",
+    shadowcam_path: "",
+    illumination_path: "",
+    layover_threshold: 0.3,
+    use_langgraph: false,
+  };
+
+  try {
+    const runRes = await PrismAPI.post("/run", payload);
+    if (!runRes.job_id) throw new Error("No job_id returned from /run");
+    currentJobId = runRes.job_id;
+    document.getElementById("footer-job").textContent = `Job: ${currentJobId}`;
+    localStorage.setItem("prism_latest_job", currentJobId);
+    addLog(`SYSTEM: Job launched → ${currentJobId}`, "agent");
+    addLog("SYSTEM: Beginning agent polling every 2s…", "info");
+    setProgress(10, "Job queued — polling agents…");
+    startPolling(currentJobId);
+  } catch (err) {
+    addLog(`ERROR: ${err.message}`, "error");
+    setStatusPill("error", "Error");
+    setProgress(0, "Pipeline failed");
+    finishRun(false);
+  }
+}
+
+// ───────────── Upload single image ─────────────
+async function handleUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  addLog(`UPLOAD: ${file.name} (${(file.size/1024/1024).toFixed(2)} MB) → /run_single_image`, "agent");
+  setStatusPill("running", "Uploading");
+  setProgress(15, `Uploading ${file.name}…`);
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const baseUrl = (window.PRISM_CONFIG && window.PRISM_CONFIG.API_BASE_URL) || "";
+    const res = await fetch(`${baseUrl}/run_single_image`, { method: "POST", body: formData });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.job_id) {
+      currentJobId = data.job_id;
+      document.getElementById("footer-job").textContent = `Job: ${currentJobId}`;
+      localStorage.setItem("prism_latest_job", currentJobId);
+      addLog(`UPLOAD: Image queued as job ${currentJobId}`, "success");
+      setProgress(20, "Image received — running inference…");
+      pipelineRunning = true;
+      document.getElementById("btn-run").disabled = true;
+      startPolling(currentJobId);
+    } else {
+      throw new Error("No job_id in response");
+    }
+  } catch (err) {
+    addLog(`UPLOAD ERROR: ${err.message}`, "error");
+    setStatusPill("error", "Upload failed");
+    setProgress(0, "Upload failed");
+  }
+}
+
+// ───────────── Polling ─────────────
+let lastMessage = "";
+let lastProgress = 0;
+let agentsDone = new Set();
+
+function startPolling(jobId) {
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(() => pollJob(jobId), 2000);
+}
+
+async function pollJob(jobId) {
+  try {
+    const res = await PrismAPI.get(`/jobs/${jobId}`);
+    const progress = res.progress || 0;
+    const status = res.status || "running";
+
+    // Progress
+    if (progress > lastProgress) {
+      setProgress(Math.min(progress, 99), res.message || "Processing…");
+      lastProgress = progress;
+    }
+
+    // New log message
+    if (res.message && res.message !== lastMessage) {
+      const msgLower = res.message.toLowerCase();
+      let logType = "info";
+      if (msgLower.includes("error") || msgLower.includes("failed")) logType = "error";
+      else if (msgLower.includes("complete") || msgLower.includes("done") || msgLower.includes("success")) logType = "success";
+      else if (msgLower.includes("agent") || msgLower.includes("running") || msgLower.includes("starting")) logType = "agent";
+      addLog(`[Pipeline] ${res.message}`, logType);
+      lastMessage = res.message;
+    }
+
+    // Infer which agents are running from progress
+    updateDagFromProgress(progress, status, res);
+
+    if (status === "done") {
+      clearInterval(pollTimer);
+      setProgress(100, "Analysis complete ✓");
+      addLog("SYSTEM: Pipeline complete. Rendering results…", "success");
+      setStatusPill("done", "Done");
+      renderResults(res.result || {}, res);
+      finishRun(true);
+    } else if (status === "error") {
+      clearInterval(pollTimer);
+      addLog(`SYSTEM ERROR: ${res.error || "Unknown error"}`, "error");
+      setStatusPill("error", "Error");
+      setProgress(0, "Pipeline error");
+      // Try to render partial results if available
+      if (res.result) renderResults(res.result, res);
+      finishRun(false);
+    }
+  } catch (err) {
+    addLog(`POLL: Network error — ${err.message}`, "warn");
+  }
+}
+
+function updateDagFromProgress(progress, status, res) {
+  // Map progress percentage to which agents should be running/done
+  const stages = [
+    { pct: 10,  agent: "PREPROCESSOR_PRIME",  state: "running" },
+    { pct: 20,  agent: "PREPROCESSOR_PRIME",  state: "done" },
+    { pct: 22,  agent: "POLSAR_DETECTIVE",     state: "running" },
+    { pct: 22,  agent: "THERMO_GUARDIAN",      state: "running" },
+    { pct: 38,  agent: "POLSAR_DETECTIVE",     state: "done" },
+    { pct: 38,  agent: "THERMO_GUARDIAN",      state: "done" },
+    { pct: 40,  agent: "DEPTH_SOUNDER",        state: "running" },
+    { pct: 40,  agent: "VOLUME_ORACLE",        state: "running" },
+    { pct: 40,  agent: "ISRU_ARCHITECT",       state: "running" },
+    { pct: 60,  agent: "DEPTH_SOUNDER",        state: "done" },
+    { pct: 65,  agent: "VOLUME_ORACLE",        state: "done" },
+    { pct: 70,  agent: "ISRU_ARCHITECT",       state: "done" },
+    { pct: 72,  agent: "TERRAIN_SCOUT",        state: "running" },
+    { pct: 85,  agent: "TERRAIN_SCOUT",        state: "done" },
+    { pct: 86,  agent: "NAVIGATOR",            state: "running" },
+    { pct: 99,  agent: "NAVIGATOR",            state: "done" },
+  ];
+
+  // If we have confidence_registry in result, mark agents as done
+  if (res && res.result && res.result.confidence_registry) {
+    const reg = res.result.confidence_registry;
+    AGENT_ORDER.forEach(k => {
+      if (reg[k] !== undefined && !agentsDone.has(k)) {
+        agentsDone.add(k);
+        setDagNode(k, "done");
+        addLog(`AGENT ${k}: confidence=${(reg[k]*100).toFixed(1)}%`, "agent");
+      }
+    });
+    return;
+  }
+
+  stages.forEach(s => {
+    if (progress >= s.pct && !agentsDone.has(s.agent + s.state)) {
+      if (s.state === "done") agentsDone.add(s.agent + s.state);
+      setDagNode(s.agent, s.state);
+    }
+  });
+}
+
+function finishRun(success) {
+  pipelineRunning = false;
+  lastProgress = 0;
+  lastMessage = "";
+  agentsDone.clear();
+  const btn = document.getElementById("btn-run");
+  btn.disabled = false;
+  btn.textContent = success ? "✓  RE-RUN" : "▶  RUN PIPELINE";
+}
+
+// ───────────── Result rendering ─────────────
+function safe(val, fallback = "—") {
+  if (val === null || val === undefined || val === "") return fallback;
+  return val;
+}
+
+function renderResults(result, fullRes) {
+  addLog("UI: Rendering all agent outputs…", "info");
+
+  const reg = result.confidence_registry || {};
+
+  // Mark all done in DAG
+  AGENT_ORDER.forEach(k => {
+    if (reg[k] !== undefined) setDagNode(k, reg[k] > 0 ? "done" : "error");
+  });
+
+  // ── Overall confidence ──
+  const confVals = AGENT_ORDER.map(k => reg[k] || 0);
+  const avgConf = confVals.reduce((a,b)=>a+b,0) / confVals.length;
+  document.getElementById("v-overall-conf").textContent = (avgConf * 100).toFixed(0) + "%";
+  document.getElementById("overall-conf-bar").style.width = (avgConf * 100) + "%";
+
+  // Render confidence rings
+  renderConfRings(reg);
+
+  // ── POLSAR / ice detection ──
+  const polsar = result.polsar_result || {};
+  const iceConf = polsar.ice_probability ?? polsar.ice_confidence ?? reg["POLSAR_DETECTIVE"] ?? null;
+  document.getElementById("m-ice-conf").textContent = iceConf !== null ? (iceConf * 100).toFixed(1) + "%" : "—";
+  document.getElementById("v-cpr").textContent = safe(polsar.cpr?.toFixed(2));
+  document.getElementById("v-dop").textContent = safe(polsar.dop?.toFixed(3));
+  document.getElementById("v-ice-conc").textContent = polsar.ice_concentration ? (polsar.ice_concentration * 100).toFixed(1) + "%" : "—";
+  document.getElementById("v-clf-acc").textContent = polsar.classifier_accuracy ? (polsar.classifier_accuracy * 100).toFixed(1) + "%" : "—";
+
+  // Decomposition
+  const decomp = polsar.yamaguchi_decomposition || polsar.decomposition || {};
+  const total = (decomp.volume || 0) + (decomp.double_bounce || 0) + (decomp.surface || 0) + (decomp.helix || 0) || 1;
+  setBar("bar-vol", "pct-vol", decomp.volume, total);
+  setBar("bar-dbl", "pct-dbl", decomp.double_bounce, total);
+  setBar("bar-srf", "pct-srf", decomp.surface, total);
+  setBar("bar-hlx", "pct-hlx", decomp.helix, total);
+
+  // ── Depth Sounder ──
+  const depth = result.depth_result || {};
+  const layers = depth.layer_fractions || depth.depth_distribution || {};
+  setDepthBars(layers, depth);
+  document.getElementById("v-peak-depth").textContent = depth.peak_depth_m != null ? depth.peak_depth_m.toFixed(2) + " m" : "—";
+  document.getElementById("v-depth-ci").textContent = depth.ci_90 || depth.confidence_interval || "—";
+  document.getElementById("v-density").textContent = depth.regolith_density != null ? depth.regolith_density.toFixed(2) + " g/cm³" : "—";
+  document.getElementById("v-dielectric").textContent = depth.dielectric_constant != null ? depth.dielectric_constant.toFixed(2) : "—";
+
+  // ── Thermal Guardian ──
+  const thermo = result.thermo_result || {};
+  document.getElementById("v-tmax").textContent = thermo.t_max != null ? thermo.t_max.toFixed(1) + " K" : "—";
+  document.getElementById("v-cold-trap").textContent = thermo.cold_trap_score != null ? thermo.cold_trap_score.toFixed(2) : "—";
+  document.getElementById("v-illum").textContent = thermo.illumination_pct != null ? thermo.illumination_pct.toFixed(1) + "%" : "—";
+  document.getElementById("v-thermo-score").textContent = thermo.thermal_score != null ? thermo.thermal_score.toFixed(2) : "—";
+  const isIcePsr = (thermo.t_max != null && thermo.t_max < 110) || thermo.is_psr;
+  document.getElementById("v-psr-label").textContent = isIcePsr
+    ? "PSR Classification: ✓ Permanent Shadow — Ice Stable"
+    : (thermo.t_max != null ? `PSR Classification: T_max = ${thermo.t_max.toFixed(1)} K` : "PSR Classification: —");
+  document.getElementById("v-psr-desc").textContent = isIcePsr
+    ? "Temperature below 110 K threshold. Cold trap confirmed by DIVINER data."
+    : "Awaiting DIVINER analysis…";
+
+  // ── ISRU Architect ──
+  const isru = result.isru_result || {};
+  const ei = isru.extractability_index ?? isru.ei_score ?? null;
+  document.getElementById("m-isru-ei").textContent = ei !== null ? ei.toFixed(3) : "—";
+  document.getElementById("v-ei-score").textContent = ei !== null ? ei.toFixed(3) : "—";
+  document.getElementById("isru-ring-val").textContent = ei !== null ? (ei * 100).toFixed(0) : "—";
+  if (ei !== null) {
+    document.getElementById("isru-ring").setAttribute("stroke-dashoffset", 201 - (201 * ei));
+  }
+  // Sub-scores
+  const sub = isru.sub_scores || {};
+  setSubBar("sb-ice", "sv-ice", sub.ice_volume ?? isru.ice_score);
+  setSubBar("sb-acc", "sv-acc", sub.accessibility ?? isru.terrain_score);
+  setSubBar("sb-thm", "sv-thm", sub.thermal ?? isru.thermal_score);
+  setSubBar("sb-ilm", "sv-ilm", sub.illumination ?? isru.illumination_score);
+  setSubBar("sb-com", "sv-com", sub.comm_los ?? isru.comm_score);
+
+  // ── Volume Oracle ──
+  const vol = result.volume_result || {};
+  const volMed = vol.total_ice_volume_m3?.median ?? vol.ice_volume_m3_median ?? vol.median ?? null;
+  const volP5  = vol.total_ice_volume_m3?.p5  ?? vol.p5  ?? null;
+  const volP95 = vol.total_ice_volume_m3?.p95 ?? vol.p95 ?? null;
+  document.getElementById("m-ice-vol").textContent = volMed !== null ? volMed.toFixed(1) : "—";
+  document.getElementById("v-vol-med").textContent = volMed !== null ? volMed.toFixed(1) : "—";
+  document.getElementById("v-vol-p5").textContent  = volP5  !== null ? volP5.toFixed(1)  : "—";
+  document.getElementById("v-vol-p95").textContent = volP95 !== null ? volP95.toFixed(1) : "—";
+  const waterEq = volMed != null ? (volMed * 0.917 / 1e6).toFixed(3) : null;
+  document.getElementById("v-water-eq").textContent = waterEq !== null ? waterEq : "—";
+  document.getElementById("v-extractable").textContent = volMed != null ? (volMed * 0.5).toFixed(1) + " m³" : "—";
+
+  // ── Terrain Scout — landing sites ──
+  const terrain = result.terrain_result || {};
+  const sites = terrain.landing_sites || terrain.candidates || [];
+  document.getElementById("m-land-score").textContent = sites.length > 0 ? sites[0].score?.toFixed(1) ?? "—" : "—";
+  document.getElementById("v-max-slope").textContent = terrain.max_slope != null ? terrain.max_slope.toFixed(1) + "°" : "—";
+  document.getElementById("v-boulder").textContent = terrain.boulder_risk ?? terrain.boulder_density ?? "—";
+  renderLandingSites(sites);
+
+  // ── Navigator — traverse ──
+  const nav = result.navigator_result || result.traverse_result || {};
+  const paths = nav.paths || nav.pareto_solutions || [];
+  document.getElementById("v-path-len").textContent = nav.recommended_path_length_m != null ? nav.recommended_path_length_m.toFixed(0) + " m" : "—";
+  document.getElementById("v-energy").textContent = nav.energy_budget_wh != null ? nav.energy_budget_wh.toFixed(1) + " Wh" : "—";
+  document.getElementById("v-pareto").textContent = paths.length > 0 ? paths.length + " sols" : "—";
+  renderTraversePaths(nav);
+
+  addLog("UI: All outputs rendered. Pipeline complete.", "success");
+}
+
+function setBar(barId, pctId, val, total) {
+  const pct = total > 0 ? ((val || 0) / total * 100) : 0;
+  document.getElementById(barId).style.width = pct + "%";
+  document.getElementById(pctId).textContent = pct.toFixed(0) + "%";
+}
+
+function setSubBar(barId, valId, val) {
+  if (val == null) return;
+  const pct = val <= 1 ? val * 100 : val;
+  document.getElementById(barId).style.width = pct + "%";
+  document.getElementById(valId).textContent = pct.toFixed(0) + "%";
+}
+
+function setDepthBars(layers, depth) {
+  // layers keys may vary; try common patterns
+  const vals = [
+    layers["0-1"] ?? layers.layer_0 ?? depth.shallow_fraction ?? 0,
+    layers["1-2"] ?? layers.layer_1 ?? depth.layer_1_fraction ?? 0,
+    layers["2-3"] ?? layers.layer_2 ?? depth.layer_2_fraction ?? 0,
+    layers["3-5"] ?? layers.layer_3 ?? depth.deep_fraction ?? 0,
+  ];
+  const ids = ["d0","d1","d2","d3"];
+  const maxVal = Math.max(...vals, 0.01);
+  vals.forEach((v, i) => {
+    const pct = (v / maxVal) * 100;
+    const bar = document.getElementById(`${ids[i]}-bar`);
+    const pctEl = document.getElementById(`${ids[i]}-pct`);
+    if (bar) bar.style.height = pct + "%";
+    if (pctEl) pctEl.textContent = (v * 100).toFixed(0) + "%";
+  });
+}
+
+function renderLandingSites(sites) {
+  const container = document.getElementById("landing-sites");
+  if (!sites || sites.length === 0) {
+    container.innerHTML = '<div style="padding:12px;text-align:center;font-size:11px;color:#a0b4c8;font-family:\'JetBrains Mono\',monospace;">No candidates returned — synthetic fallback mode</div>';
+    return;
+  }
+  const letters = ["A","B","C","D","E"];
+  container.innerHTML = sites.slice(0, 3).map((site, i) => {
+    const score = site.score ?? site.total_score ?? 0;
+    const lat = site.lat ?? site.latitude ?? "—";
+    const lon = site.lon ?? site.longitude ?? "—";
+    const slope = site.slope ?? "—";
+    const isPrimary = i === 0;
+    return `
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:${isPrimary ? 'rgba(244,114,22,0.06)' : 'rgba(255,255,255,0.02)'};border:1px solid ${isPrimary ? 'rgba(244,114,22,0.25)' : 'rgba(255,255,255,0.06)'};border-radius:8px;">
+        <div style="width:32px;height:32px;background:${isPrimary ? '#f47216' : 'rgba(255,255,255,0.08)'};border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:${isPrimary ? '#fff' : '#a0b4c8'};flex-shrink:0;">${letters[i]}</div>
+        <div style="flex:1;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <span style="font-size:12px;font-weight:600;color:#dae3f7;">${site.name || `Site ${letters[i]}`}</span>
+            <span style="font-size:13px;font-weight:700;color:${isPrimary ? '#ffb68f' : '#a0b4c8'};font-family:'Sora',sans-serif;">${score.toFixed(1)}<span style="font-size:9px;color:#a0b4c8;"> /100</span></span>
+          </div>
+          <div class="site-bar"><div class="site-bar-fill" style="width:${score}%;background:${isPrimary ? '#f47216' : 'rgba(255,255,255,0.2)'};"></div></div>
+          <div style="font-size:9px;color:#a0b4c8;margin-top:4px;font-family:'JetBrains Mono',monospace;">Lat: ${typeof lat === 'number' ? lat.toFixed(4) : lat}°  Lon: ${typeof lon === 'number' ? lon.toFixed(4) : lon}°  Slope: ${typeof slope === 'number' ? slope.toFixed(1) + '°' : slope}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderTraversePaths(nav) {
+  const recommended = nav.recommended_path || nav.balanced_path || {};
+  const safe_path   = nav.safe_path || {};
+  const solar_path  = nav.solar_path || {};
+  if (recommended.length_m)
+    document.getElementById("path-balanced-desc").textContent = `${recommended.length_m.toFixed(0)} m · ${recommended.energy_wh?.toFixed(0) ?? '—'} Wh · slope max ${recommended.max_slope?.toFixed(1) ?? '—'}°`;
+  if (safe_path.length_m)
+    document.getElementById("path-safe-desc").textContent = `${safe_path.length_m.toFixed(0)} m · slope max ${safe_path.max_slope?.toFixed(1) ?? '—'}° (safety-first routing)`;
+  if (solar_path.length_m)
+    document.getElementById("path-solar-desc").textContent = `${solar_path.length_m.toFixed(0)} m · illumination ${solar_path.illumination_pct?.toFixed(0) ?? '—'}% of traverse`;
+}
+
+function renderConfRings(reg) {
+  const container = document.getElementById("conf-rings-grid");
+  if (!Object.keys(reg).length) return;
+  const colors = {
+    PREPROCESSOR_PRIME: "#f47216",
+    POLSAR_DETECTIVE:   "#bbc3ff",
+    THERMO_GUARDIAN:    "#facc15",
+    DEPTH_SOUNDER:      "#10b981",
+    VOLUME_ORACLE:      "#22d3ee",
+    ISRU_ARCHITECT:     "#8b5cf6",
+    TERRAIN_SCOUT:      "#ffb68f",
+    NAVIGATOR:          "#10b981",
+  };
+  container.innerHTML = AGENT_ORDER.map(k => {
+    const conf = (reg[k] || 0) * 100;
+    const color = colors[k] || "#ffb68f";
+    const offset = 113 - (113 * conf / 100);
+    return `
+      <div style="text-align:center;">
+        <svg viewBox="0 0 44 44" width="44" height="44">
+          <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/>
+          <circle cx="22" cy="22" r="18" fill="none" stroke="${color}" stroke-width="3"
+            stroke-dasharray="113" stroke-dashoffset="${offset}" stroke-linecap="round"
+            style="transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1s ease;"/>
+          <text x="22" y="26" text-anchor="middle" fill="${color}" font-family="JetBrains Mono" font-size="9" font-weight="500">${conf.toFixed(0)}%</text>
+        </svg>
+        <div style="font-size:8px;color:#a0b4c8;font-family:'JetBrains Mono',monospace;margin-top:2px;line-height:1.2;">${AGENT_SHORT[k]}</div>
+      </div>
+    `;
+  }).join("");
+
+  // Also update confidence bars in the left panel
+  document.getElementById("conf-summary").style.display = "block";
+  const barsEl = document.getElementById("conf-bars");
+  barsEl.innerHTML = AGENT_ORDER.map(k => {
+    const conf = (reg[k] || 0) * 100;
+    const color = colors[k] || "#ffb68f";
+    return `
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div style="font-size:9px;color:#a0b4c8;width:56px;flex-shrink:0;font-family:'JetBrains Mono',monospace;">${AGENT_SHORT[k]}</div>
+        <div style="flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;">
+          <div style="height:100%;background:${color};width:${conf}%;border-radius:999px;"></div>
+        </div>
+        <div style="font-size:9px;color:${color};width:28px;text-align:right;font-family:'JetBrains Mono',monospace;">${conf.toFixed(0)}%</div>
+      </div>
+    `;
+  }).join("");
+}
+
+// ───────────── Load previous job on page load ─────────────
+window.addEventListener("DOMContentLoaded", async () => {
+  const savedJob = localStorage.getItem("prism_latest_job");
+  if (savedJob) {
+    addLog(`SYSTEM: Found previous job ${savedJob} — loading results…`, "info");
+    document.getElementById("footer-job").textContent = `Job: ${savedJob}`;
+    try {
+      const res = await PrismAPI.get(`/jobs/${savedJob}`);
+      if (res && res.status === "done" && res.result) {
+        setStatusPill("done", "Previous run loaded");
+        setProgress(100, `Last run: job ${savedJob}`);
+        AGENT_ORDER.forEach(k => setDagNode(k, "done"));
+        renderResults(res.result, res);
+        addLog(`SYSTEM: Previous results for ${savedJob} restored.`, "success");
+      } else if (res && res.status === "running") {
+        addLog(`SYSTEM: Job ${savedJob} still running — resuming poll…`, "warn");
+        currentJobId = savedJob;
+        pipelineRunning = true;
+        document.getElementById("btn-run").disabled = true;
+        setStatusPill("running", "Running");
+        startPolling(savedJob);
+      } else {
+        addLog(`SYSTEM: Job ${savedJob} status: ${res?.status || "unknown"}.`, "info");
+      }
+    } catch (err) {
+      addLog(`SYSTEM: Could not load previous job — ${err.message}`, "warn");
+    }
+  }
+});
+</script>
+</body>
+</html>
