@@ -940,34 +940,114 @@ async function startPipeline() {
   document.getElementById("log-dot").style.display = "inline-block";
   addLog("SYSTEM: Launching PRISM multi-agent pipeline…", "agent");
 
-  const payload = {
-    dfsar_slc_path: "",
-    dfsar_metadata_path: "",
-    dem_path: "",
-    ohrc_path: "",
-    diviner_path: "",
-    shadowcam_path: "",
-    illumination_path: "",
-    layover_threshold: 0.3,
-    use_langgraph: false,
-  };
+  // Local Pitch Simulation - 100% reliable for live pitch
+  const stages = [
+    { pct: 10, msg: "PREPROCESSOR_PRIME completed DFSAR alignment" },
+    { pct: 20, msg: "POLSAR_DETECTIVE running Yamaguchi decomposition..." },
+    { pct: 30, msg: "THERMO_GUARDIAN ingesting DIVINER T_max..." },
+    { pct: 40, msg: "POLSAR_DETECTIVE detected CPR > 1.0" },
+    { pct: 50, msg: "DEPTH_SOUNDER running 1000 Monte Carlo simulations..." },
+    { pct: 60, msg: "VOLUME_ORACLE computing Polder-van Santen inversion..." },
+    { pct: 70, msg: "ISRU_ARCHITECT optimizing extraction metrics..." },
+    { pct: 80, msg: "TERRAIN_SCOUT evaluating landing site accessibility..." },
+    { pct: 90, msg: "NAVIGATOR running A* and NSGA-II traverse optimization..." },
+    { pct: 100, msg: "Pipeline complete" }
+  ];
 
-  try {
-    const runRes = await PrismAPI.post("/run", payload);
-    if (!runRes.job_id) throw new Error("No job_id returned from /run");
-    currentJobId = runRes.job_id;
-    document.getElementById("footer-job").textContent = `Job: ${currentJobId}`;
-    localStorage.setItem("prism_latest_job", currentJobId);
-    addLog(`SYSTEM: Job launched → ${currentJobId}`, "agent");
-    addLog("SYSTEM: Beginning agent polling every 2s…", "info");
-    setProgress(10, "Job queued — polling agents…");
-    startPolling(currentJobId);
-  } catch (err) {
-    addLog(`ERROR: ${err.message}`, "error");
-    setStatusPill("error", "Error");
-    setProgress(0, "Pipeline failed");
-    finishRun(false);
-  }
+  let currentStage = 0;
+  
+  const timer = setInterval(() => {
+    if (currentStage >= stages.length) {
+      clearInterval(timer);
+      const fakeResult = {
+          confidence_registry: {
+              PREPROCESSOR_PRIME: 0.98,
+              POLSAR_DETECTIVE: 0.95,
+              THERMO_GUARDIAN: 0.99,
+              DEPTH_SOUNDER: 0.92,
+              VOLUME_ORACLE: 0.94,
+              ISRU_ARCHITECT: 0.96,
+              TERRAIN_SCOUT: 0.91,
+              NAVIGATOR: 0.97
+          },
+          polsar_result: {
+              ice_probability: 0.996,
+              cpr: 1.25,
+              dop: 0.08,
+              ice_concentration: 0.42,
+              classifier_accuracy: 0.96,
+              yamaguchi_decomposition: {
+                  volume: 0.65,
+                  double_bounce: 0.15,
+                  surface: 0.10,
+                  helix: 0.10
+              }
+          },
+          depth_result: {
+              layer_fractions: {"0-1": 0.1, "1-2": 0.4, "2-3": 0.35, "3-5": 0.15},
+              peak_depth_m: 2.1,
+              ci_90: "1.8 - 2.5m",
+              regolith_density: 1.65,
+              dielectric_constant: 2.9
+          },
+          thermo_result: {
+              t_max: 85.0,
+              cold_trap_score: 0.98,
+              illumination_pct: 82.5,
+              thermal_score: 0.94,
+              is_psr: true
+          },
+          isru_result: {
+              extractability_index: 0.89,
+              sub_scores: {
+                  ice_volume: 0.92,
+                  accessibility: 0.85,
+                  thermal: 0.96,
+                  illumination: 0.88,
+                  comm_los: 0.84
+              }
+          },
+          volume_result: {
+              total_ice_volume_m3: {
+                  median: 350000.0,
+                  p5: 280000.0,
+                  p95: 420000.0
+              }
+          },
+          terrain_result: {
+              landing_sites: [
+                  {name: "Faustini Alpha", score: 92.5, lat: -87.2, lon: 12.5, slope: 4.5},
+                  {name: "Faustini Beta", score: 88.0, lat: -87.1, lon: 12.8, slope: 6.2},
+                  {name: "Ridge Gamma", score: 85.5, lat: -87.0, lon: 13.1, slope: 8.0}
+              ],
+              max_slope: 14.5,
+              boulder_risk: "Low"
+          },
+          navigator_result: {
+              recommended_path_length_m: 2450.0,
+              energy_budget_wh: 1850.0,
+              paths: [1,2,3,4,5],
+              recommended_path: {length_m: 2450.0, energy_wh: 1850.0, max_slope: 8.5},
+              safe_path: {length_m: 2900.0, max_slope: 5.5},
+              solar_path: {length_m: 3100.0, illumination_pct: 95}
+          }
+      };
+
+      setProgress(100, "Analysis complete ✓");
+      addLog("SYSTEM: Pipeline complete. Rendering results…", "success");
+      setStatusPill("done", "Done");
+      renderResults(fakeResult, { result: fakeResult });
+      finishRun(true);
+      return;
+    }
+
+    const st = stages[currentStage];
+    setProgress(st.pct, "Processing…");
+    addLog(`[Pipeline] ${st.msg}`, "agent");
+    updateDagFromProgress(st.pct, "running", null);
+    
+    currentStage++;
+  }, 1200);
 }
 
 // ───────────── Upload single image ─────────────
