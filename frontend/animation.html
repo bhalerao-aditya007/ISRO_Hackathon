@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+<!-- STITCH_THREEJS_START:ANIMATION_75 class="fixed inset-0 w-full h-full bg-transparent" -->
+<div class="fixed inset-0 w-full h-full bg-transparent" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_75" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_75');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+container.appendChild(renderer.domElement);
+
+const group = new THREE.Group();
+scene.add(group);
+
+// Core icosahedron — represents the MAS consensus
+const coreGeom = new THREE.IcosahedronGeometry(1.2, 2);
+const coreMat = new THREE.MeshPhongMaterial({
+  color: 0xffb68f,
+  emissive: 0xffb68f,
+  emissiveIntensity: 0.3,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.5,
+});
+const core = new THREE.Mesh(coreGeom, coreMat);
+group.add(core);
+
+// Agent nodes: DFSAR, P_ICE, DEPTH, DIVINER, ISRU-EI, TERRAIN, LANDING, TRAVERSE
+const agentNodes = [
+  { label: 'DFSAR', color: 0xffb68f, pos: [3.5, 1.8, 0.5] },
+  { label: 'P_ICE', color: 0xbbc3ff, pos: [3.5, -1.8, 0.5] },
+  { label: 'DEPTH', color: 0x10b981, pos: [-3.5, 1.8, 0.5] },
+  { label: 'DIVINER', color: 0xfacc15, pos: [-3.5, -1.8, 0.5] },
+  { label: 'ISRU-EI', color: 0x22d3ee, pos: [0, 3.5, 0.5] },
+  { label: 'TERRAIN', color: 0x8b5cf6, pos: [0, -3.5, 0.5] },
+  { label: 'LANDING', color: 0xffb68f, pos: [2.5, 0, 2.5] },
+  { label: 'TRAVERSE', color: 0x10b981, pos: [-2.5, 0, 2.5] },
+];
+
+const nodeGeom = new THREE.SphereGeometry(0.35, 16, 16);
+const particles = [];
+
+agentNodes.forEach((n) => {
+  const mat = new THREE.MeshBasicMaterial({ color: n.color });
+  const mesh = new THREE.Mesh(nodeGeom, mat);
+  mesh.position.set(...n.pos);
+  group.add(mesh);
+  const pts = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(...n.pos)];
+  const lg = new THREE.BufferGeometry().setFromPoints(pts);
+  group.add(
+    new THREE.Line(
+      lg,
+      new THREE.LineBasicMaterial({
+        color: n.color,
+        transparent: true,
+        opacity: 0.25,
+      })
+    )
+  );
+  for (let i = 0; i < 2; i++) {
+    const pm = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 8), mat);
+    pm.userData = { t: Math.random(), end: new THREE.Vector3(...n.pos) };
+    group.add(pm);
+    particles.push(pm);
+  }
+});
+
+const ringGeom = new THREE.TorusGeometry(5.5, 0.01, 16, 100);
+const ring = new THREE.Mesh(
+  ringGeom,
+  new THREE.MeshBasicMaterial({ color: 0xffb68f, transparent: true, opacity: 0.08 })
+);
+ring.rotation.x = Math.PI / 2;
+group.add(ring);
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+const pl = new THREE.PointLight(0xffb68f, 2);
+pl.position.set(8, 8, 8);
+scene.add(pl);
+
+camera.position.z = 10;
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = Date.now() * 0.001;
+  group.rotation.y += 0.0015;
+  core.rotation.y += 0.008;
+  core.scale.setScalar(1 + Math.sin(t * 1.8) * 0.04);
+  particles.forEach((p) => {
+    p.userData.t += 0.004;
+    if (p.userData.t > 1) p.userData.t = 0;
+    p.position.lerpVectors(
+      new THREE.Vector3(0, 0, 0),
+      p.userData.end,
+      p.userData.t
+    );
+  });
+  renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+  const nw = container.clientWidth || window.innerWidth;
+  const nh = container.clientHeight || window.innerHeight;
+  camera.aspect = nw / nh;
+  camera.updateProjectionMatrix();
+  renderer.setSize(nw, nh);
+});
+
+animate();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_75 -->
+
+
+</body></html>

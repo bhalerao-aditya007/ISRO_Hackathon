@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PRISM | Polarimetric Resource Intelligence System for the Moon</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;family=Jetbrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"surface-dim": "#0b1422", "surface-bright": "#313949", "primary-fixed": "#ffdbca", background: "#0b1422", "inverse-surface": "#dae3f7", "on-tertiary-fixed": "#000e5e", primary: "#ffb68f", outline: "#a78b7d", "surface-container-highest": "#2c3544", "tertiary-container": "#7e8fff", "inverse-primary": "#9d4400", "on-background": "#dae3f7", "outline-variant": "#584237", error: "#ffb4ab", "on-secondary": "#273237", "tertiary-fixed": "#dee0ff", "on-primary-fixed": "#331100", "on-primary-container": "#542100", "error-container": "#93000a", "surface-tint": "#ffb68f", "surface-container-high": "#222a39", "primary-fixed-dim": "#ffb68f", "primary-container": "#f47216", secondary: "#bcc8cf", "on-secondary-fixed": "#121d22", "on-surface": "#dae3f7", "on-tertiary-fixed-variant": "#1130c5", "on-surface-variant": "#e0c0b1", "surface-container": "#17202e", "secondary-fixed": "#d8e4eb", "inverse-on-surface": "#283140", "tertiary-fixed-dim": "#bbc3ff", "on-tertiary-container": "#001c94", "on-primary-fixed-variant": "#773200", "surface-variant": "#2c3544", "surface-container-low": "#131c2a", "on-tertiary": "#001c95", "on-error": "#690005", "secondary-container": "#3f4b50", "secondary-fixed-dim": "#bcc8cf", "on-secondary-container": "#aebac1", "on-primary": "#542100", "on-error-container": "#ffdad6", surface: "#0b1422", "on-secondary-fixed-variant": "#3d484e", "surface-container-lowest": "#060e1c", tertiary: "#bbc3ff"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {gutter: "24px", "margin-mobile": "20px", "margin-desktop": "64px", "container-max": "1440px", unit: "4px"}, fontFamily: {"display-xl-mobile": ["Sora"], "label-md": ["Geist"], "headline-md": ["Sora"], "headline-lg": ["Sora"], "body-md": ["Inter"], "display-xl": ["Sora"], "body-lg": ["Inter"], "mono-sm": ["Geist"], headline: ["Sora"], display: ["Sora"], body: ["Inter"], label: ["Jetbrains Mono"]}, fontSize: {"display-xl-mobile": ["40px", {lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "500"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "display-xl": ["64px", {lineHeight: "72px", letterSpacing: "-0.02em", fontWeight: "700"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "mono-sm": ["12px", {lineHeight: "16px", fontWeight: "400"}]}}}};</script>
+<style>
+        body {
+            background-color: #020617;
+            color: #dce1fb;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        .fade-up {
+            opacity: 1;
+        }
+        .primary-glow:hover {
+            box-shadow: 0px 0px 20px rgba(244, 114, 22, 0.5);
+            transform: scale(1.02);
+        }
+        .pulse-accent {
+            animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky z-50 bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(34,211,238,0.1)]">
+<nav class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<a class="font-headline-md text-headline-md tracking-tighter text-primary" href="index.html">PRISM</a>
+</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1" href="mission_control.html">Missions</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="mission_control.html">Telemetry</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="dataset.html">Resources</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="dataset.html">Logistics</a>
+</div>
+<a class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-label-md hover:bg-primary/10 transition-all duration-300 active:scale-95 text-center" href="intelligence_dashboard.html">
+                Launch Terminal
+            </a>
+</nav>
+</header>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative h-screen min-h-[800px] flex items-center overflow-hidden"><div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+<iframe src="animation.html" class="w-full h-full object-cover opacity-80 mix-blend-screen border-none" style="pointer-events: none;"></iframe>
+<div class="absolute inset-0 bg-gradient-to-b from-surface-dim/80 via-transparent to-surface-dim"></div>
+</div>
+<div class="relative z-10 w-full max-w-container-max mx-auto px-gutter grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="max-w-2xl">
+<span class="inline-block px-3 py-1 mb-6 rounded-full bg-primary/10 border border-primary/20 text-primary font-mono-sm text-mono-sm tracking-widest uppercase">
+                        Institutional Lunar Logistics
+                    </span>
+<h1 class="font-display-xl text-display-xl lg:text-display-xl text-on-surface mb-4 leading-tight">
+                        PRISM
+                    </h1>
+<p class="font-headline-md text-headline-md text-primary-fixed-dim mb-6">
+                        Polarimetric Resource Intelligence System for the Moon
+                    </p>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10">
+                        We don't just detect ice — we identify extractable lunar resources, evaluate accessibility, and plan intelligent rover missions through collaborative AI.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<a class="primary-glow bg-primary-container text-on-primary-container px-8 py-4 rounded-xl font-headline-md transition-all duration-300 text-center" href="mission_control.html">
+                            Explore Mission
+                        </a>
+<a class="border border-primary/30 text-primary px-8 py-4 rounded-xl font-headline-md hover:bg-primary/5 transition-all duration-300 text-center" href="intelligence_dashboard.html">
+                            View Agent Architecture
+                        </a>
+</div>
+</div>
+<div class="relative h-[400px] lg:h-[600px] w-full">
+<!-- Decorative HUD elements -->
+<div class="absolute top-0 right-0 p-4 border-r border-t border-primary/20 w-32 h-32 pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 p-4 border-l border-b border-primary/20 w-32 h-32 pointer-events-none"></div>
+</div>
+</div>
+</section>
+<!-- Stats Row -->
+<section class="relative z-20 -mt-24 px-gutter max-w-container-max mx-auto mb-24">
+<div class="glass-card rounded-2xl grid grid-cols-2 md:grid-cols-4 divide-x divide-white/5 py-8">
+<div class="flex flex-col items-center justify-center p-6 text-center">
+<span class="font-headline-lg text-headline-lg text-primary">8</span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">AI Agents</span>
+</div>
+<div class="flex flex-col items-center justify-center p-6 text-center">
+<span class="font-headline-lg text-headline-lg text-primary">10+</span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Datasets</span>
+</div>
+<div class="flex flex-col items-center justify-center p-6 text-center">
+<span class="font-headline-lg text-headline-lg text-primary">30h</span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Execution Pipeline</span>
+</div>
+<div class="flex flex-col items-center justify-center p-6 text-center">
+<span class="font-headline-lg text-headline-lg text-primary">ISRU</span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">E2E Planning</span>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="px-gutter max-w-container-max mx-auto py-24">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div class="max-w-2xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Autonomous Intelligence for Lunar Expansion</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">PRISM orchestrates specialized neural architectures to solve the most complex challenges of off-world resource management.</p>
+</div>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-primary pulse-accent"></span>
+<span class="font-mono-sm text-mono-sm text-primary uppercase">Active Telemetry Stream</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Feature 1 -->
+<div class="glass-card p-10 rounded-3xl flex flex-col h-full group hover:border-primary/40 transition-colors duration-500">
+<div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl" style='font-variation-settings: "FILL" 1;'>dataset</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Resource Identification</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 flex-grow">
+                        Utilizing multi-spectral polarimetry to detect sub-surface volatiles and mineral deposits with 98.4% diagnostic accuracy across the lunar south pole.
+                    </p>
+<a class="inline-flex items-center text-primary font-label-md hover:translate-x-2 transition-transform" href="intelligence_dashboard.html">
+                        Explore Model Specs <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Feature 2 -->
+<div class="glass-card p-10 rounded-3xl flex flex-col h-full group hover:border-primary/40 transition-colors duration-500">
+<div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl" style='font-variation-settings: "FILL" 1;'>analytics</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Accessibility Evaluation</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 flex-grow">
+                        Real-time geotechnical analysis of regolith stability and crater slope gradients to determine extraction feasibility for ISRU hardware.
+                    </p>
+<a class="inline-flex items-center text-primary font-label-md hover:translate-x-2 transition-transform" href="dataset.html">
+                        Topographic Data <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Feature 3 -->
+<div class="glass-card p-10 rounded-3xl flex flex-col h-full group hover:border-primary/40 transition-colors duration-500">
+<div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl" style='font-variation-settings: "FILL" 1;'>precision_manufacturing</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Rover Mission Planning</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 flex-grow">
+                        Multi-agent pathfinding that optimizes for power consumption, communication windows, and thermal management in Permanently Shadowed Regions (PSRs).
+                    </p>
+<a class="inline-flex items-center text-primary font-label-md hover:translate-x-2 transition-transform" href="mission_control.html">
+                        Simulation Engine <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Asymmetric Bento Data View -->
+<section class="px-gutter max-w-container-max mx-auto py-24">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter h-full lg:h-[600px]">
+<div class="lg:col-span-8 glass-card rounded-3xl p-8 flex flex-col justify-end relative">
+<div class="absolute inset-0 opacity-40 overflow-hidden rounded-3xl">
+<div class="w-full h-full bg-cover bg-center" data-alt="A cinematic, high-resolution scientific data visualization showing a 3D topographic map of a lunar crater with glowing cyan heat maps indicating mineral concentrations." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuALRd3Djxwy4iHBzqJuKnYBcA1F2kyA1X46a1l1Y4A9dnwVLsysSkq6lLe4pj_WMRvRQXYA7XueYbHci6V6L8KgwaszmtD79A_CE-ZxTHLtLwbV2NQg67OoJThO67QBwcvhfI2kNqqJ8YzaOgoc9ungr0fXd-NjQWBaLGMMjsHwaAPh_V0RJU13dM8jUyBQ1wrqpKdvhwedn9Hnag00bVYDpRvURX4Zuei0GWBwOmwfmBQkr1n7fKPFUg");'></div>
+</div>
+<div class="relative z-10 bg-surface/80 backdrop-blur-md p-8 rounded-2xl border border-white/5 max-w-lg">
+<h4 class="font-headline-md text-headline-md text-primary mb-2">Live Mission Simulation</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Observing PRISM-A1 Agent executing pathfinding in the Shackleton Crater vicinity. Current success probability: 94%.</p>
+<div class="flex items-center gap-4">
+<div class="flex-grow bg-surface-container h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[94%] shadow-[0_0_8px_#8aebff]"></div>
+</div>
+<span class="font-mono-sm text-mono-sm text-primary">SYST_RUNNING</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<div class="glass-card flex-grow rounded-3xl p-8 flex flex-col">
+<span class="material-symbols-outlined text-primary mb-4">security</span>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2">Clearance Level 5</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Authorized personnel can access the raw telemetry feeds and neural weights of our mission agents.</p>
+</div>
+<div class="glass-card flex-grow rounded-3xl p-8 flex flex-col bg-primary-container/10 border border-primary/20">
+<span class="material-symbols-outlined text-primary mb-4">rocket_launch</span>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2">Next Window</h4>
+<p class="font-headline-lg text-headline-lg text-primary">T-Minus 12:44:02</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">To Shackleton-Prime landing site.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="px-gutter max-w-container-max mx-auto py-24 text-center">
+<div class="glass-card p-16 rounded-[3rem] border-primary/20 bg-gradient-to-b from-primary/5 to-transparent">
+<h2 class="font-display-xl-mobile text-display-xl-mobile md:text-display-xl text-on-surface mb-6">Secure the Future of ISRU</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-2xl mx-auto">Join the multi-agent lunar intelligence network and start identifying extractable resources today.</p>
+<div class="flex flex-col md:flex-row justify-center gap-4">
+<a class="primary-glow bg-primary-container text-on-primary-container px-12 py-5 rounded-2xl font-headline-md text-center" href="mission_control.html">Initialize Protocol</a>
+<a class="border border-white/10 hover:bg-white/5 text-on-surface px-12 py-5 rounded-2xl font-headline-md transition-colors text-center" href="#contact">Request Access</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto bg-surface-container-lowest border-t border-white/5">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop py-12 max-w-container-max mx-auto">
+<div class="md:col-span-1">
+<span class="font-headline-lg text-headline-lg text-primary block mb-4">PRISM</span>
+<p class="font-mono-sm text-mono-sm text-on-surface-variant mb-6 leading-relaxed">
+                    © 2024 PRISM Lunar Intelligence. All rights reserved. Authorized Lunar Personnel Only.
+                </p>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface mb-6 uppercase tracking-widest">Protocol</h4>
+<ul class="space-y-4">
+<li class=""><a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Privacy Protocol</a></li>
+<li class=""><a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Security Clearance</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface mb-6 uppercase tracking-widest">Resources</h4>
+<ul class="space-y-4">
+<li class=""><a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Data Policy</a></li>
+<li class=""><a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary-fixed transition-colors" href="mission_control.html">Mission Control</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface mb-6 uppercase tracking-widest">Status</h4>
+<div class="flex items-center gap-2 mb-4">
+<span class="w-2 h-2 rounded-full bg-primary pulse-accent"></span>
+<span class="font-mono-sm text-mono-sm text-primary">SYSTEMS NOMINAL</span>
+</div>
+<p class="font-mono-sm text-mono-sm text-on-surface-variant">Lat: 89.9° S | Long: 0.0° E</p>
+</div>
+</div>
+</footer>
+<script>
+        // Interactive Button scaling
+        document.querySelectorAll('button, a').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+            btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
+        });
+    </script>
+</body></html>

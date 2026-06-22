@@ -1,0 +1,329 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>PRISM LUNAR INTELLIGENCE - Dataset Ecosystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;family=Jetbrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-primary-fixed-variant": "#773200", "on-surface": "#dae3f7", secondary: "#bcc8cf", "primary-fixed": "#ffdbca", "inverse-primary": "#9d4400", "surface-container-low": "#131c2a", "surface-container-highest": "#2c3544", "secondary-fixed-dim": "#bcc8cf", "on-tertiary": "#001c95", "surface-bright": "#313949", "surface-variant": "#2c3544", "inverse-on-surface": "#283140", error: "#ffb4ab", "on-tertiary-fixed-variant": "#1130c5", "on-error-container": "#ffdad6", "on-tertiary-container": "#001c94", "on-primary-container": "#542100", "on-error": "#690005", "surface-dim": "#0b1422", "on-tertiary-fixed": "#000e5e", "on-background": "#dae3f7", "on-primary": "#542100", "on-secondary-fixed-variant": "#3d484e", "secondary-fixed": "#d8e4eb", "on-surface-variant": "#e0c0b1", "surface-container": "#17202e", "primary-fixed-dim": "#ffb68f", primary: "#ffb68f", "inverse-surface": "#dae3f7", "surface-container-lowest": "#060e1c", "secondary-container": "#3f4b50", background: "#0b1422", "error-container": "#93000a", surface: "#0b1422", "tertiary-container": "#7e8fff", "on-secondary": "#273237", "surface-container-high": "#222a39", "outline-variant": "#584237", "on-secondary-container": "#aebac1", "tertiary-fixed-dim": "#bbc3ff", tertiary: "#bbc3ff", "on-primary-fixed": "#331100", "primary-container": "#f47216", outline: "#a78b7d", "tertiary-fixed": "#dee0ff", "surface-tint": "#ffb68f", "on-secondary-fixed": "#121d22"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {unit: "4px", "margin-desktop": "64px", "container-max": "1440px", gutter: "24px", "margin-mobile": "20px"}, fontFamily: {"body-md": ["Inter"], "mono-sm": ["Geist Mono"], "display-xl-mobile": ["Sora"], "headline-lg": ["Sora"], "headline-md": ["Sora"], "label-md": ["Geist Mono"], "display-xl": ["Sora"], "body-lg": ["Inter"], headline: ["Sora"], display: ["Sora"], body: ["Inter"], label: ["Jetbrains Mono"]}, fontSize: {}}}};</script>
+<style>
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .radar-scan {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, transparent, rgba(34, 211, 238, 0.05) 50%, transparent);
+            animation: scanline 4s linear infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up {
+            animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.02); }
+        }
+        .pulse-indicator {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(34, 211, 238, 0.3); border-radius: 10px; }
+    </style>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary/30 overflow-hidden">
+<!-- WebGL Background Overlay -->
+<!-- TopNavBar Shell -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+<div class="flex items-center gap-4">
+<a class="font-headline-md text-headline-md font-bold tracking-tighter text-primary drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]" href="index.html">PRISM LUNAR INTELLIGENCE</a>
+</div>
+<div class="hidden lg:flex gap-8 items-center">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="mission_control.html">Mission Control</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="intelligence_dashboard.html">Analytics</a>
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1" href="dataset.html">Telemetry</a>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center bg-surface-container-low px-4 py-1.5 rounded-full border border-white/10">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-md text-on-surface placeholder:text-on-surface-variant/50 w-48" placeholder="Search manifest..." type="text">
+</div>
+<div class="flex gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95">settings</button>
+</div>
+<div class="w-8 h-8 rounded-full border border-primary/40 bg-primary/10 overflow-hidden"></div>
+</div>
+</nav>
+<!-- SideNavBar Shell (Shared Component) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-surface-container-lowest/60 backdrop-blur-2xl border-r border-white/10 flex-col py-6 hidden lg:flex z-40">
+<nav class="flex-1 space-y-1 px-3">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all" href="mission_control.html">
+<span class="material-symbols-outlined text-[20px]">dashboard</span> Overview
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md bg-primary/10 text-primary border-l-4 border-primary" href="dataset.html">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dataset</span> Datasets
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all" href="intelligence_dashboard.html">
+<span class="material-symbols-outlined text-[20px]">psychology</span> Intelligence
+            </a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-16 lg:ml-64 h-screen overflow-y-auto custom-scrollbar relative z-10 px-gutter pb-24 flex flex-col">
+<!-- Header Section -->
+<header class="py-12 animate-slide-up w-full" style="animation-delay: 0.1s;">
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md text-primary tracking-[0.3em] uppercase">Mission Data Sources</span>
+
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-2">
+                    Multi-source lunar intelligence stack powering PRISM. Integrated telemetry, orbital imaging, and thermal mapping fusion for total sector awareness.
+                </p>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter w-full">
+<!-- Dataset Cards Column -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Card 1: DFSAR L-Band -->
+<div class="glass-card p-6 rounded-xl animate-slide-up" style="animation-delay: 0.2s">
+<div class="radar-scan"></div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline-md text-headline-md text-white">DFSAR L-Band</h3>
+<p class="font-mono-sm text-mono-sm text-primary">Synthetic Aperture Radar</p>
+</div>
+<span class="material-symbols-outlined text-primary/50">radar</span>
+</div>
+<div class="space-y-2 border-t border-white/5 pt-4">
+<div class="flex justify-between font-mono-sm text-mono-sm">
+<span class="text-on-surface-variant">Resolution</span>
+<span class="text-on-surface">2.0m - 100m</span>
+</div>
+<div class="flex justify-between font-mono-sm text-mono-sm">
+<span class="text-on-surface-variant">Polarization</span>
+<span class="text-on-surface">Full Quad-Pol</span>
+</div>
+<div class="flex justify-between font-mono-sm text-mono-sm">
+<span class="text-on-surface-variant">Penetration</span>
+<span class="text-on-surface">Deep Regolith</span>
+</div>
+</div>
+</div>
+<!-- Card 2: OHRC Imagery -->
+<div class="glass-card p-6 rounded-xl animate-slide-up" style="animation-delay: 0.3s">
+<div class="radar-scan"></div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline-md text-headline-md text-white">OHRC Imagery</h3>
+<p class="font-mono-sm text-mono-sm text-primary">High Resolution Optics</p>
+</div>
+<span class="material-symbols-outlined text-primary/50">photo_camera</span>
+</div>
+<div class="space-y-2 border-t border-white/5 pt-4">
+<div class="flex justify-between font-mono-sm text-mono-sm">
+<span class="text-on-surface-variant">GSD</span>
+<span class="text-on-surface">0.25m / Pixel</span>
+</div>
+<div class="flex justify-between font-mono-sm text-mono-sm">
+<span class="text-on-surface-variant">Spectral</span>
+<span class="text-on-surface">Panchromatic</span>
+</div>
+<div class="flex justify-between font-mono-sm text-mono-sm">
+<span class="text-on-surface-variant">Swath</span>
+<span class="text-on-surface">3.0 km</span>
+</div>
+</div>
+</div>
+<!-- Card 3: DIVINER Thermal -->
+<div class="glass-card p-6 rounded-xl animate-slide-up" style="animation-delay: 0.4s">
+<div class="radar-scan"></div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline-md text-headline-md text-white">DIVINER Thermal</h3>
+<p class="font-mono-sm text-mono-sm text-primary">Radiometer Exp.</p>
+</div>
+<span class="material-symbols-outlined text-primary/50">thermostat</span>
+</div>
+<div class="space-y-2 border-t border-white/5 pt-4">
+<div class="flex justify-between font-mono-sm text-mono-sm">
+<span class="text-on-surface-variant">Temp Range</span>
+<span class="text-on-surface">30K - 400K</span>
+</div>
+<div class="flex justify-between font-mono-sm text-mono-sm">
+<span class="text-on-surface-variant">Channels</span>
+<span class="text-on-surface">9 Multi-spectral</span>
+</div>
+<div class="flex justify-between font-mono-sm text-mono-sm">
+<span class="text-on-surface-variant">Precision</span>
+<span class="text-on-surface">± 0.5K</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Central Data Fusion Visualization -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-gutter">
+<div class="glass-card flex-1 rounded-xl p-8 border-primary/20 bg-surface-container-highest/20 animate-slide-up" style="animation-delay: 0.5s; transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1);">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-white">Data Fusion Architecture</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Real-time ingestion and cross-validation pipeline.</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-mono-sm text-mono-sm">LIVE FEED</span>
+<span class="px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-mono-sm text-mono-sm">NOMINAL</span>
+</div>
+</div>
+<div class="relative w-full aspect-video rounded-lg overflow-hidden border border-white/10 group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBRWCw1nSC6XKbqQmU5cQA5JrQKR6_px_ockkWqs9Oyaegpa7C_60Rz20pLzOmNRyqoSx_m3WwrkEl5IHgXbnpIb_jiIcD7FsKHsnNNSdqB4bMGq79iG8IWdM2_SxclskAcKuyWnFAEkeUHULH9Vrasre8S4p4-ZGeY-TFhrB_1p3XkoLw1j4tRx6MnvGtu8JH_5r32q-0rRmFCYuOJcc_7NQgxOcPca1-ZT6E6_iSGJJscr54wja_20-fCiO7AXPw1fQcAiqhqR0">
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+<div class="font-mono-sm text-mono-sm text-on-surface/80 space-y-1">
+
+
+
+</div>
+
+</div>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+<div class="glass-card p-4 rounded-lg bg-surface/40">
+<h4 class="font-label-md text-label-md text-primary mb-2 uppercase">LOLA + SLDEM</h4>
+<p class="font-mono-sm text-mono-sm text-on-surface-variant">Laser altimeter topography &amp; elevation fusion.</p>
+</div>
+<div class="glass-card p-4 rounded-lg bg-surface/40" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1);">
+<h4 class="font-label-md text-label-md text-primary mb-2 uppercase">DFSAR S-Band</h4>
+<p class="font-mono-sm text-mono-sm text-on-surface-variant">Shadow region ice detection &amp; roughness mapping.</p>
+</div>
+<div class="glass-card p-4 rounded-lg bg-surface/40" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1);">
+<h4 class="font-label-md text-label-md text-primary mb-2 uppercase">ShadowCam</h4>
+<p class="font-mono-sm text-mono-sm text-on-surface-variant">Ultra-sensitive PSR visual validation sources.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Metrics Section -->
+<section class="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-gutter mb-12 w-full">
+<div class="glass-card p-6 rounded-xl border-l-4 border-l-primary animate-slide-up" style="animation-delay: 0.6s">
+<div class="flex flex-col gap-1">
+<span class="font-mono-sm text-mono-sm text-on-surface-variant uppercase tracking-widest">Active Manifests</span>
+<span class="font-display-xl text-display-xl text-primary drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]" data-count="1">1+</span>
+<span class="font-label-md text-label-md text-white/40">Global Lunar Datasets</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl border-l-4 border-l-secondary animate-slide-up" style="animation-delay: 0.7s">
+<div class="flex flex-col gap-1">
+<span class="font-mono-sm text-mono-sm text-on-surface-variant uppercase tracking-widest">Processing Layer</span>
+<span class="font-display-xl text-display-xl text-secondary drop-shadow-[0_0_10px_rgba(139,92,246,0.3)]" data-count="1">1</span>
+<span class="font-label-md text-label-md text-white/40">Autonomous AI Agents</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl border-l-4 border-l-primary animate-slide-up" style="animation-delay: 0.8s">
+<div class="flex flex-col gap-1">
+<span class="font-mono-sm text-mono-sm text-on-surface-variant uppercase tracking-widest">Integrity Check</span>
+<span class="font-display-xl text-display-xl text-primary drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]" data-count="1">1</span>
+<span class="font-label-md text-label-md text-white/40">Validation Cross-Sources</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl border-l-4 border-l-secondary animate-slide-up" style="animation-delay: 0.9s">
+<div class="flex flex-col gap-1">
+<span class="font-mono-sm text-mono-sm text-on-surface-variant uppercase tracking-widest">System Sync</span>
+<span class="font-display-xl text-display-xl text-secondary drop-shadow-[0_0_10px_rgba(139,92,246,0.3)]" data-count="1">1%</span>
+<span class="font-label-md text-label-md text-white/40">Cross-Referenced Nodes</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="fixed bottom-0 left-0 w-full z-30 flex justify-between items-center px-gutter py-2 bg-surface-dim/80 dark:bg-surface-dim/80 backdrop-blur-md border-t border-white/5">
+<div class="flex items-center gap-6">
+<span class="font-mono-sm text-mono-sm text-on-surface-variant/60 uppercase tracking-widest">© 2024 LUNAR INTELLIGENCE COMMAND. ALL SENSORS NOMINAL.</span>
+</div>
+<div class="flex gap-8">
+<a class="font-mono-sm text-mono-sm text-on-surface-variant/60 uppercase tracking-widest hover:text-primary transition-colors" href="#">Privacy Protocol</a>
+<a class="font-mono-sm text-mono-sm text-on-surface-variant/60 uppercase tracking-widest hover:text-primary transition-colors" href="#">Service Level Agreement</a>
+<a class="font-mono-sm text-mono-sm text-primary uppercase tracking-widest flex items-center gap-2" href="#">
+<span class="w-1.5 h-1.5 rounded-full bg-primary pulse-indicator"></span>
+                System Heartbeat
+            </a>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Hover effects on cards to tilt slightly
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+            });
+        });
+
+        // Metrics counter animation logic
+        // TODO(backend): these counters animate up to the static numbers already
+        // in the markup below (data-count targets). Once real metrics exist, fetch
+        // them first, e.g. `const stats = await PrismAPI.get('/datasets/stats');`,
+        // write the values into the .font-display-xl spans, then run this animation.
+        const counters = document.querySelectorAll('.font-display-xl');
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.innerText.replace(/[+%]/g, '');
+                const count = +counter.getAttribute('data-count') || 0;
+                const speed = 200;
+                const inc = target / speed;
+
+                if (count < target) {
+                    const nextVal = Math.ceil(count + inc);
+                    counter.setAttribute('data-count', nextVal);
+                    counter.innerText = nextVal + (counter.innerText.includes('+') ? '+' : '') + (counter.innerText.includes('%') ? '%' : '');
+                    setTimeout(updateCount, 1);
+                } else {
+                    counter.innerText = target + (counter.innerText.includes('+') ? '+' : '') + (counter.innerText.includes('%') ? '%' : '');
+                }
+            };
+            // Trigger animation after delay
+            setTimeout(updateCount, 1200);
+        });
+    </script>
+
+
+
+
+
+
+</body></html>

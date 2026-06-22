@@ -1,0 +1,916 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>PRISM — Chandrayaan-2 Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;family=Jetbrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-primary": "#9d4400",
+                        "on-primary-fixed": "#331100",
+                        "secondary-container": "#3f4b50",
+                        "error-container": "#93000a",
+                        "on-secondary-container": "#aebac1",
+                        "tertiary-fixed-dim": "#bbc3ff",
+                        "surface-bright": "#313949",
+                        "on-primary-container": "#542100",
+                        "surface": "#0b1422",
+                        "surface-container-low": "#131c2a",
+                        "surface-container-highest": "#2c3544",
+                        "on-tertiary-container": "#001c94",
+                        "on-secondary-fixed": "#121d22",
+                        "tertiary": "#bbc3ff",
+                        "on-secondary": "#273237",
+                        "outline": "#a78b7d",
+                        "surface-container-lowest": "#060e1c",
+                        "on-tertiary-fixed": "#000e5e",
+                        "on-primary-fixed-variant": "#773200",
+                        "on-error": "#690005",
+                        "primary": "#ffb68f",
+                        "secondary": "#bcc8cf",
+                        "on-tertiary": "#001c95",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#ffb68f",
+                        "error": "#ffb4ab",
+                        "on-background": "#dae3f7",
+                        "tertiary-container": "#7e8fff",
+                        "inverse-surface": "#dae3f7",
+                        "secondary-fixed-dim": "#bcc8cf",
+                        "on-surface": "#dae3f7",
+                        "surface-variant": "#2c3544",
+                        "background": "#0b1422",
+                        "secondary-fixed": "#d8e4eb",
+                        "surface-container-high": "#222a39",
+                        "on-primary": "#542100",
+                        "tertiary-fixed": "#dee0ff",
+                        "surface-dim": "#0b1422",
+                        "primary-fixed": "#ffdbca",
+                        "on-secondary-fixed-variant": "#3d484e",
+                        "surface-container": "#17202e",
+                        "outline-variant": "#584237",
+                        "inverse-on-surface": "#283140",
+                        "primary-container": "#f47216",
+                        "on-tertiary-fixed-variant": "#1130c5",
+                        "on-surface-variant": "#e0c0b1",
+                        "surface-tint": "#ffb68f"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    fontFamily: {
+                        "headline": ["Sora"],
+                        "display": ["Sora"],
+                        "body": ["Inter"],
+                        "label": ["Jetbrains Mono"]
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease-out;
+        }
+        .glass-card:hover {
+            border-color: rgba(255, 182, 143, 0.3);
+            background: rgba(15, 23, 42, 0.7);
+        }
+        .reveal-stagger > * {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .reveal-active {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+        @keyframes pulse-primary {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 182, 143, 0.4); }
+            50% { box-shadow: 0 0 20px 4px rgba(255, 182, 143, 0.2); }
+        }
+        .animate-pulse-primary {
+            animation: pulse-primary 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 1s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<!-- Procedural Background -->
+<!-- STITCH_SHADER_START:ANIMATION_74 class="fixed inset-0 w-full h-full z-[-1] opacity-40" -->
+<div class="fixed inset-0 w-full h-full z-[-1] opacity-40" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_74" style="display:block;width:100%;height:100%" width="1280" height="1568"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_74');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+float noise(vec2 p) {
+    return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+float smooth_noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    return mix(mix(noise(i), noise(i + vec2(1.0, 0.0)), f.x), mix(noise(i + vec2(0.0, 1.0)), noise(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 center = uv - 0.5;
+    center.x *= u_resolution.x / u_resolution.y;
+    
+    vec3 color = vec3(0.01, 0.02, 0.05);
+    float n = smooth_noise(uv * 4.0 + u_time * 0.05);
+    n += 0.5 * smooth_noise(uv * 8.0 - u_time * 0.02);
+    
+    vec3 cyan = vec3(0.13, 0.83, 0.93);
+    vec3 emerald = vec3(0.06, 0.73, 0.51);
+    vec3 violet = vec3(0.55, 0.36, 0.96);
+    
+    float dist = length(center);
+    color += violet * (1.0 - smoothstep(0.0, 0.8, dist)) * 0.12;
+    color += cyan * (1.0 - smoothstep(0.0, 0.5, length(uv - vec2(0.9, 0.1)))) * 0.08;
+    color += emerald * (1.0 - smoothstep(0.0, 0.4, length(uv - vec2(0.1, 0.9)))) * 0.05;
+    
+    vec2 grid = fract(uv * 30.0);
+    float line = min(grid.x, grid.y);
+    color += cyan * (1.0 - smoothstep(0.0, 0.015, line)) * 0.02;
+    
+    float pulse = fract(u_time * 0.2);
+    float pulseCircle = smoothstep(0.45, 0.5, dist + pulse * 0.1) - smoothstep(0.5, 0.55, dist + pulse * 0.1);
+    color += emerald * pulseCircle * 0.03 * (1.0 - pulse);
+    
+    float synapse = smoothstep(0.7, 1.0, n);
+    color = mix(color, cyan * 0.5, synapse * 0.1);
+    
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_74 -->
+<!-- Top Navigation Anchor (Shared Component) -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/70 backdrop-blur-xl border-b border-white/10 flex justify-between items-center h-16 px-6 md:px-margin-desktop transition-all duration-300 ease-in-out shadow-[0_0_20px_rgba(255,182,143,0.1)]">
+<div class="flex items-center gap-4">
+<a class="font-display text-[22px] md:text-2xl tracking-tighter text-primary drop-shadow-[0_0_10px_rgba(255,182,143,0.5)]" href="index.html">PRISM</a>
+</div>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="font-label text-xs text-primary border-b-2 border-primary pb-1" href="mission_control.html">Mission Control</a>
+<a class="font-label text-xs text-on-surface-variant hover:text-primary transition-colors" href="intelligence_dashboard.html">Analytics</a>
+<a class="font-label text-xs text-on-surface-variant hover:text-primary transition-colors" href="dataset.html">Telemetry</a>
+<a class="font-label text-xs text-on-surface-variant hover:text-primary transition-colors" href="index.html">Archives</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-white/5 p-2 rounded-full transition-all">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-white/5 p-2 rounded-full transition-all">settings</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-white/20"></div>
+</div>
+</header>
+<!-- Side Navigation (Shared Component) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-72 bg-surface-container-lowest/60 backdrop-blur-2xl border-r border-white/10 flex-col py-6 hidden md:flex z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<div>
+<h3 class="font-headline text-[18px] text-primary">PRISM-1</h3>
+<p class="font-label text-[11px] text-on-surface-variant">Lunar Mission Complete</p>
+</div>
+</div>
+<a class="block w-full py-2 bg-primary text-on-primary font-label text-xs text-center rounded-xl hover:shadow-[0_0_20px_rgba(255,182,143,0.5)] transition-all active:scale-95" href="mission_control.html">New Mission</a>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 font-label text-xs bg-secondary-container/30 text-primary border-l-4 border-primary" href="mission_control.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span> Overview
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-label text-xs text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all" href="dataset.html">
+<span class="material-symbols-outlined">public</span> Geology
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-label text-xs text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all" href="dataset.html">
+<span class="material-symbols-outlined">precision_manufacturing</span> ISR Utility
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-label text-xs text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all" href="dataset.html">
+<span class="material-symbols-outlined">local_shipping</span> Logistics
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-label text-xs text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all" href="intelligence_dashboard.html">
+<span class="material-symbols-outlined">psychology</span> Intelligence
+            </a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-72 pt-24 pb-20 px-6 md:px-12 min-h-screen">
+<!-- Header -->
+<header class="mb-10 reveal-stagger">
+<span class="font-label text-[10px] text-primary tracking-[0.2em] uppercase mb-2 block reveal-active">CHANDRAYAAN-2 INTELLIGENCE HUB</span>
+<h1 class="font-display text-4xl md:text-5xl text-on-surface mb-3 reveal-active">Mission Control Dashboard</h1>
+<p class="font-body text-lg text-on-surface-variant max-w-2xl reveal-active">Autonomous synthesis of orbital telemetry and surface scans from Chandrayaan-2 datasets. Powered by Multi-Agent Systems for real-time mission planning.</p>
+</header>
+<!-- Content Grid -->
+<div class="grid grid-cols-1 md:grid-cols-6 gap-6 reveal-stagger">
+<!-- Main Analysis Card -->
+<div class="glass-card col-span-1 md:col-span-4 row-span-2 rounded-xl p-8 relative overflow-hidden flex flex-col min-h-[600px] reveal-active">
+<div class="absolute top-0 right-0 p-8 z-10">
+<div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full font-label text-xs animate-pulse-primary" id="status-badge">
+<span class="w-2 h-2 bg-emerald-400 rounded-full"></span> SYSTEM ONLINE
+                </div>
+</div>
+<div class="relative z-10 h-full flex flex-col">
+<h2 class="font-headline text-2xl text-on-surface mb-8">Agent Consensus Graph</h2>
+<div class="flex-1 mb-8 relative rounded-xl border border-white/5 bg-black/20 overflow-hidden" id="graph-container">
+<!-- STITCH_THREEJS_START:ANIMATION_75 class="w-full h-full" -->
+<div class="w-full h-full" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_75" style="width:100%;height:100%"><canvas width="849" height="672" style="display: block; width: 523px; height: 414px;"></canvas></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_75');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+container.appendChild(renderer.domElement);
+
+const group = new THREE.Group();
+scene.add(group);
+
+// Core icosahedron — represents the MAS consensus
+const coreGeom = new THREE.IcosahedronGeometry(1.2, 2);
+const coreMat = new THREE.MeshPhongMaterial({
+  color: 0xffb68f,
+  emissive: 0xffb68f,
+  emissiveIntensity: 0.3,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.5,
+});
+const core = new THREE.Mesh(coreGeom, coreMat);
+group.add(core);
+
+// Agent nodes: DFSAR, P_ICE, DEPTH, DIVINER, ISRU-EI, TERRAIN, LANDING, TRAVERSE
+const agentNodes = [
+  { label: 'DFSAR', color: 0xffb68f, pos: [3.5, 1.8, 0.5] },
+  { label: 'P_ICE', color: 0xbbc3ff, pos: [3.5, -1.8, 0.5] },
+  { label: 'DEPTH', color: 0x10b981, pos: [-3.5, 1.8, 0.5] },
+  { label: 'DIVINER', color: 0xfacc15, pos: [-3.5, -1.8, 0.5] },
+  { label: 'ISRU-EI', color: 0x22d3ee, pos: [0, 3.5, 0.5] },
+  { label: 'TERRAIN', color: 0x8b5cf6, pos: [0, -3.5, 0.5] },
+  { label: 'LANDING', color: 0xffb68f, pos: [2.5, 0, 2.5] },
+  { label: 'TRAVERSE', color: 0x10b981, pos: [-2.5, 0, 2.5] },
+];
+
+const nodeGeom = new THREE.SphereGeometry(0.35, 16, 16);
+const particles = [];
+
+agentNodes.forEach((n) => {
+  const mat = new THREE.MeshBasicMaterial({ color: n.color });
+  const mesh = new THREE.Mesh(nodeGeom, mat);
+  mesh.position.set(...n.pos);
+  group.add(mesh);
+  const pts = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(...n.pos)];
+  const lg = new THREE.BufferGeometry().setFromPoints(pts);
+  group.add(
+    new THREE.Line(
+      lg,
+      new THREE.LineBasicMaterial({
+        color: n.color,
+        transparent: true,
+        opacity: 0.25,
+      })
+    )
+  );
+  for (let i = 0; i < 2; i++) {
+    const pm = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 8), mat);
+    pm.userData = { t: Math.random(), end: new THREE.Vector3(...n.pos) };
+    group.add(pm);
+    particles.push(pm);
+  }
+});
+
+const ringGeom = new THREE.TorusGeometry(5.5, 0.01, 16, 100);
+const ring = new THREE.Mesh(
+  ringGeom,
+  new THREE.MeshBasicMaterial({ color: 0xffb68f, transparent: true, opacity: 0.08 })
+);
+ring.rotation.x = Math.PI / 2;
+group.add(ring);
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+const pl = new THREE.PointLight(0xffb68f, 2);
+pl.position.set(8, 8, 8);
+scene.add(pl);
+
+camera.position.z = 10;
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = Date.now() * 0.001;
+  group.rotation.y += 0.0015;
+  core.rotation.y += 0.008;
+  core.scale.setScalar(1 + Math.sin(t * 1.8) * 0.04);
+  particles.forEach((p) => {
+    p.userData.t += 0.004;
+    if (p.userData.t > 1) p.userData.t = 0;
+    p.position.lerpVectors(
+      new THREE.Vector3(0, 0, 0),
+      p.userData.end,
+      p.userData.t
+    );
+  });
+  renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+  const nw = container.clientWidth || window.innerWidth;
+  const nh = container.clientHeight || window.innerHeight;
+  camera.aspect = nw / nh;
+  camera.updateProjectionMatrix();
+  renderer.setSize(nw, nh);
+});
+
+animate();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_75 -->
+<!-- Loading Overlay -->
+<div class="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-20 hidden" id="analysis-loader">
+<div class="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+<p class="font-label text-primary animate-pulse">SYNTHESIZING TELEMETRY...</p>
+<div class="mt-4 w-48 h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary transition-all duration-300" id="progress-bar" style="width: 100%;"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<div class="flex items-center gap-3 cursor-pointer primary-glow p-2 rounded-lg transition-all" onclick="openChartModal('dfsar')">
+<span class="material-symbols-outlined text-primary">data_exploration</span>
+<span class="font-label text-xs">DFSAR Raw</span>
+</div>
+<div class="flex items-center gap-3 cursor-pointer primary-glow p-2 rounded-lg transition-all" onclick="openChartModal('pice')">
+<span class="material-symbols-outlined text-primary">ac_unit</span>
+<span class="font-label text-xs">P_ICE Model</span>
+</div>
+<div class="flex items-center gap-3 cursor-pointer primary-glow p-2 rounded-lg transition-all" onclick="openChartModal('depth')">
+<span class="material-symbols-outlined text-primary">terrain</span>
+<span class="font-label text-xs">Depth Profiling</span>
+</div>
+<div class="flex items-center gap-3 cursor-pointer primary-glow p-2 rounded-lg transition-all" onclick="openChartModal('isru')">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<span class="font-label text-xs">ISRU Priority</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Scores & Stats -->
+<div class="glass-card col-span-1 md:col-span-2 rounded-xl p-8 flex flex-col gap-6 reveal-active">
+<h3 class="font-headline text-xl text-primary">Intelligence Scores</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<span class="font-label text-sm text-on-surface-variant">Ice Detection Confidence</span>
+<div class="relative w-12 h-12">
+<svg class="w-full h-full">
+<circle class="text-white/5 stroke-current" cx="24" cy="24" fill="transparent" r="20" stroke-width="3"></circle>
+<circle class="text-primary stroke-current progress-ring__circle" cx="24" cy="24" fill="transparent" r="20" stroke-linecap="round" stroke-width="3" style="stroke-dasharray: 125.6; stroke-dashoffset: 12.5;"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center font-label text-[10px]">90%</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label text-sm text-on-surface-variant">Terrain Safety Rating</span>
+<div class="relative w-12 h-12">
+<svg class="w-full h-full">
+<circle class="text-white/5 stroke-current" cx="24" cy="24" fill="transparent" r="20" stroke-width="3"></circle>
+<circle class="text-tertiary stroke-current progress-ring__circle" cx="24" cy="24" fill="transparent" r="20" stroke-linecap="round" stroke-width="3" style="stroke-dasharray: 125.6; stroke-dashoffset: 25;"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center font-label text-[10px]">80%</span>
+</div>
+</div>
+<div class="pt-6 border-t border-white/10">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label text-sm text-primary uppercase">Overall Reliability</span>
+<span class="font-display text-4xl text-primary counter">94</span>
+</div>
+<div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 94%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Metric Widgets -->
+<div class="glass-card col-span-1 md:col-span-2 rounded-xl p-6 reveal-active">
+<h4 class="font-label text-xs text-on-surface-variant uppercase tracking-widest mb-4">Volume Estimates</h4>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/5 p-4 rounded-lg">
+<p class="font-label text-[10px] text-on-surface-variant mb-1">Ice Volume</p>
+<p class="font-display text-xl text-primary"><span class="counter">4.2</span>k m³</p>
+</div>
+<div class="bg-white/5 p-4 rounded-lg">
+<p class="font-label text-[10px] text-on-surface-variant mb-1">Potability</p>
+<p class="font-display text-xl text-tertiary">86%</p>
+</div>
+</div>
+</div>
+<!-- Landing Map -->
+<div class="glass-card col-span-1 md:col-span-3 rounded-xl p-6 overflow-hidden reveal-active">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline text-lg">Landing Site Candidates</h3>
+<span class="px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded text-[10px] font-label uppercase">Validated</span>
+</div>
+<div class="aspect-video bg-black/40 rounded-lg overflow-hidden relative border border-white/5">
+<img alt="Landing Site Heatmap" class="w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvGGK9Ym61rN4XsZeXjBVHjg5TdWBZMCultcwymQYQv-RHoibRkjdjdRG9bCEZo5pCUkLa9YrZx95Jvwo8jx9RBSZVaUaUQmmZ6Bc6V-1UhxenHM48YSEpZWVtPDSXSIiCjFGZGmhg9zivQKwbYZZO2jQF8FfZ2jYYmJOZ7U2QdS2EsExgzCPvURYRQpFiqu6cIHt8YlNiLVzQhf4SG6TcAPn1PnaOZdWQIDNUyT9kLoaE6k6PCpxqiA">
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent flex items-end p-4">
+<div class="flex gap-4">
+<div class="px-3 py-1 bg-primary/20 border border-primary/40 rounded backdrop-blur">
+<p class="text-[10px] font-label text-primary">ALPHA-1: 98.2 SCORE</p>
+</div>
+<div class="px-3 py-1 bg-white/5 border border-white/10 rounded backdrop-blur">
+<p class="text-[10px] font-label text-on-surface-variant">BETA-PROX: 84.5 SCORE</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Console / Logs -->
+<div class="glass-card col-span-1 md:col-span-3 rounded-xl p-6 flex flex-col reveal-active">
+<h3 class="font-headline text-lg mb-4">Mission Stream</h3>
+<div class="flex-1 bg-black/60 rounded border border-white/5 p-4 font-label text-[11px] overflow-y-auto space-y-2" id="mission-logs">
+<p class="text-primary/60">[08:24:11] DFSAR AGENT: Initializing synthetic aperture radar mapping...</p>
+<p class="text-on-surface-variant">[08:24:14] P_ICE AGENT: Probability model loaded. Comparing against Chandrayaan-2 historical telemetry...</p>
+<p class="text-tertiary/60">[08:24:18] DEPTH AGENT: Stratification analysis in progress. Regolith density estimation: 1.6g/cm³.</p>
+<p class="text-primary/60">[08:24:22] CONSENSUS: Water ice detected in Permanently Shadowed Region (PSR).</p>
+<p class="text-on-surface-variant">[21:33:20] Cross-referencing Diviner temperature data...</p><p class="text-on-surface-variant">[21:33:20] Cross-referencing Diviner temperature data...</p><p class="text-on-surface-variant">[21:33:21] Synthetic Aperture Radar overlap verified.</p><p class="text-on-surface-variant">[21:33:21] Synthetic Aperture Radar overlap verified.</p><p class="text-on-surface-variant">[21:33:21] Synthetic Aperture Radar overlap verified.</p><p class="text-on-surface-variant">[21:33:23] Generating ISRU Priority Heatmap...</p><p class="text-on-surface-variant">[21:33:23] Generating ISRU Priority Heatmap...</p><p class="text-on-surface-variant">[21:33:23] Generating ISRU Priority Heatmap...</p><p class="text-on-surface-variant">[21:33:23] Generating ISRU Priority Heatmap...</p><p class="text-primary">[21:33:25] ANALYSIS COMPLETE. Consensus reached on candidate sites.</p></div>
+
+<!-- Upload Dropzone -->
+<div class="mt-4 border-2 border-dashed border-primary/30 rounded-xl p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-primary/5 transition-colors group" id="upload-zone" onclick="document.getElementById('file-upload').click()" ondragover="event.preventDefault(); this.classList.add('border-primary', 'bg-primary/10')" ondragleave="this.classList.remove('border-primary', 'bg-primary/10')" ondrop="handleDrop(event)">
+    <input type="file" id="file-upload" class="hidden" accept=".tif,.tiff,.png,.jpg,.jpeg" onchange="handleFileSelect(event)">
+    <span class="material-symbols-outlined text-2xl text-primary/60 group-hover:text-primary mb-1 transition-colors">cloud_upload</span>
+    <p class="font-label text-xs text-primary mb-1">Upload External Dataset</p>
+    <p class="font-label text-[9px] text-on-surface-variant">Drop TIFF, PNG, or JPG here</p>
+</div>
+
+<!-- Upload Progress Bar (Hidden) -->
+<div id="upload-progress-container" class="mt-4 hidden flex-col">
+    <div class="flex justify-between items-end mb-1">
+        <span id="upload-filename" class="font-label text-xs text-primary truncate max-w-[200px]">file.tif</span>
+        <span id="upload-size" class="font-label text-[10px] text-on-surface-variant">0 MB</span>
+    </div>
+    <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+        <div id="upload-progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 0%;"></div>
+    </div>
+    <p id="upload-status-text" class="font-label text-[10px] text-primary/80 mt-1 animate-pulse">Encrypting & Uploading to PRISM Secure Network...</p>
+</div>
+<button class="mt-4 py-2 border border-primary/30 text-primary font-label text-xs rounded hover:bg-primary/10 transition-all uppercase tracking-widest" id="refresh-analysis">Resync Agents</button>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-0 w-full h-10 z-40 bg-surface-dim/80 backdrop-blur-md border-t border-white/5 flex justify-between items-center px-6 md:px-16 opacity-80 transition-opacity">
+<span class="font-label text-[9px] text-secondary uppercase tracking-[0.2em]">© 2024 PRISM MISSION CONTROL // TELEMETRY ENCRYPTED</span>
+<div class="flex gap-6">
+<a class="font-label text-[9px] text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Network Status: Optimal</a>
+<a class="font-label text-[9px] text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Secure Link</a>
+</div>
+</footer>
+<!-- Backend Logic Simulation -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Animation reveals
+        const staggerGroups = document.querySelectorAll('.reveal-stagger');
+        staggerGroups.forEach((group, gIdx) => {
+            Array.from(group.children).forEach((child, cIdx) => {
+                setTimeout(() => {
+                    child.classList.add('reveal-active');
+                }, (gIdx * 200) + (cIdx * 100));
+            });
+        });
+
+        // Numeric Counter animation
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = parseFloat(counter.innerText);
+            let current = 0;
+            const inc = target / 40;
+            const update = () => {
+                if (current < target) {
+                    current += inc;
+                    counter.innerText = current.toFixed(target % 1 === 0 ? 0 : 1);
+                    requestAnimationFrame(update);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            update();
+        });
+
+        // API Integration Logic
+        const refreshBtn = document.getElementById('refresh-analysis');
+        const loader = document.getElementById('analysis-loader');
+        const progress = document.getElementById('progress-bar');
+        const logs = document.getElementById('mission-logs');
+
+        const addLog = (text, type = 'default') => {
+            if (!logs) return;
+            const p = document.createElement('p');
+            const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+            p.className = type === 'alert' ? 'text-primary' : 'text-on-surface-variant';
+            p.innerText = `[${time}] ${text}`;
+            logs.appendChild(p);
+            logs.scrollTop = logs.scrollHeight;
+        };
+
+        const startAnalysis = async () => {
+            if (!PrismAPI.isConfigured()) {
+                addLog('API not configured. Check config.js', 'alert');
+                return;
+            }
+            loader.classList.remove('hidden');
+            progress.style.width = '10%';
+            addLog('SYSTEM SYNC: Initiating PRISM pipeline...', 'alert');
+
+            try {
+                let payload = {
+                    "dfsar_slc_path": "", "dfsar_metadata_path": "", "dem_path": "", "ohrc_path": "",
+                    "diviner_path": "", "shadowcam_path": "", "illumination_path": "",
+                    "layover_threshold": 0.3, "use_langgraph": false
+                };
+                
+                // Use real local paths if testing against local backend
+                const baseUrl = window.PRISM_CONFIG ? window.PRISM_CONFIG.API_BASE_URL : "";
+                if (baseUrl.includes('127.0.0.1') || baseUrl.includes('localhost')) {
+                    payload = {
+                        "dfsar_slc_path": "D:\\\\PRISM_DATA\\\\01_DFSAR",
+                        "dfsar_metadata_path": "",
+                        "dem_path": "D:\\\\PRISM_DATA\\\\03_LOLA\\\\LDEM_80S_20MPP_ADJ.TIF",
+                        "ohrc_path": "",
+                        "diviner_path": "D:\\\\PRISM_DATA\\\\05_DIVINER\\\\polar_south_80_Tmax.grd",
+                        "shadowcam_path": "",
+                        "illumination_path": "D:\\\\PRISM_DATA\\\\04_ILLUMINATION\\\\AVGVISIB_65S_240M.IMG",
+                        "layover_threshold": 0.3,
+                        "use_langgraph": false
+                    };
+                    addLog('Detected local backend: loading genuine local PRISM datasets.', 'alert');
+                }
+
+                const runRes = await PrismAPI.post('/run', payload);
+                if (!runRes.job_id) throw new Error("No job ID returned");
+                
+                const jobId = runRes.job_id;
+                addLog(`Job launched: ${jobId}. Polling status...`);
+                localStorage.setItem('prism_latest_job', jobId);
+                
+                const pollInterval = setInterval(async () => {
+                    try {
+                        const statusRes = await PrismAPI.get(`/jobs/${jobId}`);
+                        progress.style.width = `${Math.max(10, statusRes.progress || 0)}%`;
+                        
+                        if (statusRes.message) {
+                            if (window.lastMessage !== statusRes.message) {
+                                addLog(`[Agent Update] ${statusRes.message}`);
+                                window.lastMessage = statusRes.message;
+                            }
+                        }
+                        
+                        if (statusRes.status === 'done' || statusRes.status === 'error') {
+                            clearInterval(pollInterval);
+                            setTimeout(() => loader.classList.add('hidden'), 500);
+                            
+                            if (statusRes.status === 'done') {
+                                addLog('ANALYSIS COMPLETE. Consensus reached.', 'alert');
+                                setTimeout(() => {
+                                    window.location.href = 'intelligence_dashboard.html';
+                                }, 1500);
+                            } else {
+                                addLog('ANALYSIS FAILED: ' + statusRes.error, 'alert');
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Poll error', e);
+                    }
+                }, 1000);
+
+            } catch (err) {
+                addLog(`ERROR: ${err.message}`, 'alert');
+                loader.classList.add('hidden');
+            }
+        };
+
+        if (refreshBtn) refreshBtn.addEventListener('click', startAnalysis);
+    });
+
+    // Upload Data Simulation Logic
+    function handleDrop(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('border-primary', 'bg-primary/10');
+        if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+            processUpload(event.dataTransfer.files[0]);
+        }
+    }
+
+    function handleFileSelect(event) {
+        if (event.target.files && event.target.files.length > 0) {
+            processUpload(event.target.files[0]);
+        }
+    }
+
+    async function processUpload(file) {
+        const zone = document.getElementById('upload-zone');
+        const container = document.getElementById('upload-progress-container');
+        const filenameEl = document.getElementById('upload-filename');
+        const sizeEl = document.getElementById('upload-size');
+        const bar = document.getElementById('upload-progress-bar');
+        const statusText = document.getElementById('upload-status-text');
+
+        zone.classList.add('hidden');
+        container.classList.remove('hidden');
+        container.classList.add('flex');
+
+        filenameEl.innerText = file.name;
+        sizeEl.innerText = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+        bar.style.width = '20%';
+        statusText.innerText = 'Extracting features and sending to Remote PRISM Pipeline...';
+        statusText.classList.add('animate-pulse');
+
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const baseUrl = window.PRISM_CONFIG ? window.PRISM_CONFIG.API_BASE_URL : "";
+            const res = await fetch(`${baseUrl}/run_single_image`, {
+                method: "POST",
+                body: formData
+            });
+
+            if (!res.ok) {
+                throw new Error("Analysis failed on server.");
+            }
+
+            const data = await res.json();
+            
+            bar.style.width = '100%';
+            statusText.innerText = 'Real ML Inference Complete! Loading Dashboard...';
+            statusText.classList.remove('animate-pulse');
+
+            // Save the real job ID that the backend returned
+            if (data && data.job_id) {
+                localStorage.setItem('prism_latest_job', data.job_id);
+            }
+
+            setTimeout(() => {
+                window.location.href = 'intelligence_dashboard.html';
+            }, 1500);
+
+        } catch (e) {
+            console.error(e);
+            bar.style.width = '100%';
+            bar.style.backgroundColor = '#ef4444'; // Red error
+            statusText.innerText = 'Inference Failed: ' + e.message;
+            statusText.classList.remove('animate-pulse');
+            
+            setTimeout(() => {
+                container.classList.add('hidden');
+                container.classList.remove('flex');
+                zone.classList.remove('hidden');
+                bar.style.backgroundColor = ''; // Reset
+            }, 3000);
+        }
+    }
+</script>
+
+
+<!-- Chart Modal -->
+<div id="chart-modal" class="fixed inset-0 z-[100] bg-background/90 backdrop-blur-md hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+    <div class="glass-card w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl p-8 relative m-4 border border-primary/20">
+        <button onclick="closeChartModal()" class="absolute top-6 right-6 text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-3xl">close</span>
+        </button>
+        <h2 id="chart-modal-title" class="font-headline-lg text-headline-lg text-primary mb-2">Data Exploration</h2>
+        <p id="chart-modal-desc" class="font-body-md text-on-surface-variant mb-8">Detailed analysis view.</p>
+        
+        <div class="w-full h-[400px] bg-surface/50 rounded-xl p-4 border border-white/5">
+            <canvas id="agentChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentChart = null;
+
+    function closeChartModal() {
+        const modal = document.getElementById('chart-modal');
+        modal.classList.remove('opacity-100');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+
+    async function openChartModal(type) {
+        const modal = document.getElementById('chart-modal');
+        const titleEl = document.getElementById('chart-modal-title');
+        const descEl = document.getElementById('chart-modal-desc');
+        const ctx = document.getElementById('agentChart').getContext('2d');
+        
+        modal.classList.remove('hidden');
+        // trigger reflow
+        void modal.offsetWidth;
+        modal.classList.add('opacity-100');
+
+        if (currentChart) {
+            currentChart.destroy();
+        }
+
+        Chart.defaults.color = '#dce1fb';
+        Chart.defaults.font.family = 'Inter';
+
+        // Fetch real data if available
+        let conf = 0.85;
+        let pIceConf = 0.90;
+        let depthConf = 0.80;
+        let isruConf = 0.95;
+        
+        try {
+            const jobId = localStorage.getItem('prism_latest_job');
+            if (jobId && PrismAPI && PrismAPI.isConfigured()) {
+                const res = await PrismAPI.get(`/jobs/${jobId}`);
+                if (res && res.result && res.result.confidence_registry) {
+                    const reg = res.result.confidence_registry;
+                    conf = reg['PREPROCESSOR_PRIME'] || conf;
+                    pIceConf = reg['POLSAR_DETECTIVE'] || pIceConf;
+                    depthConf = reg['DEPTH_SOUNDER'] || depthConf;
+                    isruConf = reg['ISRU_ARCHITECT'] || isruConf;
+                }
+            }
+        } catch (e) {}
+
+        let config = {};
+
+        if (type === 'dfsar') {
+            titleEl.innerText = "DFSAR Raw Backscatter";
+            descEl.innerText = "L-Band & S-Band polarimetric decomposition identifying anomalous subsurface dielectric constants.";
+            config = {
+                type: 'bar',
+                data: {
+                    labels: ['S-Band (HH)', 'S-Band (VV)', 'L-Band (HH)', 'L-Band (HV)', 'CPR Ratio'],
+                    datasets: [{
+                        label: 'Signal Strength (dB)',
+                        data: [12 * conf, 15 * conf, 22 * conf, 8 * conf, 1.2 * conf],
+                        backgroundColor: 'rgba(255, 182, 143, 0.6)',
+                        borderColor: 'rgba(255, 182, 143, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            };
+        } else if (type === 'pice') {
+            titleEl.innerText = "P_ICE Model Probabilities";
+            descEl.innerText = "Confidence distribution of water-ice presence within the target Shackleton crater boundaries.";
+            config = {
+                type: 'doughnut',
+                data: {
+                    labels: ['High Confidence Ice', 'Mixed Regolith', 'Dry Regolith'],
+                    datasets: [{
+                        data: [pIceConf * 100, (1-pIceConf)*50, (1-pIceConf)*50],
+                        backgroundColor: ['#f47216', '#7e8fff', '#2c3544'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
+            };
+        } else if (type === 'depth') {
+            titleEl.innerText = "Depth Profiling Stratification";
+            descEl.innerText = "Simulated radar wave penetration depth estimating the regolith density and ice-block layers.";
+            config = {
+                type: 'line',
+                data: {
+                    labels: ['0m', '0.5m', '1m', '1.5m', '2m', '2.5m', '3m'],
+                    datasets: [{
+                        label: 'Dielectric Constant ε',
+                        data: [2.1, 2.3, 3.1 * depthConf, 3.4 * depthConf, 2.9, 2.5, 2.2],
+                        fill: true,
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: '#10b981',
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            };
+        } else if (type === 'isru') {
+            titleEl.innerText = "ISRU Site Priority";
+            descEl.innerText = "Overall score evaluating the viability of In-Situ Resource Utilization hardware deployment.";
+            config = {
+                type: 'radar',
+                data: {
+                    labels: ['Accessibility', 'Ice Volume', 'Illumination', 'Thermal Stability', 'Comm LOS'],
+                    datasets: [{
+                        label: 'Site Alpha',
+                        data: [90 * isruConf, 95 * isruConf, 70, 85, 98],
+                        fill: true,
+                        backgroundColor: 'rgba(34, 211, 238, 0.2)',
+                        borderColor: '#22d3ee',
+                        pointBackgroundColor: '#22d3ee',
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    scales: { r: { angleLines: { color: 'rgba(255,255,255,0.1)' }, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { display: false } } }
+                }
+            };
+        }
+
+        currentChart = new Chart(ctx, config);
+    }
+</script>
+
+</body></html>

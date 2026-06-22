@@ -1,0 +1,744 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>PRISM Results | Executive Mission Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;family=Jetbrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {tertiary: "#bbc3ff", secondary: "#bcc8cf", "surface-container": "#17202e", "secondary-container": "#3f4b50", "on-tertiary-fixed-variant": "#1130c5", "secondary-fixed-dim": "#bcc8cf", "primary-container": "#f47216", outline: "#a78b7d", "on-primary-fixed": "#331100", "inverse-surface": "#dae3f7", "tertiary-fixed": "#dee0ff", "secondary-fixed": "#d8e4eb", "primary-fixed": "#ffdbca", "surface-dim": "#0b1422", "primary-fixed-dim": "#ffb68f", "surface-container-high": "#222a39", "on-tertiary-fixed": "#000e5e", "on-secondary-fixed-variant": "#3d484e", "on-tertiary-container": "#001c94", background: "#0b1422", "on-tertiary": "#001c95", "on-primary-container": "#542100", "inverse-primary": "#9d4400", surface: "#0b1422", "on-primary": "#542100", "on-background": "#dae3f7", "on-primary-fixed-variant": "#773200", "error-container": "#93000a", "on-secondary-fixed": "#121d22", "on-surface-variant": "#e0c0b1", "surface-container-lowest": "#060e1c", "on-secondary": "#273237", "surface-tint": "#ffb68f", primary: "#ffb68f", "on-error": "#690005", "surface-container-highest": "#2c3544", "outline-variant": "#584237", "on-secondary-container": "#aebac1", "tertiary-container": "#7e8fff", "surface-variant": "#2c3544", "surface-container-low": "#131c2a", "tertiary-fixed-dim": "#bbc3ff", "surface-bright": "#313949", "on-error-container": "#ffdad6", "on-surface": "#dae3f7", error: "#ffb4ab", "inverse-on-surface": "#283140"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {unit: "4px", "margin-desktop": "64px", "container-max": "1440px", gutter: "24px", "margin-mobile": "20px"}, fontFamily: {"display-xl-mobile": ["Sora"], "headline-md": ["Sora"], "headline-lg": ["Sora"], "body-md": ["Inter"], "display-xl": ["Sora"], "mono-sm": ["Geist"], "label-md": ["Geist"], "body-lg": ["Inter"], headline: ["Sora"], display: ["Sora"], body: ["Inter"], label: ["Jetbrains Mono"]}, fontSize: {"display-xl-mobile": ["40px", {lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "700"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "display-xl": ["64px", {lineHeight: "72px", letterSpacing: "-0.02em", fontWeight: "700"}], "mono-sm": ["12px", {lineHeight: "16px", fontWeight: "400"}], "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "500"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}]}}}};</script>
+<style>
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease-out;
+        }
+        .glass-card:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+            background: rgba(15, 23, 42, 0.7);
+        }
+        .reveal-stagger > * {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .reveal-active {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+        @keyframes pulse-emerald {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            50% { box-shadow: 0 0 20px 4px rgba(16, 185, 129, 0.2); }
+        }
+        .animate-pulse-emerald {
+            animation: pulse-emerald 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 1s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/api.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<!-- Procedural Background -->
+<!-- STITCH_SHADER_START:ANIMATION_54 class="fixed inset-0 w-full h-full z-[-1] opacity-40" -->
+<div class="fixed inset-0 w-full h-full z-[-1] opacity-40" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_54" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_54');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+float noise(vec2 p) {
+    return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+float smooth_noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    return mix(mix(noise(i), noise(i + vec2(1.0, 0.0)), f.x),
+               mix(noise(i + vec2(0.0, 1.0)), noise(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 center = uv - 0.5;
+    center.x *= u_resolution.x / u_resolution.y;
+    
+    // Mission Intelligence Deep Base
+    vec3 color = vec3(0.01, 0.02, 0.05);
+    
+    // Procedural "Success" Glow
+    float n = smooth_noise(uv * 4.0 + u_time * 0.05);
+    n += 0.5 * smooth_noise(uv * 8.0 - u_time * 0.02);
+    
+    // Brand Palette
+    vec3 cyan = vec3(0.13, 0.83, 0.93);
+    vec3 emerald = vec3(0.06, 0.73, 0.51);
+    vec3 violet = vec3(0.55, 0.36, 0.96);
+    
+    // Background Atmospheric Gradients
+    float dist = length(center);
+    color += violet * (1.0 - smoothstep(0.0, 0.8, dist)) * 0.12;
+    color += cyan * (1.0 - smoothstep(0.0, 0.5, length(uv - vec2(0.9, 0.1)))) * 0.08;
+    color += emerald * (1.0 - smoothstep(0.0, 0.4, length(uv - vec2(0.1, 0.9)))) * 0.05;
+    
+    // Executive Grid (Subtle)
+    vec2 grid = fract(uv * 30.0);
+    float line = min(grid.x, grid.y);
+    color += cyan * (1.0 - smoothstep(0.0, 0.015, line)) * 0.02;
+    
+    // Success Pulse
+    float pulse = fract(u_time * 0.2);
+    float pulseCircle = smoothstep(0.45, 0.5, dist + pulse * 0.1) - smoothstep(0.5, 0.55, dist + pulse * 0.1);
+    color += emerald * pulseCircle * 0.03 * (1.0 - pulse);
+    
+    // Data "Neural" Synapses
+    float synapse = smoothstep(0.7, 1.0, n);
+    color = mix(color, cyan * 0.5, synapse * 0.1);
+    
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_54 -->
+<!-- Top Navigation Anchor (Shared Component) -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/70 backdrop-blur-xl border-b border-white/10 flex justify-between items-center h-16 px-6 md:px-margin-desktop transition-all duration-300 ease-in-out shadow-[0_0_20px_rgba(34,211,238,0.1)]">
+<div class="flex items-center gap-4">
+<a class="font-display-xl text-[24px] md:text-display-xl tracking-tighter text-primary drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]" href="index.html">PRISM Intelligence</a>
+</div>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="mission_control.html">Mission Control</a>
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1" href="intelligence_dashboard.html">Analytics</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="dataset.html">Telemetry</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="index.html">Archives</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-white/5 p-2 rounded-full transition-all">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-white/5 p-2 rounded-full transition-all">settings</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-white/20">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of an executive mission commander avatar with glowing tech interfaces reflected in their eyes, futuristic aerospace aesthetic, deep navy and cyan color palette, cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDNEgpvigKjDDJib4qfOOOyI1iAHMfEPXXpYOEhT49qzWIdRF6Df6jjoZST62zsCMfRGX6ZWTvW_zqyJVjvH_kS_P3kBuFs2hsLLaWkIvpn66iXWaAlO4c6ckC-EB6K2CJWYJqAyIK4ANJeaEKBho22Lz622nTQ8OrrmWa83Tpr7Tz7f5WSZIhYkAYyy3MhYckvejMb7WiqQIXYtMbD0wYbuOoFNhvj8xHr-tf6g9eY5FMQg1lsy3vCw">
+</div>
+</div>
+</header>
+<!-- Side Navigation (Shared Component) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-72 bg-surface-container-lowest/60 backdrop-blur-2xl border-r border-white/10 flex-col py-6 hidden md:flex z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-[18px] text-primary">PRISM-1</h3>
+<p class="font-mono-sm text-mono-sm text-on-surface-variant">Lunar Mission Complete</p>
+</div>
+</div>
+<button class="w-full py-2 bg-primary text-on-primary font-label-md text-label-md rounded-xl hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all active:scale-95">New Mission</button>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all" href="mission_control.html">
+<span class="material-symbols-outlined">dashboard</span> Overview
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all" href="dataset.html">
+<span class="material-symbols-outlined">public</span> Geology
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all" href="dataset.html">
+<span class="material-symbols-outlined">precision_manufacturing</span> ISR Utility
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all" href="dataset.html">
+<span class="material-symbols-outlined">local_shipping</span> Logistics
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md bg-secondary-container/30 text-primary border-l-4 border-primary" href="intelligence_dashboard.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">psychology</span> Intelligence
+            </a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-72 pt-24 pb-20 px-6 md:px-gutter min-h-screen">
+<!-- Top Section Header -->
+<header class="mb-10 reveal-stagger">
+<span class="font-mono-sm text-mono-sm text-primary tracking-[0.2em] uppercase mb-2 block">MISSION OUTCOMES</span>
+<h1 class="font-display-xl text-headline-lg md:text-display-xl text-on-surface mb-3">PRISM Intelligence Dashboard</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Unified mission intelligence generated through collaborative lunar AI agents. Real-time synthesized data from autonomous orbital and surface sensors.</p>
+</header>
+<!-- Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6 reveal-stagger">
+<!-- Center Hero Card -->
+<div class="glass-card col-span-1 md:col-span-4 lg:col-span-4 row-span-2 rounded-xl p-8 relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-0 right-0 p-8 z-10 text-right">
+<div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full font-label-md text-label-md animate-pulse-emerald">
+<span class="w-2 h-2 bg-emerald-400 rounded-full"></span> SUCCESS
+                    </div>
+</div>
+<div class="relative z-10 h-full flex flex-col">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-8">MISSION SUMMARY</h2>
+<div class="flex-1 min-h-[300px] mb-8 relative rounded-xl border border-white/5 bg-black/20 overflow-hidden">
+<!-- STITCH_THREEJS_START:ANIMATION_55 class="w-full h-full" -->
+<div class="w-full h-full" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_55" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_55');
+  const width = container.clientWidth || window.innerWidth;
+  const height = container.clientHeight || window.innerHeight;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(width, height);
+  container.appendChild(renderer.domElement);
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  // Central Mission Core
+  const coreGeom = new THREE.IcosahedronGeometry(1.5, 2);
+  const coreMat = new THREE.MeshPhongMaterial({ 
+    color: 0x22d3ee, 
+    emissive: 0x22d3ee, 
+    emissiveIntensity: 0.4, 
+    wireframe: true,
+    transparent: true,
+    opacity: 0.6
+  });
+  const core = new THREE.Mesh(coreGeom, coreMat);
+  group.add(core);
+
+  // Outcome Nodes
+  const outcomes = [
+    { label: "ICE", color: 0x22d3ee, pos: [4, 2, 0] },
+    { label: "DEPTH", color: 0x8b5cf6, pos: [4, -2, 0] },
+    { label: "ISRU", color: 0x10b981, pos: [-4, 2, 0] },
+    { label: "LANDING", color: 0xfacc15, pos: [-4, -2, 0] },
+    { label: "ROVER", color: 0x22d3ee, pos: [0, -4, 2] }
+  ];
+
+  const nodeGeom = new THREE.SphereGeometry(0.4, 16, 16);
+  const nodeMap = [];
+
+  outcomes.forEach(o => {
+    const mat = new THREE.MeshBasicMaterial({ color: o.color });
+    const mesh = new THREE.Mesh(nodeGeom, mat);
+    mesh.position.set(...o.pos);
+    group.add(mesh);
+    nodeMap.push({ mesh, color: o.color, start: new THREE.Vector3(0,0,0), end: new THREE.Vector3(...o.pos) });
+
+    // Connection lines
+    const points = [new THREE.Vector3(0,0,0), new THREE.Vector3(...o.pos)];
+    const geom = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(geom, new THREE.LineBasicMaterial({ color: o.color, transparent: true, opacity: 0.3 }));
+    group.add(line);
+
+    // Data Flow
+    for(let i=0; i<3; i++) {
+        const pGeom = new THREE.SphereGeometry(0.08, 8, 8);
+        const pMesh = new THREE.Mesh(pGeom, mat);
+        pMesh.userData = { t: Math.random(), start: new THREE.Vector3(0,0,0), end: new THREE.Vector3(...o.pos) };
+        group.add(pMesh);
+        o.particles = o.particles || [];
+        o.particles.push(pMesh);
+    }
+  });
+
+  // Orbital Rings
+  const ringGeom = new THREE.TorusGeometry(6, 0.01, 16, 100);
+  const ringMat = new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.1 });
+  const ring1 = new THREE.Mesh(ringGeom, ringMat);
+  ring1.rotation.x = Math.PI / 2;
+  group.add(ring1);
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+  const pointLight = new THREE.PointLight(0x22d3ee, 2);
+  pointLight.position.set(10, 10, 10);
+  scene.add(pointLight);
+
+  camera.position.z = 12;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const time = Date.now() * 0.001;
+    
+    group.rotation.y += 0.002;
+    core.rotation.y += 0.01;
+    core.scale.setScalar(1 + Math.sin(time * 2) * 0.05);
+
+    outcomes.forEach(o => {
+        o.particles.forEach(p => {
+            p.userData.t += 0.005;
+            if(p.userData.t > 1) p.userData.t = 0;
+            p.position.lerpVectors(p.userData.start, p.userData.end, p.userData.t);
+            p.scale.setScalar(1 + Math.sin(time * 8 + p.userData.t * 5) * 0.5);
+        });
+    });
+    
+    renderer.render(scene, camera);
+  }
+
+  window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
+
+  animate();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_55 -->
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">ac_unit</span>
+<span class="font-label-md text-label-md">Ice Detected</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">layers</span>
+<span class="font-label-md text-label-md">Depth Estimated</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span class="font-label-md text-label-md">Resources Ranked</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="font-label-md text-label-md">Landing Sites Selected</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">route</span>
+<span class="font-label-md text-label-md">Traverse Planned</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-label-md text-label-md">Mission Blueprint Generated</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side Intelligence Score -->
+<div class="glass-card col-span-1 md:col-span-2 lg:col-span-2 rounded-xl p-8 flex flex-col justify-between">
+<h3 class="font-headline-md text-headline-md text-primary mb-6">Intelligence Score</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-6" id="agent-confidence-grid">
+    <div class="flex items-center justify-between group">
+        <span class="font-label-md text-label-md text-on-surface-variant truncate mr-2" title="PREPROCESSOR_PRIME">PREPROCESSOR</span>
+        <div class="relative w-10 h-10 shrink-0">
+            <svg class="w-full h-full"><circle class="text-white/5 stroke-current" cx="20" cy="20" fill="transparent" r="16" stroke-width="3"></circle><circle id="conf-preprocessor" class="text-primary stroke-current progress-ring__circle" cx="20" cy="20" fill="transparent" r="16" stroke-linecap="round" stroke-width="3" style="stroke-dasharray: 100.5; stroke-dashoffset: 100.5;"></circle></svg>
+            <span id="val-preprocessor" class="absolute inset-0 flex items-center justify-center font-mono-sm text-[9px]">-</span>
+        </div>
+    </div>
+    <div class="flex items-center justify-between group">
+        <span class="font-label-md text-label-md text-on-surface-variant truncate mr-2" title="POLSAR_DETECTIVE">POLSAR DETECTIVE</span>
+        <div class="relative w-10 h-10 shrink-0">
+            <svg class="w-full h-full"><circle class="text-white/5 stroke-current" cx="20" cy="20" fill="transparent" r="16" stroke-width="3"></circle><circle id="conf-polsar" class="text-tertiary stroke-current progress-ring__circle" cx="20" cy="20" fill="transparent" r="16" stroke-linecap="round" stroke-width="3" style="stroke-dasharray: 100.5; stroke-dashoffset: 100.5;"></circle></svg>
+            <span id="val-polsar" class="absolute inset-0 flex items-center justify-center font-mono-sm text-[9px]">-</span>
+        </div>
+    </div>
+    <div class="flex items-center justify-between group">
+        <span class="font-label-md text-label-md text-on-surface-variant truncate mr-2" title="THERMO_GUARDIAN">THERMO GUARDIAN</span>
+        <div class="relative w-10 h-10 shrink-0">
+            <svg class="w-full h-full"><circle class="text-white/5 stroke-current" cx="20" cy="20" fill="transparent" r="16" stroke-width="3"></circle><circle id="conf-thermo" class="text-primary stroke-current progress-ring__circle" cx="20" cy="20" fill="transparent" r="16" stroke-linecap="round" stroke-width="3" style="stroke-dasharray: 100.5; stroke-dashoffset: 100.5;"></circle></svg>
+            <span id="val-thermo" class="absolute inset-0 flex items-center justify-center font-mono-sm text-[9px]">-</span>
+        </div>
+    </div>
+    <div class="flex items-center justify-between group">
+        <span class="font-label-md text-label-md text-on-surface-variant truncate mr-2" title="TERRAIN_SCOUT">TERRAIN SCOUT</span>
+        <div class="relative w-10 h-10 shrink-0">
+            <svg class="w-full h-full"><circle class="text-white/5 stroke-current" cx="20" cy="20" fill="transparent" r="16" stroke-width="3"></circle><circle id="conf-terrain" class="text-emerald-400 stroke-current progress-ring__circle" cx="20" cy="20" fill="transparent" r="16" stroke-linecap="round" stroke-width="3" style="stroke-dasharray: 100.5; stroke-dashoffset: 100.5;"></circle></svg>
+            <span id="val-terrain" class="absolute inset-0 flex items-center justify-center font-mono-sm text-[9px]">-</span>
+        </div>
+    </div>
+    <div class="flex items-center justify-between group">
+        <span class="font-label-md text-label-md text-on-surface-variant truncate mr-2" title="DEPTH_SOUNDER">DEPTH SOUNDER</span>
+        <div class="relative w-10 h-10 shrink-0">
+            <svg class="w-full h-full"><circle class="text-white/5 stroke-current" cx="20" cy="20" fill="transparent" r="16" stroke-width="3"></circle><circle id="conf-depth" class="text-primary stroke-current progress-ring__circle" cx="20" cy="20" fill="transparent" r="16" stroke-linecap="round" stroke-width="3" style="stroke-dasharray: 100.5; stroke-dashoffset: 100.5;"></circle></svg>
+            <span id="val-depth" class="absolute inset-0 flex items-center justify-center font-mono-sm text-[9px]">-</span>
+        </div>
+    </div>
+    <div class="flex items-center justify-between group">
+        <span class="font-label-md text-label-md text-on-surface-variant truncate mr-2" title="VOLUME_ORACLE">VOLUME ORACLE</span>
+        <div class="relative w-10 h-10 shrink-0">
+            <svg class="w-full h-full"><circle class="text-white/5 stroke-current" cx="20" cy="20" fill="transparent" r="16" stroke-width="3"></circle><circle id="conf-volume" class="text-tertiary stroke-current progress-ring__circle" cx="20" cy="20" fill="transparent" r="16" stroke-linecap="round" stroke-width="3" style="stroke-dasharray: 100.5; stroke-dashoffset: 100.5;"></circle></svg>
+            <span id="val-volume" class="absolute inset-0 flex items-center justify-center font-mono-sm text-[9px]">-</span>
+        </div>
+    </div>
+    <div class="flex items-center justify-between group">
+        <span class="font-label-md text-label-md text-on-surface-variant truncate mr-2" title="ISRU_ARCHITECT">ISRU ARCHITECT</span>
+        <div class="relative w-10 h-10 shrink-0">
+            <svg class="w-full h-full"><circle class="text-white/5 stroke-current" cx="20" cy="20" fill="transparent" r="16" stroke-width="3"></circle><circle id="conf-isru" class="text-primary stroke-current progress-ring__circle" cx="20" cy="20" fill="transparent" r="16" stroke-linecap="round" stroke-width="3" style="stroke-dasharray: 100.5; stroke-dashoffset: 100.5;"></circle></svg>
+            <span id="val-isru" class="absolute inset-0 flex items-center justify-center font-mono-sm text-[9px]">-</span>
+        </div>
+    </div>
+    <div class="flex items-center justify-between group">
+        <span class="font-label-md text-label-md text-on-surface-variant truncate mr-2" title="NAVIGATOR">NAVIGATOR</span>
+        <div class="relative w-10 h-10 shrink-0">
+            <svg class="w-full h-full"><circle class="text-white/5 stroke-current" cx="20" cy="20" fill="transparent" r="16" stroke-width="3"></circle><circle id="conf-navigator" class="text-emerald-400 stroke-current progress-ring__circle" cx="20" cy="20" fill="transparent" r="16" stroke-linecap="round" stroke-width="3" style="stroke-dasharray: 100.5; stroke-dashoffset: 100.5;"></circle></svg>
+            <span id="val-navigator" class="absolute inset-0 flex items-center justify-center font-mono-sm text-[9px]">-</span>
+        </div>
+    </div>
+</div>
+<div class="pt-6 border-t border-white/10">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md text-primary">Overall Confidence</span>
+<span class="font-display-xl text-[32px] text-primary counter">8</span>
+</div>
+<div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 94%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Volume Intelligence -->
+<div class="glass-card col-span-1 md:col-span-2 lg:col-span-2 rounded-xl p-8">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-6">Volume Intelligence</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/5 p-4 rounded-lg">
+<p class="font-mono-sm text-mono-sm text-on-surface-variant mb-1">Ice Volume</p>
+<p class="font-headline-md text-headline-md text-primary"><span class="counter">0.3</span>k m³</p>
+</div>
+<div class="bg-white/5 p-4 rounded-lg">
+<p class="font-mono-sm text-mono-sm text-on-surface-variant mb-1">Extractable</p>
+<p class="font-headline-md text-headline-md text-primary"><span class="counter">7</span>%</p>
+</div>
+<div class="bg-white/5 p-4 rounded-lg">
+<p class="font-mono-sm text-mono-sm text-on-surface-variant mb-1">Water Eq.</p>
+<p class="font-headline-md text-headline-md text-tertiary"><span class="counter">0.3</span>M L</p>
+</div>
+<div class="bg-white/5 p-4 rounded-lg">
+<p class="font-mono-sm text-mono-sm text-on-surface-variant mb-1">Interval</p>
+<p class="font-headline-md text-headline-md text-on-surface-variant">+/- 4%</p>
+</div>
+</div>
+</div>
+<!-- Ice Probability Map -->
+<div class="glass-card col-span-1 md:col-span-2 lg:col-span-2 rounded-xl p-6">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline-md text-[18px]">Ice Probability Map</h3>
+<span class="px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded text-[10px] font-mono-sm">VALIDATED</span>
+</div>
+<div class="aspect-video rounded-lg bg-surface-container-low overflow-hidden relative border border-white/5">
+<img class="w-full h-full object-cover" data-alt="High resolution satellite imagery of a lunar crater floor showing a false-color heatmap overlay representing ice probability. Zones of deep violet indicate high probability, emerald for medium, and dark navy for low. Tech-style topographical lines and distance markers are visible." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXW_Coig6Uv12jTQ3vW-IBQeJGjOCIa_ojG_p4zyc_TkByfrQ-9noG6uFsvmKataDgmujVdDGHT7UGL3dDm7MTMBfnQmeGJd6F7gRuZqwuPWWKAu2X5anrQ87sLtHIG780NIZzKmoQ1K6YnFD_0zT4DAr0vgiN_LWg_zOfqMiAC3EZqB6iOLNoPh4GtR1N70sPAYfATTD3B7rIcq7iC58TW0QS4j-qLqkaX13uocSuhNIqICRZf3hLjA">
+<div class="absolute bottom-3 left-3 flex gap-2">
+<div class="px-2 py-1 bg-black/60 backdrop-blur rounded text-[10px] flex items-center gap-1"><span class="w-1.5 h-1.5 bg-violet-500 rounded-full"></span> High</div>
+<div class="px-2 py-1 bg-black/60 backdrop-blur rounded text-[10px] flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> Med</div>
+<div class="px-2 py-1 bg-black/60 backdrop-blur rounded text-[10px] flex items-center gap-1"><span class="w-1.5 h-1.5 bg-navy-500 rounded-full"></span> Low</div>
+</div>
+</div>
+</div>
+<!-- Depth Stratification -->
+<div class="glass-card col-span-1 md:col-span-2 lg:col-span-2 rounded-xl p-6">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline-md text-[18px]">Depth Stratification</h3>
+<span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded text-[10px] font-mono-sm">CONFIDENCE ENABLED</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-2 rounded bg-white/5 border border-white/5">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-primary-container"></div>
+<span class="font-label-md text-label-md">Shallow (0-2m)</span>
+</div>
+<span class="font-mono-sm">18% coverage</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-white/5 border border-white/5">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-secondary-container"></div>
+<span class="font-label-md text-label-md">Deep (2-5m)</span>
+</div>
+<span class="font-mono-sm">42% coverage</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-white/5 border border-white/5 opacity-50">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-surface-variant"></div>
+<span class="font-label-md text-label-md">No Ice detected</span>
+</div>
+<span class="font-mono-sm">40% coverage</span>
+</div>
+</div>
+</div>
+<!-- ISRU Priority Map -->
+<div class="glass-card col-span-1 md:col-span-2 lg:col-span-2 rounded-xl p-6">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline-md text-[18px]">ISRU Priority Map</h3>
+<span class="px-2 py-0.5 bg-tertiary-fixed-dim/20 text-tertiary border border-tertiary/20 rounded text-[10px] font-mono-sm">MISSION READY</span>
+</div>
+<div class="aspect-video rounded-lg bg-surface-container-low overflow-hidden relative border border-white/5">
+<img class="w-full h-full object-cover" data-alt="A tactical map visualization of a lunar mission landing zone with hexagonal grid overlays. Priority mining zones are highlighted in neon cyan and orange glow, indicating optimal In-Situ Resource Utilization areas. Sophisticated mission control UI elements like coordinate axes and zoom levels are integrated into the artistic map." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvGGK9Ym61rN4XsZeXjBVHjg5TdWBZMCultcwymQYQv-RHoibRkjdjdRG9bCEZo5pCUkLa9YrZx95Jvwo8jx9RBSZVaUaUQmmZ6Bc6V-1UhxenHM48YSEpZWVtPDSXSIiCjFGZGmhg9zivQKwbYZZO2jQF8FfZ2jYYmJOZ7U2QdS2EsExgzCPvURYRQpFiqu6cIHt8YlNiLVzQhf4SG6TcAPn1PnaOZdWQIDNUyT9kLoaE6k6PCpxqiA">
+</div>
+</div>
+<!-- Landing Site Candidates -->
+<div class="glass-card col-span-1 md:col-span-2 lg:col-span-3 rounded-xl p-6">
+<h3 class="font-headline-md text-[18px] mb-4">Landing Site Candidates</h3>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-4 p-4 rounded-lg bg-primary-container/10 border border-primary/20">
+<div class="w-10 h-10 rounded bg-primary flex items-center justify-center text-on-primary font-bold">A</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md">Alpha Prime</span>
+<span class="text-primary font-bold">98.2 Score</span>
+</div>
+<div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 98.2%"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-white/5 border border-white/5">
+<div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center text-on-surface-variant font-bold">B</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md">Beta Station</span>
+<span class="text-on-surface-variant">84.5 Score</span>
+</div>
+<div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-surface-variant" style="width: 84.5%"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-white/5 border border-white/5">
+<div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center text-on-surface-variant font-bold">G</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md">Gamma Outpost</span>
+<span class="text-on-surface-variant">72.1 Score</span>
+</div>
+<div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-surface-variant" style="width: 72.1%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Rover Traverse Paths -->
+<div class="glass-card col-span-1 md:col-span-2 lg:col-span-3 rounded-xl p-6 flex flex-col">
+<h3 class="font-headline-md text-[18px] mb-4">Rover Traverse Paths</h3>
+<div class="flex-1 rounded-lg bg-black/40 border border-white/5 p-4 flex flex-col justify-between">
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-6 bg-emerald-400 rounded"></div>
+<span class="font-label-md text-label-md">Path: Balanced</span>
+</div>
+<span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-[10px] rounded uppercase font-bold">Recommended</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-6 bg-primary rounded"></div>
+<span class="font-label-md text-label-md">Path: Safe Traverse</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">92% Slope Safety</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-6 bg-tertiary rounded"></div>
+<span class="font-label-md text-label-md">Path: Max Solar</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">98% Light Access</span>
+</div>
+</div>
+<button class="mt-6 w-full py-3 rounded-xl border border-primary/30 text-primary font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-all">Launch Route Protocol</button>
+</div>
+</div>
+</div>
+<!-- Bottom Key Metrics Row -->
+<section class="mt-12 glass-card rounded-2xl p-8 reveal-stagger">
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
+<div>
+<p class="font-display-xl text-[32px] text-primary mb-1 counter">8</p>
+<p class="font-mono-sm text-mono-sm text-on-surface-variant uppercase">AI Agents</p>
+</div>
+<div>
+<p class="font-display-xl text-[32px] text-primary mb-1 counter">3</p>
+<p class="font-mono-sm text-mono-sm text-on-surface-variant uppercase">Validation Layers</p>
+</div>
+<div>
+<p class="font-display-xl text-[32px] text-primary mb-1 counter">4</p>
+<p class="font-mono-sm text-mono-sm text-on-surface-variant uppercase">Datasets</p>
+</div>
+<div>
+<p class="font-display-xl text-[32px] text-emerald-400 mb-1">100%</p>
+<p class="font-mono-sm text-mono-sm text-on-surface-variant uppercase">Traceability</p>
+</div>
+<div class="col-span-2 lg:col-span-2">
+<div class="h-full flex items-center justify-center bg-primary/5 rounded-xl border border-primary/20 px-6">
+<span class="material-symbols-outlined text-primary mr-2">verified</span>
+<span class="font-label-md text-label-md text-primary tracking-widest uppercase">Mission Ready Status Active</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Anchor (Shared Component) -->
+<footer class="fixed bottom-0 w-full h-10 z-40 bg-surface-dim/80 backdrop-blur-md border-t border-white/5 flex justify-between items-center px-6 md:px-margin-desktop opacity-80 hover:opacity-100 transition-opacity">
+<span class="font-mono-sm text-mono-sm text-secondary uppercase tracking-widest">© 2024 LUNAR COMMAND &amp; CONTROL. ALL TELEMETRY ENCRYPTED.</span>
+<div class="flex gap-6">
+<a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+<a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Security</a>
+<a class="font-mono-sm text-mono-sm text-on-surface-variant hover:text-primary transition-colors" href="#">API Documentation</a>
+</div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Reveal stagger animation
+            const staggerGroups = document.querySelectorAll('.reveal-stagger');
+            staggerGroups.forEach((group, groupIndex) => {
+                const children = group.children;
+                Array.from(children).forEach((child, childIndex) => {
+                    setTimeout(() => {
+                        child.classList.add('reveal-active');
+                    }, (groupIndex * 200) + (childIndex * 100));
+                });
+            });
+
+            const animateCounter = (el, target, isPercentage = false) => {
+                let count = 0;
+                const increment = target / 40 || 1;
+                const update = () => {
+                    if (count < target) {
+                        count += increment;
+                        el.innerText = isPercentage ? `${Math.round(count)}%` : count.toFixed(1);
+                        requestAnimationFrame(update);
+                    } else {
+                        el.innerText = isPercentage ? `${Math.round(target)}%` : (target % 1 === 0 ? target : target.toFixed(1));
+                    }
+                };
+                update();
+            };
+
+            const animateRing = (el, percentage) => {
+                // Circumference is ~100.5 for r=16
+                const offset = 100.5 - (100.5 * (percentage / 100));
+                el.style.strokeDashoffset = offset;
+            };
+
+            try {
+                if (!PrismAPI.isConfigured()) return;
+                const jobId = localStorage.getItem('prism_latest_job');
+                if (!jobId) return;
+
+                const res = await PrismAPI.get(`/jobs/${jobId}`);
+                if (res && res.status === 'done' && res.result) {
+                    const result = res.result;
+                    const registry = result.confidence_registry || {};
+                    
+                    const agents = [
+                        { id: 'preprocessor', key: 'PREPROCESSOR_PRIME' },
+                        { id: 'polsar', key: 'POLSAR_DETECTIVE' },
+                        { id: 'thermo', key: 'THERMO_GUARDIAN' },
+                        { id: 'terrain', key: 'TERRAIN_SCOUT' },
+                        { id: 'depth', key: 'DEPTH_SOUNDER' },
+                        { id: 'volume', key: 'VOLUME_ORACLE' },
+                        { id: 'isru', key: 'ISRU_ARCHITECT' },
+                        { id: 'navigator', key: 'NAVIGATOR' }
+                    ];
+
+                    let totalConf = 0;
+                    agents.forEach(agent => {
+                        const conf = (registry[agent.key] || 0) * 100;
+                        totalConf += conf;
+                        const valEl = document.getElementById(`val-${agent.id}`);
+                        const ringEl = document.getElementById(`conf-${agent.id}`);
+                        if (valEl) animateCounter(valEl, conf, true);
+                        if (ringEl) animateRing(ringEl, conf);
+                    });
+
+                    // Update overall
+                    const avgConf = totalConf / 8;
+                    const overallEl = document.querySelector('.pt-6 .counter');
+                    if (overallEl) animateCounter(overallEl, avgConf);
+                    const overallBar = document.querySelector('.pt-6 .bg-primary.rounded-full');
+                    if (overallBar) overallBar.style.width = `${avgConf}%`;
+
+                    // Update volumes if available
+                    if (result.volume_result && result.volume_result.total_ice_volume_m3) {
+                        const iceVol = result.volume_result.total_ice_volume_m3.median / 1000; // in k m3
+                        const volEls = document.querySelectorAll('.grid-cols-2 .counter');
+                        if (volEls.length >= 2) {
+                            animateCounter(volEls[0], iceVol);
+                            // Assume Extractable is around 7% and water equivalent is derived
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Dashboard failed to fetch real data", e);
+            }
+        });
+    </script>
+</body></html>
