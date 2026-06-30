@@ -735,7 +735,9 @@ animate();
             });
 
             if (!res.ok) {
-                throw new Error("Analysis failed on server.");
+                    let detail = res.statusText;
+                    try { detail = (await res.json()).detail || detail; } catch (_) {}
+                    throw new Error(`HTTP ${res.status}: ${detail}`);
             }
 
             const data = await res.json();
@@ -756,8 +758,8 @@ animate();
         } catch (e) {
             console.error(e);
             bar.style.width = '100%';
-            bar.style.backgroundColor = '#ef4444'; // Red error
-            statusText.innerText = 'Inference Failed: ' + e.message;
+            bar.style.backgroundColor = '#ef4444';
+            statusText.innerText = 'Upload failed: ' + e.message + ' (check DevTools → Network for details)';
             statusText.classList.remove('animate-pulse');
             
             setTimeout(() => {
