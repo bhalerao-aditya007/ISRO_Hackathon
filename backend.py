@@ -393,52 +393,123 @@ async def upload_dataset(
 @app.post("/run_single_image", tags=["Pipeline"])
 async def run_single_image(file: UploadFile = File(...)):
     """
-    Run the REAL .pkl models against a standard 3-channel uploaded image 
-    by extracting numerical features to act as the 8-channel Polarimetric tensor.
+    Run the REAL .pkl model against an uploaded TIFF/PNG/JPG by extracting
+    actual pixel-derived features (not a hash of the file bytes).
+
+    NOTE: a generic optical image does not contain genuine DFSAR polarimetric
+    channels (CPR_L/S, DOP_L/S, sigma0_L/S). For non-DFSAR uploads we derive
+    a physically-motivated proxy feature vector from real image statistics
+    (mean/std/contrast per region) so results actually vary with image
+    content. This is clearly weaker evidence than true DFSAR input and is
+    labeled as such in the response.
     """
-    content = await file.read()
-    
-    # 1. Feature Extraction Bridge
+    import io
     import numpy as np
-    h = hashlib.sha256(content).digest()
-    
-    # Map byte values to realistic physical ranges for the 8 features expected
-    cpr_l = (h[0] / 255.0) * 1.5
-    cpr_s = (h[1] / 255.0) * 1.2
-    dop_l = (h[2] / 255.0) * 0.5
-    dop_s = (h[3] / 255.0) * 0.4
-    sigma0_l = -20.0 + (h[4] / 255.0) * 15.0
-    sigma0_s = -20.0 + (h[5] / 255.0) * 15.0
-    vsf = (h[6] / 255.0)
-    br_ls = (h[7] / 255.0) * 2.0
-    
+
+    filename = (file.filename or "").lower()
+    content  = await file.read()
+
+    if not content:
+        raise HTTPException(400, "Empty file upload.")
+
+    img_arr = None
+    source_kind = "unknown"
+
+    # ---- Try TIFF (rasterio) — handles real GeoTIFF / multi-band DFSAR-style data
+    if filename.endswith((".tif", ".tiff")):
+        try:
+            import rasterio
+            with rasterio.MemoryFile(content) as memfile:
+                with memfile.open() as src:
+                    bands = [src.read(i + 1).astype(np.float32) for i in range(src.count)]
+                    img_arr = np.stack(bands)  # (C, H, W)
+                    source_kind = f"geotiff_{src.count}band"
+        except Exception as e:
+            log.warning(f"rasterio failed to read TIFF ({e}); falling back to PIL.")
+
+    # ---- Fall back to PIL for TIFF/PNG/JPG (plain raster image, no geo metadata)
+    if img_arr is None:
+        try:
+            from PIL import Image
+            pil_img = Image.open(io.BytesIO(content))
+            if pil_img.mode not in ("L", "RGB"):
+                pil_img = pil_img.convert("RGB")
+            arr = np.array(pil_img).astype(np.float32)
+            if arr.ndim == 2:
+                img_arr = arr[None, :, :]            # (1, H, W)
+            else:
+                img_arr = np.moveaxis(arr, -1, 0)     # (C, H, W)
+            source_kind = f"raster_{pil_img.mode}"
+        except Exception as e:
+            log.error(f"Failed to decode upload '{file.filename}': {e}")
+            raise HTTPException(400, f"Could not decode image/TIFF file: {e}")
+
+    # ---- Derive an 8-feature vector from real pixel statistics ----
+    # This mirrors the shape the RF model expects:
+    #   [CPR_L, CPR_S, DOP_L, DOP_S, sigma0_L, sigma0_S, VSF, backscatter_ratio_L_S]
+    # but built from actual image content (per-channel mean/std/contrast),
+    # not file-byte hashing. Still a proxy — clearly not real radar physics —
+    # but at least it responds to what's actually in the picture.
+    norm = img_arr / (img_arr.max() + 1e-9)
+    c0 = norm[0]
+    c1 = norm[1] if norm.shape[0] > 1 else norm[0]
+
+    mean0, std0 = float(c0.mean()), float(c0.std())
+    mean1, std1 = float(c1.mean()), float(c1.std())
+
+    cpr_l    = float(np.clip(1.0 + (std0 - 0.15) * 3.0, 0.0, 3.0))
+    cpr_s    = float(np.clip(1.0 + (std1 - 0.15) * 2.4, 0.0, 3.0))
+    dop_l    = float(np.clip(0.3 - std0, 0.0, 1.0))
+    dop_s    = float(np.clip(0.3 - std1, 0.0, 1.0))
+    sigma0_l = float(-20.0 + mean0 * 15.0)
+    sigma0_s = float(-20.0 + mean1 * 15.0)
+    vsf      = float(np.clip(std0 + std1, 0.0, 1.0))
+    br_ls    = float(np.clip((mean0 + 1e-6) / (mean1 + 1e-6), 0.0, 2.0))
+
     X = np.array([[cpr_l, cpr_s, dop_l, dop_s, sigma0_l, sigma0_s, vsf, br_ls]])
-    
-    # 2. Run through the REAL model
+
+    # ---- Run through the real trained model ----
     model_path = _PRISM_ROOT / "models" / "trained_models" / "rf_ice_classifier.pkl"
     try:
         model = joblib.load(model_path)
         proba = model.predict_proba(X)[0]
         ice_prob = float(proba[1])
+        model_used = True
     except Exception as e:
-        log.error(f"Failed to load real model, using derived probability: {e}")
-        ice_prob = 0.5 + (h[8] / 255.0) * 0.49 # Fallback mathematical derivation
-        
+        log.error(f"Failed to load real model ({e}); using physics-style fallback.")
+        score = (cpr_l * vsf) / (dop_l + 0.01)
+        ice_prob = float(1.0 / (1.0 + np.exp(-2.0 * (score - 1.5))))
+        model_used = False
+
     alpha_score = 60.0 + (ice_prob * 39.0)
-    
+    h = hashlib.sha256(content).digest()  # still used only for confidence jitter, not the science
+
     result = {
         "status": "success",
-        "message": "Custom Image Analysis Complete",
-        "output_dir": "/tmp/prism_outputs/custom",
+        "message": "Image analysis complete",
+        "source_kind": source_kind,
+        "is_real_dfsar": False,
+        "caveat": (
+            "Uploaded file is a generic raster, not calibrated DFSAR polarimetric "
+            "data. Feature vector is derived from pixel intensity statistics as a "
+            "proxy and should not be treated as a scientific ice detection result."
+        ),
+        "model_used": model_used,
+        "derived_features": {
+            "cpr_l": round(cpr_l, 3), "cpr_s": round(cpr_s, 3),
+            "dop_l": round(dop_l, 3), "dop_s": round(dop_s, 3),
+            "sigma0_l": round(sigma0_l, 2), "sigma0_s": round(sigma0_s, 2),
+            "vsf": round(vsf, 3), "backscatter_ratio_l_s": round(br_ls, 3),
+        },
         "confidence_registry": {
-            "PREPROCESSOR_PRIME": 0.70 + (h[9]/255.0)*0.2,
+            "PREPROCESSOR_PRIME": 0.70 + (h[9] / 255.0) * 0.2,
             "POLSAR_DETECTIVE": ice_prob,
-            "THERMO_GUARDIAN": 0.80 + (h[10]/255.0)*0.15,
-            "TERRAIN_SCOUT": 0.75 + (h[11]/255.0)*0.2,
-            "DEPTH_SOUNDER": 0.85 + (h[12]/255.0)*0.1,
-            "VOLUME_ORACLE": 0.80 + (h[13]/255.0)*0.15,
+            "THERMO_GUARDIAN": 0.80 + (h[10] / 255.0) * 0.15,
+            "TERRAIN_SCOUT": 0.75 + (h[11] / 255.0) * 0.2,
+            "DEPTH_SOUNDER": 0.85 + (h[12] / 255.0) * 0.1,
+            "VOLUME_ORACLE": 0.80 + (h[13] / 255.0) * 0.15,
             "ISRU_ARCHITECT": ice_prob * 0.95,
-            "NAVIGATOR": 0.85
+            "NAVIGATOR": 0.85,
         },
         "ice_volume_m3": int(ice_prob * 1000000),
         "extractable_volume_m3": int(ice_prob * 70000),
@@ -446,12 +517,12 @@ async def run_single_image(file: UploadFile = File(...)):
             "name": "Alpha Prime",
             "score": round(alpha_score, 1),
             "lat": -89.0,
-            "lon": 120.0
-        }
+            "lon": 120.0,
+        },
     }
-    
+
     job_id = "custom-" + str(uuid.uuid4())[:8]
-    
+
     with _lock:
         _jobs[job_id] = {
             "job_id": job_id,
@@ -462,10 +533,9 @@ async def run_single_image(file: UploadFile = File(...)):
             "error": None,
             "created": time.time(),
         }
-        
+
     return _jobs[job_id]
-
-
+  
 # ── Download output file ──────────────────────────────────────────────────
 
 @app.get("/outputs/{job_id}/{filename}", tags=["Data"])
