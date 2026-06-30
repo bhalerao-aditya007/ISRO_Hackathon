@@ -1,5 +1,5 @@
 # PRISM — Python dependencies for HuggingFace Spaces
-
+python-multipart
 # Core scientific stack
 numpy>=1.24
 scipy>=1.11
